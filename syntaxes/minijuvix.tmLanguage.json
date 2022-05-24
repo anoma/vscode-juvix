@@ -1,0 +1,63 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "MiniJuvix",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#line-comment"
+		},
+		{
+			"include": "#block-comment"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.minijuvix",
+					"match": "(\\b(import|open|public|axiom|module|compile|end|foreign|inductive|terminating)\\b)"
+				},
+				{
+					"name": "keyword.control.minijuvix",
+					"match": "(->|→|:=|↦|:|≔|;)"
+				},
+				{
+					"name": "keyword.other.minijuvix",
+					"match": "Type|Any"
+				}
+			]
+		},
+		"line-comment": {
+			"name": "comment.line.double-dash.minijuvix",
+			"begin": "--",
+			"end": "$"
+		},
+		"block-comment": {
+			"name": "comment.block.minijuvix",
+			"begin": "\\{-",
+			"end": "-\\}",
+			"patterns": [
+				{
+					"include": "#block-comment"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.minijuvix",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.minijuvix",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.minijuvix"
+}
