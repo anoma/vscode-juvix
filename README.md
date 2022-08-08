@@ -1,6 +1,9 @@
 # vscode-juvix
 
-## Install the Juvix syntax highlighting extension
+Install the Juvix syntax highlighting extension by running the following
+command on your prefered shell.
 
-* To start using your extension with Visual Studio Code copy it into the `<user home>/.vscode/extensions` folder and restart Code.
+```
+git clone https://github.com/anama/vscode-juvix ~/.vscode/extensions
+```
 
