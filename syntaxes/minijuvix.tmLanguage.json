@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "MiniJuvix",
+	"name": "Juvix",
 	"patterns": [
 		{
 			"include": "#keywords"
@@ -19,26 +19,26 @@
 		"keywords": {
 			"patterns": [
 				{
-					"name": "keyword.control.minijuvix",
+					"name": "keyword.control.juvix",
 					"match": "(\\b(import|open|public|axiom|module|compile|end|foreign|inductive|terminating)\\b)"
 				},
 				{
-					"name": "keyword.control.minijuvix",
+					"name": "keyword.control.juvix",
 					"match": "(->|→|:=|↦|:|≔|;)"
 				},
 				{
-					"name": "keyword.other.minijuvix",
+					"name": "keyword.other.juvix",
 					"match": "Type|Any"
 				}
 			]
 		},
 		"line-comment": {
-			"name": "comment.line.double-dash.minijuvix",
+			"name": "comment.line.double-dash.juvix",
 			"begin": "--",
 			"end": "$"
 		},
 		"block-comment": {
-			"name": "comment.block.minijuvix",
+			"name": "comment.block.juvix",
 			"begin": "\\{-",
 			"end": "-\\}",
 			"patterns": [
@@ -48,16 +48,16 @@
 			]
 		},
 		"strings": {
-			"name": "string.quoted.double.minijuvix",
+			"name": "string.quoted.double.juvix",
 			"begin": "\"",
 			"end": "\"",
 			"patterns": [
 				{
-					"name": "constant.character.escape.minijuvix",
+					"name": "constant.character.escape.juvix",
 					"match": "\\\\."
 				}
 			]
 		}
 	},
-	"scopeName": "source.minijuvix"
+	"scopeName": "source.juvix"
 }

@@ -1,6 +1,6 @@
 {
-    "name": "language-minijuvix",
-    "displayName": "language-minijuvix",
+    "name": "language-juvix",
+    "displayName": "language-juvix",
     "description": "",
     "version": "0.0.1",
     "engines": {
@@ -11,15 +11,15 @@
     ],
     "contributes": {
         "languages": [{
-            "id": "minijuvix",
-            "aliases": ["MiniJuvix", "minijuvix"],
-            "extensions": [".mjuvix"],
+            "id": "juvix",
+            "aliases": ["Juvix", "juvix"],
+            "extensions": [".juvix"],
             "configuration": "./language-configuration.json"
         }],
         "grammars": [{
-            "language": "minijuvix",
-            "scopeName": "source.minijuvix",
-            "path": "./syntaxes/minijuvix.tmLanguage.json"
+            "language": "juvix",
+            "scopeName": "source.juvix",
+            "path": "./syntaxes/juvix.tmLanguage.json"
         }]
     }
 }
