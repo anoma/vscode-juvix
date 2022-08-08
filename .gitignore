@@ -1,2 +1,10 @@
 node_modules
 *.vsix
+/bower_components/
+/node_modules/
+/.spago/
+/output/
+/generated-docs/
+/.psc*
+/.purs*
+/.psa*

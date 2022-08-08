@@ -1,25 +1,125 @@
 {
-    "name": "language-juvix",
-    "displayName": "language-juvix",
-    "description": "",
+    "name": "juvix-vscode-mode",
     "version": "0.0.1",
+    "license": "AGPL-3.0",
+    "description": "Juvix IDE support for VSCode",
+    "displayName": "juvix-vscode-mode",
+    "publisher": "Anoma",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/anoma/vscode-juvix.git"
+    },
+    "bugs": {
+        "url": "https://github.com/anoma/vscode-juvix/issues"
+    },
+    "directories": {
+        "test": "test"
+    },
     "engines": {
+        "vscode": "^1.67.0"
+    },
+    "devDependencies": {
         "vscode": "^1.67.0"
     },
     "categories": [
         "Programming Languages"
     ],
+    "keywords": [
+        "juvix",
+        "language",
+        "programming"
+    ],
+    "galleryBanner": {
+        "color": "#cc374d"
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "spago build",
+        "watch": "spago --watch build"
+    },
+    "activationEvents": [
+        "onLanguage:juvix",
+        "workspaceContains:src/**/juvix.yaml",
+        "workspaceContains:src/**/*.juvix"
+    ],
+    "main": "./src/juvix.ts",
     "contributes": {
-        "languages": [{
-            "id": "juvix",
-            "aliases": ["Juvix", "juvix"],
-            "extensions": [".juvix"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "juvix",
-            "scopeName": "source.juvix",
-            "path": "./syntaxes/juvix.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "juvix",
+                "aliases": [
+                    "juvix"
+                ],
+                "extensions": [
+                    ".juvix"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "juvix",
+                "scopeName": "source.juvix",
+                "path": "./syntaxes/juvix.tmLanguage.json"
+            }
+        ],
+        "commands": [
+            {
+                "command": "juvix.typecheck",
+                "title": "Typecheck",
+                "category": "Juvix"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "juvix.typecheck",
+                "key": "ctrl+c ctrl+l",
+                "mac": "ctrl+c ctrl+l",
+                "when": "editorTextFocus"
+            }
+        ],
+        "configuration": {
+            "title": "Juvix",
+            "properties": {
+                "juvix.connection.version": {
+                    "type": "string",
+                    "default": "juvix",
+                    "scope": "machine-overridable",
+                    "description": "Name of the executable of Juvix."
+                },
+                "juvix.connection.path": {
+                    "type": "string",
+                    "default": "",
+                    "scope": "machine-overridable",
+                    "description": "Path to the executable of Juvix."
+                },
+                "juvix.connection.CLIOptions": {
+                    "type": "string",
+                    "default": "--only-errors",
+                    "scope": "machine-overridable",
+                    "description": "Command-line options for Juvix delimited by space."
+                },
+                "juvix.view.panel": {
+                    "type": "string",
+                    "default": "bottom",
+                    "enum": [
+                        "bottom",
+                        "right"
+                    ],
+                    "description": "Where to mount the panel"
+                },
+                "juvix.backend": {
+                    "type": "string",
+                    "default": "C",
+                    "enum": [
+                        "C",
+                        "Haskell",
+                        "Html"
+                    ],
+                    "scope": "machine-overridable",
+                    "description": "Backend"
+                }
+            }
+        }
     }
 }

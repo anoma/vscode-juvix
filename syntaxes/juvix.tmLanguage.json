@@ -20,7 +20,7 @@
 			"patterns": [
 				{
 					"name": "keyword.control.juvix",
-					"match": "(\\b(import|open|public|axiom|module|compile|end|foreign|inductive|terminating)\\b)"
+					"match": "(\\b(import|open|public|axiom|module|compile|end|foreign|inductive|positive|terminating)\\b)"
 				},
 				{
 					"name": "keyword.control.juvix",
