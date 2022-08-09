@@ -13,7 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(modal);
 // end of the example
 
-    const activatePS = require('../../output/Main').main;
+    const activatePS = require('./Main').main;
 
 }
 
