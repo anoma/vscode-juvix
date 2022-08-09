@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES5",
+		"outDir": "output/src",
+		"lib": ["es6"],
+		"newLine": "LF",
+		"sourceMap": true
+	},
+	"include": [
+		"src/*.ts"
+	]
+}
