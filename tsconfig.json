@@ -1,13 +1,17 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "ES5",
-		"outDir": "output/src",
-		"lib": ["es6"],
+		"target": "ES2020",
+		"outDir": "output",
+		"rootDir" : "src",
+		"lib": [
+			"ES2020"
+		],
 		"newLine": "LF",
-		"sourceMap": true
+		"sourceMap": true,
+		"strict": true,
 	},
 	"include": [
-		"src/*.ts"
+		"src/**/*.ts"
 	]
 }
