@@ -9,3 +9,6 @@ vsc-extension-quickstart.md
 **/tsconfig.json
 **/*.ts
 .spago/**
+HACKING.md
+*.dhall
+**/.eslintrc.json

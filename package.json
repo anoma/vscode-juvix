@@ -5,6 +5,7 @@
     "description": "Juvix IDE support for VSCode",
     "displayName": "juvix-mode",
     "publisher": "Heliax",
+    "icon": "assets/tara.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/anoma/vscode-juvix.git"
@@ -64,10 +65,6 @@
         "singleQuote": true,
         "tabWidth": 2,
         "arrowParens": "avoid"
-      },
-    "dependencies": {
-        "vscode-languageclient": "^8.0.2",
-        "vscode-uri": "^3.0.3"
     },
     "activationEvents": [
         "onLanguage:Juvix",

@@ -27,6 +27,22 @@ npm run ps:watch
 
 ## Publishing
 
+Before to publish, run
+
 ```
 vsce package
 ```
+
+To see the content of the VSIX file, run:
+
+```
+vsce ls
+```
+
+To publish a new version (minor), run:
+
+```
+vsce publish minor
+```
+
+TODO: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#verify-a-publisher
