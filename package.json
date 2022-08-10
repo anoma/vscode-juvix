@@ -4,7 +4,7 @@
     "license": "AGPL-3.0",
     "description": "Juvix IDE support for VSCode",
     "displayName": "juvix-mode",
-    "publisher": "Anoma",
+    "publisher": "Heliax",
     "repository": {
         "type": "git",
         "url": "https://github.com/anoma/vscode-juvix.git"
@@ -16,7 +16,7 @@
         "test": "test"
     },
     "engines": {
-        "vscode": "^1.67.0"
+        "vscode": "^1.66.0"
     },
     "categories": [
         "Programming Languages"
@@ -30,26 +30,42 @@
         "color": "#cc374d"
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "dist": "esbuild output/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
-        "ts:compile": "tsc -p ./ & npm run dist",
-        "ts:watch": "tsc-watch --onSuccess 'npm run ts:compile'",
+        "vscode:prepublish": "npm run -S esbuild-base -- --minify",
+        "esbuild-base": "rimraf out && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+        "build": "npm run -S esbuild-base -- --sourcemap",
+        "watch": "npm run -S esbuild-base -- --sourcemap --watch",
+        "fmt": "prettier --write \"src/**/*.ts\"&& npm run test -- --fix",
+        "test": "eslint src --ext ts && tsc --noEmit",
         "ps:compile": "spago build",
         "ps:watch": "spago build --watch --clear-screen --then 'npm run ts:compile'",
         "ps:build": "spago build",
         "upgrade-dependencies": "ncu -u"
     },
-    "main": "./dist/extension.js",
+    "main": "./out/extension.js",
     "devDependencies": {
         "@types/node": "^18.6.5",
-        "@types/vscode": "^1.70.0",
+        "@types/vscode": "^1.66.0",
         "eslint": "^8.21.0",
         "npm-run-all": "^4.1.5",
         "tsc-watch": "^5.0.3",
-        "typescript": "^4.7.4"
+        "typescript": "^4.7.4",
+        "@typescript-eslint/eslint-plugin": "^5.33.0",
+        "@typescript-eslint/parser": "^5.33.0",
+        "esbuild": "^0.15.0",
+        "eslint-plugin-header": "^3.1.1",
+        "prettier": "^2.7.1",
+        "rimraf": "^3.0.2",
+        "vscode-dts": "^0.3.3",
+        "vscode-test": "^1.5.0",
+        "vscode-test-adapter-api": "^1.9.0"
     },
+    "prettier": {
+        "printWidth": 100,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "arrowParens": "avoid"
+      },
     "dependencies": {
-        "esbuild": "^0.14.54",
         "vscode-languageclient": "^8.0.2",
         "vscode-uri": "^3.0.3"
     },

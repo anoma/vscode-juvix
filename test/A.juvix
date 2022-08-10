@@ -1,4 +1,5 @@
 module A;
 
+f : A -> A;
 
 end;

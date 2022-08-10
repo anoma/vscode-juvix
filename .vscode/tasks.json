@@ -5,11 +5,11 @@
 	"tasks": [
 		{
 			"label": "juvix-compile",
-			"isBackground": false,
+			"isBackground": true,
 			"command": "juvix",
 			"type": "shell",
 			"args": [
-				"compile",
+				"typecheck",
 				"${file}"
 			],
 			"problemMatcher": {

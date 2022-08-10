@@ -8,10 +8,11 @@ export function activate(context: vscode.ExtensionContext) {
     const msg = vscode.commands.registerCommand(
         'juvix.typecheck', () => {
         vscode.window.showInformationMessage('No type checking errors', { modal: false });
+        // vscode.ShellExecution()
     });
     context.subscriptions.push(msg);
 // end of the example
-    const activatePS = require('./Main').main;
+    // const activatePS = require('./Main').main;
 }
 
 export function deactivate() {}
