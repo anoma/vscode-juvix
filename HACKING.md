@@ -15,15 +15,14 @@ To build the extension:
 
 ```
 npm run vscode:prepublish
-``` 
+```
 
 For debugging:
 
 ```
 npm run ts:watch
 npm run ps:watch
-``` 
-
+```
 
 ## Publishing
 

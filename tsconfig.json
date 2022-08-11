@@ -1,21 +1,17 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"target": "ES2020",
-		"outDir": "out",
-		"rootDir" : "src",
-		"lib": [
-			"ES2020"
-		],
-		"newLine": "LF",
-		"sourceMap": true,
-		"strict": true,
-		"pretty" : true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
-	},
-	"include": [
-		"src/**/*.ts"
-	],
-	"exclude": ["node_modules", ".vscode-test"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2020",
+    "outDir": "out",
+    "rootDir": "src",
+    "lib": ["ES2020"],
+    "newLine": "LF",
+    "sourceMap": true,
+    "strict": true,
+    "pretty": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", ".vscode-test"]
 }

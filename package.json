@@ -1,163 +1,186 @@
 {
-	"name": "juvix-mode",
-	"version": "0.0.2",
-	"license": "AGPL-3.0",
-	"description": "Juvix IDE support for VSCode",
-	"displayName": "juvix-mode",
-	"publisher": "Heliax",
-	"icon": "assets/tara.png",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/anoma/vscode-juvix.git"
-	},
-	"bugs": {
-		"url": "https://github.com/anoma/vscode-juvix/issues"
-	},
-	"directories": {
-		"test": "test"
-	},
-	"engines": {
-		"vscode": "^1.66.0"
-	},
-	"categories": [
-		"Programming Languages"
-	],
-	"keywords": [
-		"juvix",
-		"language",
-		"programming"
-	],
-	"galleryBanner": {
-		"color": "#cc374d"
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run -S esbuild-base -- --minify",
-		"esbuild-base": "rimraf out && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
-		"build": "npm run -S esbuild-base -- --sourcemap",
-		"watch": "npm run -S esbuild-base -- --sourcemap --watch",
-		"fmt": "prettier --write \"src/**/*.ts\"&& npm run test -- --fix",
-		"test": "eslint src --ext ts && tsc --noEmit",
-		"ps:compile": "spago build",
-		"ps:watch": "spago build --watch --clear-screen --then 'npm run ts:compile'",
-		"ps:build": "spago build",
-		"upgrade-dependencies": "ncu -u"
-	},
-	"main": "./out/extension.js",
-	"devDependencies": {
-		"@types/node": "^18.6.5",
-		"@types/vscode": "^1.66.0",
-		"eslint": "^8.21.0",
-		"npm-run-all": "^4.1.5",
-		"tsc-watch": "^5.0.3",
-		"typescript": "^4.7.4",
-		"@typescript-eslint/eslint-plugin": "^5.33.0",
-		"@typescript-eslint/parser": "^5.33.0",
-		"esbuild": "^0.15.0",
-		"eslint-plugin-header": "^3.1.1",
-		"prettier": "^2.7.1",
-		"rimraf": "^3.0.2",
-		"vscode-dts": "^0.3.3",
-		"@vscode/test-electron": "^1.6.1",
-		"vscode-test-adapter-api": "^1.9.0"
-	},
-	"prettier": {
-		"printWidth": 100,
-		"singleQuote": true,
-		"tabWidth": 2,
-		"arrowParens": "avoid"
-	},
-	"activationEvents": [
-		"onLanguage:Juvix",
-		"workspaceContains:src/**/juvix.yaml",
-		"workspaceContains:src/**/*.juvix"
-	],
-	"contributes": {
-		"languages": [
-			{
-				"id": "Juvix",
-				"extensions": [
-					".juvix"
-				],
-				"configuration": "./language-configuration.json"
-			}
-		],
-		"grammars": [
-			{
-				"language": "Juvix",
-				"scopeName": "source.juvix",
-				"path": "./syntaxes/juvix.tmLanguage.json"
-			}
-		],
-		"commands": [
-			{
-				"command": "juvix.getBinaryVersion",
-				"title": "binary version",
-				"category": "Juvix",
-				"when": "editorLangId == Juvix"
-			},
-			{
-				"command": "juvix.typecheck",
-				"title": "Typecheck",
-				"category": "Juvix",
-				"when": "editorLangId == Juvix && editorTextFocus"
-			}
-		],
-		"keybindings": [
-			{
-				"command": "juvix.getBinaryVersion",
-				"key": "ctrl+k ctrl+j ctrl+v",
-				"mac": "ctrl+k ctrl+j ctrl+v",
-				"when": "editorLangId == Juvix && editorTextFocus"
-			}
-		],
-		"configuration": {
-			"title": "Juvix",
-			"properties": {
-				"juvix.exec.version": {
-					"type": "string",
-					"default": "juvix",
-					"scope": "machine-overridable",
-					"description": "Name of the executable of Juvix."
-				},
-				"juvix.exec.path": {
-					"type": "string",
-					"default": "",
-					"scope": "machine-overridable",
-					"description": "Path to the executable of Juvix."
-				},
-				"juvix.exec.CLIOptions": {
-					"type": "string",
-					"default": "--only-errors",
-					"scope": "machine-overridable",
-					"description": "Command-line options for Juvix delimited by space."
-				},
-				"juvix.view.panel": {
-					"type": "string",
-					"default": "bottom",
-					"enum": [
-						"bottom",
-						"right"
-					],
-					"description": "Where to mount the panel"
-				},
-				"juvix.backend": {
-					"type": "string",
-					"default": "C",
-					"enum": [
-						"C",
-						"Haskell",
-						"Html"
-					],
-					"scope": "machine-overridable",
-					"description": "Backend"
-				}
-			}
-		}
-	},
-	"__metadata": {
-		"id": "a5e2256d-697e-4c7e-bf3d-96779842b982",
-		"publisherDisplayName": "Heliax",
-		"publisherId": "9e6dae1a-f8fb-4b28-b2c6-bf8cc8ea4f11",
-		"isPreReleaseVersion": false
-	}
+  "name": "juvix-mode",
+  "version": "0.0.2",
+  "license": "AGPL-3.0",
+  "description": "Juvix IDE support for VSCode",
+  "displayName": "juvix-mode",
+  "publisher": "Heliax",
+  "icon": "assets/tara.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anoma/vscode-juvix.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anoma/vscode-juvix/issues"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "engines": {
+    "vscode": "^1.66.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "juvix",
+    "language",
+    "programming"
+  ],
+  "galleryBanner": {
+    "color": "#cc374d"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run -S esbuild-base -- --minify",
+    "package": "vsce package -o juvix-mode.vsix",
+    "esbuild-base": "rimraf out && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "build": "npm run -S esbuild-base -- --sourcemap",
+    "watch": "npm run -S esbuild-base -- --sourcemap --watch",
+    "fix": "prettier --write . && eslint -c .eslintrc.js --ext ts ./src  --fix",
+    "test": "eslint src --ext ts && tsc --noEmit",
+    "ps:compile": "spago build",
+    "ps:watch": "spago build --watch --clear-screen --then 'npm run ts:compile'",
+    "ps:build": "spago build",
+    "upgrade-dependencies": "ncu -u"
+  },
+  "main": "./out/extension.js",
+  "devDependencies": {
+    "@types/node": "^18.6.5",
+    "@types/vscode": "^1.66.0",
+    "eslint": "^8.21.0",
+    "npm-run-all": "^4.1.5",
+    "tsc-watch": "^5.0.3",
+    "typescript": "^4.7.4",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "esbuild": "^0.15.0",
+    "eslint-plugin-header": "^3.1.1",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "vscode-dts": "^0.3.3",
+    "@vscode/test-electron": "^1.6.1",
+    "vscode-test-adapter-api": "^1.9.0"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "arrowParens": "avoid"
+  },
+  "activationEvents": [
+    "onLanguage:Juvix",
+    "workspaceContains:src/**/juvix.yaml",
+    "workspaceContains:src/**/*.juvix"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "Juvix",
+        "extensions": [
+          ".juvix"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "Juvix",
+        "scopeName": "source.juvix",
+        "path": "./syntaxes/juvix.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "juvix.getBinaryVersion",
+        "title": "binary version",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix"
+      },
+      {
+        "command": "juvix.typecheck",
+        "title": "Typecheck",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "typecheck"
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "JuvixWarnings",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+)-(\\d+):\\s (error):(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "juvix.getBinaryVersion",
+        "key": "ctrl+k ctrl+j ctrl+v",
+        "mac": "ctrl+k ctrl+j ctrl+v",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "Juvix",
+      "properties": {
+        "juvix.exec.version": {
+          "type": "string",
+          "default": "juvix",
+          "scope": "machine-overridable",
+          "description": "Name of the executable of Juvix."
+        },
+        "juvix.exec.path": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "Path to the executable of Juvix."
+        },
+        "juvix.exec.CLIOptions": {
+          "type": "string",
+          "default": "--only-errors",
+          "scope": "machine-overridable",
+          "description": "Command-line options for Juvix delimited by space."
+        },
+        "juvix.view.panel": {
+          "type": "string",
+          "default": "bottom",
+          "enum": [
+            "bottom",
+            "right"
+          ],
+          "description": "Where to mount the panel"
+        },
+        "juvix.backend": {
+          "type": "string",
+          "default": "C",
+          "enum": [
+            "C",
+            "Haskell",
+            "Html"
+          ],
+          "scope": "machine-overridable",
+          "description": "Backend"
+        }
+      }
+    }
+  },
+  "__metadata": {
+    "id": "a5e2256d-697e-4c7e-bf3d-96779842b982",
+    "publisherDisplayName": "Heliax",
+    "publisherId": "9e6dae1a-f8fb-4b28-b2c6-bf8cc8ea4f11",
+    "isPreReleaseVersion": false
+  }
 }

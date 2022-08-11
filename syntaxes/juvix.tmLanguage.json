@@ -1,63 +1,63 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Juvix",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#line-comment"
-		},
-		{
-			"include": "#block-comment"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [
-				{
-					"name": "keyword.control.juvix",
-					"match": "(\\b(import|open|public|axiom|module|compile|end|foreign|inductive|positive|terminating)\\b)"
-				},
-				{
-					"name": "keyword.control.juvix",
-					"match": "(->|→|:=|↦|:|≔|;)"
-				},
-				{
-					"name": "keyword.other.juvix",
-					"match": "Type|Any"
-				}
-			]
-		},
-		"line-comment": {
-			"name": "comment.line.double-dash.juvix",
-			"begin": "--",
-			"end": "$"
-		},
-		"block-comment": {
-			"name": "comment.block.juvix",
-			"begin": "\\{-",
-			"end": "-\\}",
-			"patterns": [
-				{
-					"include": "#block-comment"
-				}
-			]
-		},
-		"strings": {
-			"name": "string.quoted.double.juvix",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.juvix",
-					"match": "\\\\."
-				}
-			]
-		}
-	},
-	"scopeName": "source.juvix"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Juvix",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#line-comment"
+    },
+    {
+      "include": "#block-comment"
+    }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.juvix",
+          "match": "(\\b(import|open|public|axiom|module|compile|end|foreign|inductive|positive|terminating)\\b)"
+        },
+        {
+          "name": "keyword.control.juvix",
+          "match": "(->|→|:=|↦|:|≔|;)"
+        },
+        {
+          "name": "keyword.other.juvix",
+          "match": "Type|Any"
+        }
+      ]
+    },
+    "line-comment": {
+      "name": "comment.line.double-dash.juvix",
+      "begin": "--",
+      "end": "$"
+    },
+    "block-comment": {
+      "name": "comment.block.juvix",
+      "begin": "\\{-",
+      "end": "-\\}",
+      "patterns": [
+        {
+          "include": "#block-comment"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.juvix",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.juvix",
+          "match": "\\\\."
+        }
+      ]
+    }
+  },
+  "scopeName": "source.juvix"
 }

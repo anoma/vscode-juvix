@@ -12,3 +12,4 @@ vsc-extension-quickstart.md
 HACKING.md
 *.dhall
 **/.eslintrc.json
+output/**
