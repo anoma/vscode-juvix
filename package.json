@@ -22,6 +22,12 @@
   "categories": [
     "Programming Languages"
   ],
+  "snippets": [
+    {
+      "language": "juvix",
+      "path": "./snippets.json"
+    }
+  ],
   "keywords": [
     "juvix",
     "language",
@@ -85,17 +91,10 @@
         "configuration": "./language-configuration.json"
       }
     ],
-    "grammars": [
-      {
-        "language": "Juvix",
-        "scopeName": "source.juvix",
-        "path": "./syntaxes/juvix.tmLanguage.json"
-      }
-    ],
     "commands": [
       {
         "command": "juvix-mode.getBinaryVersion",
-        "title": "Get binary version",
+        "title": "About",
         "category": "Juvix",
         "when": "editorLangId == Juvix"
       },

@@ -1,0 +1,32 @@
+{
+  "module": {
+    "prefix": "mo",
+    "body": "module ${1:moduleName};\n${2:moduleBody}\nend;\n",
+    "description": "module type"
+  },
+  "data types": {
+    "prefix": ["ind", "data"],
+    "body": "\ninductive\n  ${1:typeName} ${2:typeParameters}\n : Type {\n ${5:constructor-name} : $6\n ${3:constructor-body}\n -> ${typeName} ${ypeParameters}; \n};\n",
+    "description": "inductive data type declaration"
+  },
+  "axiom": {
+    "prefix": ["ax", "def"],
+    "body": "\naxiom ${1:axiomName} : ${2:axiomType}\n;\n",
+    "description": "Axiom"
+  },
+  "comment type 1": {
+    "prefix": "co",
+    "body": "{-\n\t$1\n-}",
+    "description": "comment"
+  },
+  "documentation": {
+    "prefix": "doc",
+    "body": "--- ${1:documentation}",
+    "description": "documentation"
+  },
+  "set type": {
+    "prefix": "ty",
+    "body": "Type",
+    "description": "The type of all types"
+  }
+}

@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
   */
   context.subscriptions.push(
     vscode.languages.registerDocumentSemanticTokensProvider(
-      { language: 'Juvix' },
+      { language: 'Juvix' , scheme: 'file'},
       new syntax.Highlighter(),
       syntax.legend
     )
