@@ -1,5 +1,9 @@
 module A;
 
-f : A -> A;
+axiom A : Type;
+axiom a : A;
+
+f : A;
+f := a;
 
 end;

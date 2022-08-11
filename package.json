@@ -8,7 +8,7 @@
   "icon": "assets/tara.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anoma/vscode-juvix.git"
+    "url": "https://github.com/anoma/vscode-juvix-mode.git"
   },
   "bugs": {
     "url": "https://github.com/anoma/vscode-juvix/issues"
@@ -59,17 +59,20 @@
     "rimraf": "^3.0.2",
     "vscode-dts": "^0.3.3",
     "@vscode/test-electron": "^1.6.1",
-    "vscode-test-adapter-api": "^1.9.0"
+    "vscode-test-adapter-api": "^1.9.0",
+    "vsce": "^2.9.2"
   },
   "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
+    "printWidth": 80,
     "tabWidth": 2,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "semi": true,
+    "singleQuote": true,
+    "bracketSpacing": true
   },
   "activationEvents": [
     "onLanguage:Juvix",
-    "workspaceContains:src/**/juvix.yaml",
+    "workspaceContains:src/**/juvix-mode.yaml",
     "workspaceContains:src/**/*.juvix"
   ],
   "contributes": {
@@ -91,13 +94,13 @@
     ],
     "commands": [
       {
-        "command": "juvix.getBinaryVersion",
-        "title": "binary version",
+        "command": "juvix-mode.getBinaryVersion",
+        "title": "Get binary version",
         "category": "Juvix",
         "when": "editorLangId == Juvix"
       },
       {
-        "command": "juvix.typecheck",
+        "command": "juvix-mode.typecheck",
         "title": "Typecheck",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
@@ -105,14 +108,32 @@
     ],
     "taskDefinitions": [
       {
-        "type": "typecheck"
+        "type": "juvix-mode",
+        "required": [
+          "command"
+        ],
+        "properties": {
+          "command": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "args": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
     ],
     "problemMatchers": [
       {
-        "name": "JuvixWarnings",
+        "name": "juvix-mode.warnings",
+        "owner": "juvix-mode",
         "fileLocation": [
-          "relative",
+          "autoDetect",
           "${workspaceFolder}"
         ],
         "pattern": {
@@ -125,45 +146,44 @@
         }
       }
     ],
-    "keybindings": [
-      {
-        "command": "juvix.getBinaryVersion",
-        "key": "ctrl+k ctrl+j ctrl+v",
-        "mac": "ctrl+k ctrl+j ctrl+v",
-        "when": "editorLangId == Juvix && editorTextFocus"
-      }
-    ],
+    "keybindings": [],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "juvix-mode.typecheck",
+          "when": "editorLangId == Juvix"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "juvix-mode.typecheck",
+          "when": "editorLangId == Juvix",
+          "group": "navigation@1.31"
+        }
+      ]
+    },
     "configuration": {
-      "title": "Juvix",
+      "title": "Juvix Mode",
       "properties": {
-        "juvix.exec.version": {
+        "juvix-mode.exec.version": {
           "type": "string",
           "default": "juvix",
           "scope": "machine-overridable",
           "description": "Name of the executable of Juvix."
         },
-        "juvix.exec.path": {
+        "juvix-mode.exec.path": {
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
           "description": "Path to the executable of Juvix."
         },
-        "juvix.exec.CLIOptions": {
+        "juvix-mode.exec.CLIOptions": {
           "type": "string",
           "default": "--only-errors",
           "scope": "machine-overridable",
           "description": "Command-line options for Juvix delimited by space."
         },
-        "juvix.view.panel": {
-          "type": "string",
-          "default": "bottom",
-          "enum": [
-            "bottom",
-            "right"
-          ],
-          "description": "Where to mount the panel"
-        },
-        "juvix.backend": {
+        "juvix-mode.backend": {
           "type": "string",
           "default": "C",
           "enum": [

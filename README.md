@@ -9,7 +9,7 @@ This extension provides support for the Juvix programming language.
   - [ ] compile
   - [ ] html
 - problem matchers provider
-  - [ ] compiler errors 
+  - [ ] compiler errors
 - [ ] semantic syntax highlighting
 - [ ] go to definition
 - [ ] go to implementation
@@ -22,7 +22,6 @@ This extension provides support for the Juvix programming language.
 - [ ] workspace symbol search
 - [ ] for debugging: show ast (run juvix internal parse)
 - [ ] hints for types and parameter names
-
 
 ## Quick start
 
