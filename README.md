@@ -2,6 +2,10 @@
 
 This extension provides support for the Juvix programming language.
 
+<p align="center">
+  <img src="assets/juvix-vscode-extension.png" >
+</p>
+
 ## Checklist
 
 - [ ] commands/tasks for:
