@@ -1,0 +1,42 @@
+{
+  "module": {
+    "prefix": ["mod"],
+    "body": "module ${1:moduleName};\n  ${2:moduleBody}\nend;\n",
+    "description": "module type"
+  },
+  "data types": {
+    "prefix": ["ind", "data"],
+    "body": "inductive ${1:typeName ${2:typeParameters?}} {\n  ${3:constructorName} : ${4:constructorArgs} -> ${5:returnType}; \n};\n",
+    "description": "inductive data type declaration"
+  },
+  "axiom": {
+    "prefix": ["axiom", "postulate", "definition"],
+    "body": "\naxiom ${1:axiomName} : ${2:axiomType};\n",
+    "description": "Axiom"
+  },
+  "function": {
+    "prefix": ["function"],
+    "body": "${1:functionName} : ${2:functionType};\n$1 := ${3:functionBody};\n",
+    "description": "Axiom"
+  },
+  "comment": {
+    "prefix": ["comment", "--"],
+    "body": "{-\n  ${1:commentBody}\n-}",
+    "description": "comment"
+  },
+  "compile block": {
+    "prefix": ["compile"],
+    "body": "compile ${1:compileName} {\n  ${2|c,ghc|} ↦ \"${3:replacementRule}\"\n};",
+    "description": "compile block"
+  },
+  "documentation": {
+    "prefix": "doc",
+    "body": "--- ${1:documentation}",
+    "description": "documentation"
+  },
+  "set type": {
+    "prefix": "ty",
+    "body": "Type",
+    "description": "The type of all types"
+  }
+}

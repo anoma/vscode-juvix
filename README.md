@@ -11,6 +11,7 @@ This extension provides support for the Juvix programming language.
 - problem matchers provider
   - [ ] compiler errors
 - [x] semantic syntax highlighting
+- [x] snippets
 - [ ] go to definition
 - [ ] go to implementation
 - [ ] find all references

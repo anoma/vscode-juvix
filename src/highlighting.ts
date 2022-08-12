@@ -25,10 +25,7 @@ export const legend = (function () {
   );
 
   // not used at the moment
-  const tokenModifiersLegend = [
-    'declaration',
-    'documentation',
-  ];
+  const tokenModifiersLegend = ['declaration', 'documentation'];
   tokenModifiersLegend.forEach((tokenModifier, index) =>
     tokenModifiers.set(tokenModifier, index)
   );
@@ -70,7 +67,13 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   ): Promise<vscode.SemanticTokens> {
     const filePath: string = document.fileName;
     const { spawnSync } = require('child_process');
-    const ls = spawnSync('juvix', ['internal', 'highlight', "--format", "json",filePath]);
+    const ls = spawnSync('juvix', [
+      'internal',
+      'highlight',
+      '--format',
+      'json',
+      filePath,
+    ]);
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
       vscode.window.showErrorMessage(errMsg);
@@ -79,14 +82,15 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const stdout = ls.stdout;
     const output: InternalHighlightOutput = JSON.parse(stdout.toString());
     const allTokens = output.face;
-    const builder = new vscode.SemanticTokensBuilder();
+    console.log('tokens length: ' + allTokens.length);
+    const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {
       const tk: FaceProperty = this.getFaceProperty(entry);
       builder.push(
         tk.interval.line,
         tk.interval.startCharacter,
         tk.interval.length,
-        this._encodeTokenType(tk.tokenType),
+        this.encodeTokenType(tk.tokenType),
         0
       );
     });
@@ -99,9 +103,9 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const intervalInfo = entry[0];
     const rawInterval: RawInterval = {
       file: intervalInfo[0].toString(),
-      line: Number(intervalInfo[1]) -1,
-      startCharacter: Number(intervalInfo[2])-1,
-      length: Number(intervalInfo[3]) -1 ,
+      line: Number(intervalInfo[1]) - 1,
+      startCharacter: Number(intervalInfo[2]) - 1,
+      length: Number(intervalInfo[3]),
     };
     const token: FaceProperty = {
       interval: rawInterval,
@@ -110,7 +114,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     return token;
   }
 
-  private _encodeTokenType(tokenType: string): number {
+  private encodeTokenType(tokenType: string): number {
     if (tokenTypes.has(tokenType)) {
       return tokenTypes.get(tokenType)!;
     } else if (tokenType === 'notInLegend') {
@@ -119,7 +123,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     return 0;
   }
 
-  private _encodeTokenModifiers(strTokenModifiers: string[]): number {
+  private encodeTokenModifiers(strTokenModifiers: string[]): number {
     let result = 0;
     for (let i = 0; i < strTokenModifiers.length; i++) {
       const tokenModifier = strTokenModifiers[i];

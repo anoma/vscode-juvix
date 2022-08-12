@@ -5,7 +5,7 @@
 
 import * as vscode from 'vscode';
 // import * as path from 'path';
-import * as syntax from './syntax';
+import * as syntax from './highlighting';
 
 let juvixStatusBarItem: vscode.StatusBarItem;
 
@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
   */
   context.subscriptions.push(
     vscode.languages.registerDocumentSemanticTokensProvider(
-      { language: 'Juvix' , scheme: 'file'},
+      { language: 'Juvix', scheme: 'file' },
       new syntax.Highlighter(),
       syntax.legend
     )

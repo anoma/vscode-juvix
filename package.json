@@ -20,13 +20,8 @@
     "vscode": "^1.66.0"
   },
   "categories": [
-    "Programming Languages"
-  ],
-  "snippets": [
-    {
-      "language": "juvix",
-      "path": "./snippets.json"
-    }
+    "Programming Languages",
+    "Snippets"
   ],
   "keywords": [
     "juvix",
@@ -34,7 +29,8 @@
     "programming"
   ],
   "galleryBanner": {
-    "color": "#cc374d"
+    "theme": "light",
+    "color": "#F2F2F2"
   },
   "scripts": {
     "vscode:prepublish": "npm run -S esbuild-base -- --minify",
@@ -50,6 +46,7 @@
     "upgrade-dependencies": "ncu -u"
   },
   "main": "./out/extension.js",
+  "extensionDependencies": [],
   "devDependencies": {
     "@types/node": "^18.6.5",
     "@types/vscode": "^1.66.0",
@@ -78,15 +75,72 @@
   },
   "activationEvents": [
     "onLanguage:Juvix",
-    "workspaceContains:src/**/juvix-mode.yaml",
-    "workspaceContains:src/**/*.juvix"
+    "workspaceContains:**/juvix-mode.yaml",
+    "workspaceContains:**/*.juvix"
   ],
+  "editor.semanticHighlighting.enabled": true,
   "contributes": {
+    "configurationDefaults": {
+      "[Juvix]": {
+        "editor.insertSpaces": false
+      },
+      "editor.semanticTokenColorCustomizations": {
+        "enabled": true,
+        "rules": {
+          "axiom": {
+            "foreground": "#f07171"
+          },
+          "comment": {
+            "foreground": "#8b2252",
+            "fontStyle": "italic"
+          },
+          "constructor": {
+            "foreground": "#a37acc",
+            "fontStyle": "italic"
+          },
+          "error": {
+            "foreground": "#bd3744",
+            "fontStyle": "bold"
+          },
+          "function": {
+            "foreground": "#f2ae49"
+          },
+          "inductive": {
+            "foreground": "#86b300",
+            "fontStyle": "italic"
+          },
+          "keyword": {
+            "foreground": "#399ee6",
+            "fontStyle": "italic"
+          },
+          "module": {
+            "foreground": "#4e5e78"
+          },
+          "number": {
+            "foreground": "#8c48d0",
+            "fontStyle": "italic"
+          },
+          "string": {
+            "foreground": "#f07171",
+            "fontStyle": "italic"
+          }
+        }
+      }
+    },
+    "snippets": [
+      {
+        "language": "Juvix",
+        "path": "./snippets/Juvix.json"
+      }
+    ],
     "languages": [
       {
         "id": "Juvix",
         "extensions": [
           ".juvix"
+        ],
+        "aliases": [
+          "juvix"
         ],
         "configuration": "./language-configuration.json"
       }
