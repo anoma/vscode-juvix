@@ -16,7 +16,7 @@ This extension provides support for the Juvix programming language.
   - [ ] compiler errors
 - [x] semantic syntax highlighting
 - [x] snippets
-- [ ] go to definition
+- [x] go to definition (not for stdlib symbols)
 - [ ] go to implementation
 - [ ] find all references
 - [ ] types on hover
