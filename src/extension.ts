@@ -47,4 +47,14 @@ export function activate(context: vscode.ExtensionContext) {
       syntax.legend
     )
   );
+
+  /*
+    Go to definition
+      */
+  context.subscriptions.push(
+    vscode.languages.registerDefinitionProvider(
+      { language: 'Juvix', scheme: 'file' },
+      new syntax.JuvixDefinitionProvider()
+    )
+  );
 }

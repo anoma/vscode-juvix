@@ -1,17 +1,4 @@
 module A;
-
-axiom A : Type;
+open import B;
 axiom a : A;
-
-f : A;
-f := a;
-inductive B {unit : B};
-
-g : B -> A;
-g unit := a;
-
-
-h : A -> B;
-h a := unit;
-
 end;

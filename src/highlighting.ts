@@ -7,6 +7,20 @@ import * as vscode from 'vscode';
 export const tokenTypes = new Map<string, number>();
 export const tokenModifiers = new Map<string, number>();
 
+const defLocation = new Map<string, Map<number, TargetLocation[]>>();
+
+interface ColInterval {
+  start: number;
+  end: number;
+}
+
+interface TargetLocation {
+  interval: ColInterval;
+  targetFile: string;
+  targetLine: number;
+  targetStartCharacter: number;
+}
+
 export const legend = (function () {
   const tokenTypesLegend = [
     'axiom',
@@ -48,16 +62,9 @@ interface FaceProperty {
   tokenType: string;
 }
 
-interface GotoProperty {
-  interval: RawInterval;
-  targetFile: string;
-  targetLine: number;
-  targetStartCharacter: number;
-}
-
 interface InternalHighlightOutput {
   face: [Array<Array<string | number> | string>];
-  goto: any[];
+  goto: [[string, number, number, number], string, number, number][];
 }
 
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
@@ -82,6 +89,29 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const stdout = ls.stdout;
     const output: InternalHighlightOutput = JSON.parse(stdout.toString());
     const allTokens = output.face;
+
+    defLocation.set(filePath, new Map());
+    output.goto.forEach(entry => {
+      console.log(entry);
+      const line: number = Number(entry[0][1]) - 1;
+      const startLoc: number = Number(entry[0][2]) - 1;
+      const targetLocation: TargetLocation = {
+        interval: {
+          start: startLoc,
+          end: startLoc + Number(entry[0][3]) - 1,
+        },
+        targetFile: entry[1].toString(),
+        targetLine: Number(entry[2]) - 1,
+        targetStartCharacter: Number(entry[3]) - 1,
+      };
+      if (!defLocation.get(filePath)?.has(line)) {
+        defLocation.get(filePath)?.set(line, []);
+      } else {
+        defLocation.get(filePath)?.get(line)?.push(targetLocation);
+      }
+    });
+
+    console.log('filePath: ' + filePath);
     console.log('tokens length: ' + allTokens.length);
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {
@@ -134,5 +164,48 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       }
     }
     return result;
+  }
+}
+
+export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
+  async provideDefinition(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+    token: vscode.CancellationToken
+  ): Promise<vscode.Location | vscode.Location[] | undefined> {
+    const filePath: string = document.fileName;
+    const line = position.line;
+    const col: number = position.character;
+    console.log('filePath: ' + filePath);
+    if (!defLocation.has(filePath)) {
+      console.log('no defLocation for filePath: ' + filePath);
+      return undefined;
+    } else {
+      if (!defLocation.get(filePath)!.has(line)) {
+        console.log('no defLocation for line: ' + line);
+        return undefined;
+      } else {
+        const locsByLine: TargetLocation[] = defLocation
+          .get(filePath)!
+          .get(line)!;
+        console.log('checking symbol at: ' + [line, col]);
+        console.log('locsByLine: ' + locsByLine);
+        for (let i = 0; i < locsByLine.length; i++) {
+          const info: TargetLocation = locsByLine[i];
+          console.log(
+            'char in interval?: ' + [info.interval.start, info.interval.end, info.targetFile, info.targetLine, info.targetStartCharacter]
+          );
+          if (info.interval.start <= col && info.interval.end >= col) {
+            // check if the target file is in the standrd library
+            return new vscode.Location(
+              vscode.Uri.file(info.targetFile),
+              new vscode.Position(info.targetLine, info.targetStartCharacter)
+            );
+          }
+        }
+      }
+    }
+
+    return undefined;
   }
 }

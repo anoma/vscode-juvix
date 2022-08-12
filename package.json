@@ -159,6 +159,7 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       }
     ],
+    "semanticTokenScopes": [],
     "taskDefinitions": [
       {
         "type": "juvix-mode",
