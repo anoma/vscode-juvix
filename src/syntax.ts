@@ -70,7 +70,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   ): Promise<vscode.SemanticTokens> {
     const filePath: string = document.fileName;
     const { spawnSync } = require('child_process');
-    const ls = spawnSync('juvix', ['internal', 'highlight', filePath]);
+    const ls = spawnSync('juvix', ['internal', 'highlight', "--format", "json",filePath]);
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
       vscode.window.showErrorMessage(errMsg);
@@ -99,9 +99,9 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const intervalInfo = entry[0];
     const rawInterval: RawInterval = {
       file: intervalInfo[0].toString(),
-      line: Number(intervalInfo[1]),
-      startCharacter: Number(intervalInfo[2]),
-      length: Number(intervalInfo[3]),
+      line: Number(intervalInfo[1]) -1,
+      startCharacter: Number(intervalInfo[2])-1,
+      length: Number(intervalInfo[3]) -1 ,
     };
     const token: FaceProperty = {
       interval: rawInterval,

@@ -10,7 +10,7 @@ This extension provides support for the Juvix programming language.
   - [ ] html
 - problem matchers provider
   - [ ] compiler errors
-- [ ] semantic syntax highlighting
+- [x] semantic syntax highlighting
 - [ ] go to definition
 - [ ] go to implementation
 - [ ] find all references
