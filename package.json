@@ -29,8 +29,7 @@
     "programming"
   ],
   "galleryBanner": {
-    "theme": "light",
-    "color": "#F2F2F2"
+    "theme": "light"
   },
   "scripts": {
     "vscode:prepublish": "npm run -S esbuild-base -- --minify",
@@ -40,9 +39,6 @@
     "watch": "npm run -S esbuild-base -- --sourcemap --watch",
     "fix": "prettier --write . && eslint -c .eslintrc.js --ext ts ./src  --fix",
     "test": "eslint src --ext ts && tsc --noEmit",
-    "ps:compile": "spago build",
-    "ps:watch": "spago build --watch --clear-screen --then 'npm run ts:compile'",
-    "ps:build": "spago build",
     "upgrade-dependencies": "ncu -u"
   },
   "main": "./out/extension.js",
@@ -151,26 +147,17 @@
         "title": "About",
         "category": "Juvix",
         "when": "editorLangId == Juvix"
-      },
-      {
-        "command": "juvix-mode.typecheck",
-        "title": "Typecheck",
-        "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
       }
     ],
     "semanticTokenScopes": [],
     "taskDefinitions": [
       {
-        "type": "juvix-mode",
+        "type": "Juvix",
         "required": [
           "command"
         ],
         "properties": {
           "command": {
-            "type": "string"
-          },
-          "label": {
             "type": "string"
           },
           "args": {
@@ -184,33 +171,63 @@
     ],
     "problemMatchers": [
       {
-        "name": "juvix-mode.warnings",
-        "owner": "juvix-mode",
+        "name": "juvixerror",
+        "owner": "juvixerror",
+        "source": "juvixerror",
         "fileLocation": [
           "autoDetect",
           "${workspaceFolder}"
         ],
-        "pattern": {
-          "regexp": "^(.*):(\\d+):(\\d+)-(\\d+):\\s (error):(.*)$",
-          "file": 1,
-          "line": 2,
-          "column": 3,
-          "severity": 4,
-          "message": 5
-        }
+        "pattern": [
+          {
+            "kind": "location",
+            "regexp": "^(.+):(\\d+):(\\d+)-(\\d+): (\\w+).*",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "endColumn": 4,
+            "severity": 5
+          },
+          {
+            "regexp": "^(.*)$",
+            "message": 1,
+            "loop": true
+          }
+        ]
       }
     ],
-    "keybindings": [],
+    "keybindings": [
+      {
+        "key": "ctrl+shift+t",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Juvix: typecheck",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+b",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Juvix: compile",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
+        "key": "alt+,",
+        "command": "workbench.action.navigateBack"
+      },
+      {
+        "key": "alt+.",
+        "command": "workbench.action.navigateForward"
+      }
+    ],
     "menus": {
       "commandPalette": [
         {
-          "command": "juvix-mode.typecheck",
-          "when": "editorLangId == Juvix"
+          "command": "juvix-mode.getBinaryVersion",
+          "title": "About"
         }
       ],
       "editor/context": [
         {
-          "command": "juvix-mode.typecheck",
+          "command": "juvix-mode.getBinaryVersion",
           "when": "editorLangId == Juvix",
           "group": "navigation@1.31"
         }

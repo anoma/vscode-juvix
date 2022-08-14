@@ -6,7 +6,6 @@ import * as vscode from 'vscode';
 
 export const tokenTypes = new Map<string, number>();
 export const tokenModifiers = new Map<string, number>();
-
 const defLocation = new Map<string, Map<number, TargetLocation[]>>();
 
 interface ColInterval {
@@ -92,7 +91,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     defLocation.set(filePath, new Map());
     output.goto.forEach(entry => {
-      console.log(entry);
       const line: number = Number(entry[0][1]) - 1;
       const startLoc: number = Number(entry[0][2]) - 1;
       const targetLocation: TargetLocation = {
@@ -193,7 +191,14 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
         for (let i = 0; i < locsByLine.length; i++) {
           const info: TargetLocation = locsByLine[i];
           console.log(
-            'char in interval?: ' + [info.interval.start, info.interval.end, info.targetFile, info.targetLine, info.targetStartCharacter]
+            'char in interval?: ' +
+              [
+                info.interval.start,
+                info.interval.end,
+                info.targetFile,
+                info.targetLine,
+                info.targetStartCharacter,
+              ]
           );
           if (info.interval.start <= col && info.interval.end >= col) {
             // check if the target file is in the standrd library

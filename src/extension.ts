@@ -6,6 +6,7 @@
 import * as vscode from 'vscode';
 // import * as path from 'path';
 import * as syntax from './highlighting';
+import * as tasks from './tasks';
 
 let juvixStatusBarItem: vscode.StatusBarItem;
 
@@ -57,4 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
       new syntax.JuvixDefinitionProvider()
     )
   );
+
+  /* Task provider */
+  context.subscriptions.push(tasks.activateTaskProvider());
 }

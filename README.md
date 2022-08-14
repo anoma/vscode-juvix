@@ -8,24 +8,28 @@ This extension provides support for the Juvix programming language.
 
 ## Checklist
 
-- [ ] commands/tasks for:
-  - [ ] typecheck
-  - [ ] compile
-  - [ ] html
-- problem matchers provider
-  - [ ] compiler errors
+- Commands/tasks for:
+
+  - [x] typecheck (ctrl+shit+t)
+  - [x] compile (ctrl+shift+b)
+  - [x] run (ctrl+shift+u)
+  - [x] html
+  - [x] internal parse
+  - [x] internal scope
+
+- Problem matchers provider
+  - [x] compiler errors
 - [x] semantic syntax highlighting
 - [x] snippets
 - [x] go to definition (not for stdlib symbols)
+- [ ] user configuration
 - [ ] go to implementation
 - [ ] find all references
 - [ ] types on hover
 - [ ] documentation hover
-- [ ] show name ids
 - [ ] highlight related
 - [ ] code completion
 - [ ] workspace symbol search
-- [ ] for debugging: show ast (run juvix internal parse)
 - [ ] hints for types and parameter names
 
 ## Quick start
