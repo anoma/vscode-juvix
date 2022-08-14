@@ -10,12 +10,19 @@ This extension provides support for the Juvix programming language.
 
 - Commands/tasks for:
 
-  - [x] typecheck (ctrl+shit+t)
-  - [x] compile (ctrl+shift+b)
-  - [x] run (ctrl+shift+u)
+  - [x] typecheck (ctrl+c ctrl+l)
+  - [x] compile (ctrl+c ctrl+c)
+  - [x] run (ctrl+c ctrl+r)
   - [x] html
   - [x] internal parse
   - [x] internal scope
+
+- Context menu (right-click) showing:
+
+  - Juvix submenu
+    - [x] typecheck
+    - [x] compile
+    - [x] run
 
 - Problem matchers provider
   - [x] compiler errors

@@ -11,7 +11,7 @@ export interface JuvixTaskDefinition extends vscode.TaskDefinition {
   args?: string[];
 }
 
-class JuvixTaskProvider implements vscode.TaskProvider {
+export class JuvixTaskProvider implements vscode.TaskProvider {
   async provideTasks(): Promise<vscode.Task[]> {
     const defs = [
       {
@@ -53,6 +53,7 @@ class JuvixTaskProvider implements vscode.TaskProvider {
     ];
 
     const tasks: vscode.Task[] = [];
+
     for (const workspaceTarget of vscode.workspace.workspaceFolders || []) {
       for (const def of defs) {
         const vscodeTask = await JuvixTask(
@@ -115,9 +116,4 @@ export async function JuvixTask(
     exec,
     ['$juvixerror']
   );
-}
-
-export function activateTaskProvider(): vscode.Disposable {
-  const provider = new JuvixTaskProvider();
-  return vscode.tasks.registerTaskProvider(TASK_TYPE, provider);
 }

@@ -59,6 +59,30 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  /* Task provider */
-  context.subscriptions.push(tasks.activateTaskProvider());
+  /* Task provider 
+     A command is created for each task.
+  */
+  const provider = new tasks.JuvixTaskProvider();
+  const definedTasks = provider.provideTasks();
+  const taskProvider: vscode.Disposable = vscode.tasks.registerTaskProvider(
+    tasks.TASK_TYPE,
+    provider
+  );
+  context.subscriptions.push(taskProvider);
+
+  definedTasks
+    .then(tasks => {
+      for (const task of tasks) {
+        const cmdName = 'juvix-mode.' + task.name.replace(' ', '-');
+        console.log('name new command: ' + cmdName);
+        const cmd = vscode.commands.registerCommand(cmdName, () => {
+          vscode.tasks.executeTask(task);
+        });
+
+        context.subscriptions.push(cmd);
+      }
+    })
+    .catch(err => {
+      vscode.window.showErrorMessage(err);
+    });
 }

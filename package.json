@@ -141,14 +141,6 @@
         "configuration": "./language-configuration.json"
       }
     ],
-    "commands": [
-      {
-        "command": "juvix-mode.getBinaryVersion",
-        "title": "About",
-        "category": "Juvix",
-        "when": "editorLangId == Juvix"
-      }
-    ],
     "semanticTokenScopes": [],
     "taskDefinitions": [
       {
@@ -173,7 +165,7 @@
       {
         "name": "juvixerror",
         "owner": "juvixerror",
-        "source": "juvixerror",
+        "source": "Juvix Error",
         "fileLocation": [
           "autoDetect",
           "${workspaceFolder}"
@@ -196,17 +188,55 @@
         ]
       }
     ],
+    "commands": [
+      {
+        "command": "juvix-mode.getBinaryVersion",
+        "title": "about",
+        "category": "Juvix"
+      },
+      {
+        "command": "juvix-mode.typecheck",
+        "title": "typecheck",
+        "category": "Juvix"
+      },
+      {
+        "command": "juvix-mode.compile",
+        "title": "compile",
+        "category": "Juvix"
+      },
+      {
+        "command": "juvix-mode.run",
+        "title": "run",
+        "category": "Juvix"
+      },
+      {
+        "command": "juvix-mode.internal-parse",
+        "title": "[internal] parse",
+        "category": "Juvix"
+      },
+      {
+        "command": "juvix-mode.internal-scope",
+        "title": "[internal] scope",
+        "category": "Juvix"
+      }
+    ],
     "keybindings": [
       {
-        "key": "ctrl+shift+t",
-        "command": "workbench.action.tasks.runTask",
+        "key": "ctrl+c ctrl+l",
+        "command": "juvix-mode.typecheck",
         "args": "Juvix: typecheck",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+b",
-        "command": "workbench.action.tasks.runTask",
+        "key": "ctrl+c ctrl+c",
+        "command": "juvix-mode.compile",
         "args": "Juvix: compile",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
+        "key": "ctrl+c ctrl+r",
+        "command": "juvix-mode.run",
+        "args": "Juvix: run",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
@@ -218,18 +248,54 @@
         "command": "workbench.action.navigateForward"
       }
     ],
+    "submenus": [
+      {
+        "id": "juvix-submenu",
+        "label": "Juvix Tasks",
+        "icon": "🛠️ "
+      }
+    ],
     "menus": {
       "commandPalette": [
         {
-          "command": "juvix-mode.getBinaryVersion",
-          "title": "About"
+          "command": "juvix-mode.typecheck",
+          "when": "editorLangId == Juvix && editorTextFocus"
+        },
+        {
+          "command": "juvix-mode.compile",
+          "when": "editorLangId == Juvix && editorTextFocus"
+        },
+        {
+          "command": "juvix-mode.run",
+          "when": "editorLangId == Juvix && editorTextFocus"
+        },
+        {
+          "command": "juvix-mode.internal-parse",
+          "when": "editorLangId == Juvix && editorTextFocus"
+        },
+        {
+          "command": "juvix-mode.internal-scope",
+          "when": "editorLangId == Juvix && editorTextFocus"
         }
       ],
       "editor/context": [
         {
-          "command": "juvix-mode.getBinaryVersion",
-          "when": "editorLangId == Juvix",
-          "group": "navigation@1.31"
+          "submenu": "juvix-submenu",
+          "group": "navigation"
+        }
+      ],
+      "juvix-submenu": [
+        {
+          "command": "juvix-mode.typecheck",
+          "group": "navigation"
+        },
+        {
+          "command": "juvix-mode.compile",
+          "group": "navigation"
+        },
+        {
+          "command": "juvix-mode.run",
+          "group": "navigation"
         }
       ]
     },
