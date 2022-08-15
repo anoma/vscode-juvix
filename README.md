@@ -3,7 +3,7 @@
 This extension provides support for the Juvix programming language. 
 
 <p align="center">
-  <img src="assets/juvix-vscode-extension.png" >
+  <img src="https://github.com/anoma/vscode-juvix/raw/main/assets/juvix-vscode-extension.png" >
 </p>
 
 ## Quick start
@@ -23,7 +23,7 @@ ext install heliax.juvix-mode
 | run                                     | <kbd>Ctrl-c</kbd> <kbd>Ctrl-r</kbd> |
 
 
-Other commands are available on the Command Pallete (On Mac <kbd>Cmd</kbd><kbd>Shift</kbd><kbd>P</kbd> and on Linux <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>) or as building tasks.
+Discover other commands in the Command Pallete or as building tasks.
 
 ## Configuration
 

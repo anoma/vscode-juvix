@@ -8,7 +8,7 @@
   "icon": "assets/tara.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anoma/vscode-juvix-mode.git"
+    "url": "https://github.com/anoma/vscode-juvix.git"
   },
   "bugs": {
     "url": "https://github.com/anoma/vscode-juvix/issues"
