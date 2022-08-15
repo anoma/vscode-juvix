@@ -1,47 +1,29 @@
 # Juvix Plugin for VSCode
 
-This extension provides support for the Juvix programming language.
+This extension provides support for the Juvix programming language. 
 
 <p align="center">
   <img src="assets/juvix-vscode-extension.png" >
 </p>
 
-## Checklist
-
-- Commands/tasks for:
-
-  - [x] typecheck (ctrl+c ctrl+l)
-  - [x] compile (ctrl+c ctrl+c)
-  - [x] run (ctrl+c ctrl+r)
-  - [x] html
-  - [x] internal parse
-  - [x] internal scope
-
-- Context menu (right-click) showing:
-
-  - Juvix submenu
-    - [x] typecheck
-    - [x] compile
-    - [x] run
-
-- Problem matchers provider
-  - [x] compiler errors
-- [x] semantic syntax highlighting
-- [x] snippets
-- [x] go to definition (not for stdlib symbols)
-- [ ] user configuration
-- [ ] go to implementation
-- [ ] find all references
-- [ ] types on hover
-- [ ] documentation hover
-- [ ] highlight related
-- [ ] code completion
-- [ ] workspace symbol search
-- [ ] hints for types and parameter names
-
 ## Quick start
 
-Install [juvix](https://docs.juvix.org) and install the [vscode-juvix](https://github.com/anoma/vscode-juvix) extension.
+You can find the latest version of the `juvix-mode` on the VSCode extension marketplace. Otherwise, you can launch VS Code Quick Open (<kbd>Ctrl</kbd><kbd>P</kbd>), paste the following command, and press enter.
+
+```
+ext install heliax.juvix-mode
+```
+
+## Juvix main commands
+
+| Command                                 |            Keymap             |
+| :-------------------------------------- | :---------------------------: |
+| typecheck                               | <kbd>Ctrl-c</kbd> <kbd>Ctrl-l</kbd> |
+| compile                                 | <kbd>Ctrl-c</kbd> <kbd>Ctrl-c</kbd> |
+| run                                     | <kbd>Ctrl-c</kbd> <kbd>Ctrl-r</kbd> |
+
+
+Other commands are available on the Command Pallete (On Mac <kbd>Cmd</kbd><kbd>Shift</kbd><kbd>P</kbd> and on Linux <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>) or as building tasks.
 
 ## Configuration
 

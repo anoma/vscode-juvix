@@ -181,7 +181,7 @@
             "severity": 5
           },
           {
-            "regexp": "^(.*)$",
+            "regexp": "(.*)",
             "message": 1,
             "loop": true
           }
@@ -192,32 +192,38 @@
       {
         "command": "juvix-mode.getBinaryVersion",
         "title": "about",
-        "category": "Juvix"
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.typecheck",
         "title": "typecheck",
-        "category": "Juvix"
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.compile",
         "title": "compile",
-        "category": "Juvix"
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.run",
         "title": "run",
-        "category": "Juvix"
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.internal-parse",
         "title": "[internal] parse",
-        "category": "Juvix"
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.internal-scope",
         "title": "[internal] scope",
-        "category": "Juvix"
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
       }
     ],
     "keybindings": [
@@ -256,28 +262,6 @@
       }
     ],
     "menus": {
-      "commandPalette": [
-        {
-          "command": "juvix-mode.typecheck",
-          "when": "editorLangId == Juvix && editorTextFocus"
-        },
-        {
-          "command": "juvix-mode.compile",
-          "when": "editorLangId == Juvix && editorTextFocus"
-        },
-        {
-          "command": "juvix-mode.run",
-          "when": "editorLangId == Juvix && editorTextFocus"
-        },
-        {
-          "command": "juvix-mode.internal-parse",
-          "when": "editorLangId == Juvix && editorTextFocus"
-        },
-        {
-          "command": "juvix-mode.internal-scope",
-          "when": "editorLangId == Juvix && editorTextFocus"
-        }
-      ],
       "editor/context": [
         {
           "submenu": "juvix-submenu",
