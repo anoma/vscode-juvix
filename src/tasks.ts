@@ -15,6 +15,12 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
   async provideTasks(): Promise<vscode.Task[]> {
     const defs = [
       {
+        command: 'doctor',
+        args: [],
+        group: vscode.TaskGroup.Build,
+        reveal: vscode.TaskRevealKind.Silent,
+      },
+      {
         command: 'typecheck',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
@@ -99,13 +105,16 @@ export async function JuvixTask(
   // TODO: define a custom execution for the juvix binary
   let input = args.join(' ');
   if (!exec) {
-    if (name != 'run') {
-      exec = new vscode.ShellExecution(`juvix ${input}`);
-    } else {
-      input = args.slice(1).join(' ');
-      exec = new vscode.ShellExecution(
-        `juvix compile ${input} && wasmer \${fileDirname}\${pathSeparator}\${fileBasenameNoExtension}.wasm`
-      );
+    switch (name) {
+      case 'run':
+        exec = new vscode.ShellExecution(`juvix ${input}`);
+        break;
+      default:
+        input = args.slice(1).join(' ');
+        exec = new vscode.ShellExecution(
+          `juvix compile ${input} && wasmer \${fileDirname}\${pathSeparator}\${fileBasenameNoExtension}.wasm`
+        );
+        break;
     }
   }
   return new vscode.Task(

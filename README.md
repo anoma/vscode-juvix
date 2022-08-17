@@ -1,6 +1,6 @@
 # Juvix Plugin for VSCode
 
-This extension provides support for the Juvix programming language. 
+This extension provides support for the Juvix programming language.
 
 <p align="center">
   <img src="https://github.com/anoma/vscode-juvix/raw/main/assets/juvix-vscode-extension.png" >
@@ -16,12 +16,11 @@ ext install heliax.juvix-mode
 
 ## Juvix main commands
 
-| Command                                 |            Keymap             |
-| :-------------------------------------- | :---------------------------: |
-| typecheck                               | <kbd>Ctrl-c</kbd> <kbd>Ctrl-l</kbd> |
-| compile                                 | <kbd>Ctrl-c</kbd> <kbd>Ctrl-c</kbd> |
-| run                                     | <kbd>Ctrl-c</kbd> <kbd>Ctrl-r</kbd> |
-
+| Command   |               Keymap                |
+| :-------- | :---------------------------------: |
+| typecheck | <kbd>Ctrl-c</kbd> <kbd>Ctrl-l</kbd> |
+| compile   | <kbd>Ctrl-c</kbd> <kbd>Ctrl-c</kbd> |
+| run       | <kbd>Ctrl-c</kbd> <kbd>Ctrl-r</kbd> |
 
 Discover other commands in the Command Pallete or as building tasks.
 

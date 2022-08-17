@@ -7,6 +7,7 @@ import * as vscode from 'vscode';
 // import * as path from 'path';
 import * as syntax from './highlighting';
 import * as tasks from './tasks';
+import * as config from './config';
 
 let juvixStatusBarItem: vscode.StatusBarItem;
 
@@ -18,20 +19,24 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.StatusBarAlignment.Left
   );
   context.subscriptions.push(juvixStatusBarItem);
+  juvixStatusBarItem.text = 'Checking Juvix config...';
+  juvixStatusBarItem.show();
+
+  const config = new JuvixConfig();
 
   const { spawnSync } = require('child_process');
-  const ls = spawnSync('juvix', ['--version']);
+  const ls = spawnSync(config.juvixBin, ['--version']);
   let execJuvixVersion: string;
   if (ls.status !== 0) {
-    vscode.window.showErrorMessage('Juvix binary not found');
-    execJuvixVersion = ls.stderr.toString();
-    juvixStatusBarItem.text = 'Juvix not found';
+    vscode.window.showErrorMessage(
+      'Juvix binary is not installed. Please check the instructions on https://docs.juvix.org'
+    );
+    return;
   } else {
     execJuvixVersion = ls.stdout.toString();
     const juvixBinaryVersion: string = execJuvixVersion.split('\n')[0];
     juvixStatusBarItem.text = '🛠️ ' + juvixBinaryVersion;
   }
-  juvixStatusBarItem.show();
   context.subscriptions.push(
     vscode.commands.registerCommand('juvix-mode.getBinaryVersion', () => {
       vscode.window.showInformationMessage(execJuvixVersion, { modal: true });
@@ -59,9 +64,8 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  /* Task provider 
-     A command is created for each task.
-  */
+  /* Task provider and command creation per task.
+   */
   const provider = new tasks.JuvixTaskProvider();
   const definedTasks = provider.provideTasks();
   const taskProvider: vscode.Disposable = vscode.tasks.registerTaskProvider(
@@ -74,7 +78,6 @@ export function activate(context: vscode.ExtensionContext) {
     .then(tasks => {
       for (const task of tasks) {
         const cmdName = 'juvix-mode.' + task.name.replace(' ', '-');
-        console.log('name new command: ' + cmdName);
         const cmd = vscode.commands.registerCommand(cmdName, () => {
           vscode.tasks.executeTask(task);
         });

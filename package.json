@@ -192,8 +192,12 @@
       {
         "command": "juvix-mode.getBinaryVersion",
         "title": "about",
-        "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "category": "Juvix"
+      },
+      {
+        "command": "juvix-mode.doctor",
+        "title": "doctor",
+        "category": "Juvix"
       },
       {
         "command": "juvix-mode.typecheck",
@@ -228,6 +232,11 @@
     ],
     "keybindings": [
       {
+        "key": "ctrl+c ctrl+d",
+        "command": "juvix-mode.doctor",
+        "args": "Juvix: doctor"
+      },
+      {
         "key": "ctrl+c ctrl+l",
         "command": "juvix-mode.typecheck",
         "args": "Juvix: typecheck",
@@ -258,7 +267,7 @@
       {
         "id": "juvix-submenu",
         "label": "Juvix Tasks",
-        "icon": "🛠️ "
+        "icon": "🛠️"
       }
     ],
     "menus": {
@@ -280,31 +289,69 @@
         {
           "command": "juvix-mode.run",
           "group": "navigation"
+        },
+        {
+          "command": "juvix-mode.doctor",
+          "group": "navigation@1.31"
         }
       ]
     },
     "configuration": {
       "title": "Juvix Mode",
       "properties": {
-        "juvix-mode.exec.version": {
+        "juvix-mode.bin.name": {
           "type": "string",
-          "default": "juvix",
+          "default": "juvsssix",
           "scope": "machine-overridable",
-          "description": "Name of the executable of Juvix."
+          "description": "Name of the executable of Juvix. e.g. juvix-0.2.0"
         },
-        "juvix-mode.exec.path": {
+        "juvix-mode.bin.path": {
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "description": "Path to the executable of Juvix."
+          "description": "Path to the executable of Juvix. e.g. /usr/local/bin/"
         },
-        "juvix-mode.exec.CLIOptions": {
-          "type": "string",
-          "default": "--only-errors",
-          "scope": "machine-overridable",
-          "description": "Command-line options for Juvix delimited by space."
+        "juvix-mode.globalOptions": {
+          "type": "object",
+          "order": 1,
+          "description": "An example bool object setting.",
+          "properties": {
+            "noColors": {
+              "type": "boolean",
+              "description": ""
+            },
+            "showNameIds": {
+              "type": "boolean",
+              "description": ""
+            },
+            "onlyErrors": {
+              "type": "boolean",
+              "description": ""
+            },
+            "noTermination": {
+              "type": "boolean",
+              "description": ""
+            },
+            "noPositivity": {
+              "type": "boolean",
+              "description": ""
+            },
+            "noStdlib": {
+              "type": "boolean",
+              "description": ""
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "noColors": false,
+            "showNameIds": false,
+            "onlyErrors": false,
+            "noTermination": false,
+            "noPositivity": false,
+            "noStdlib": false
+          }
         },
-        "juvix-mode.backend": {
+        "juvix-mode.compileBackend": {
           "type": "string",
           "default": "C",
           "enum": [
