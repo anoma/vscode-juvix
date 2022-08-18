@@ -87,7 +87,7 @@
             "foreground": "#f07171"
           },
           "comment": {
-            "foreground": "#8b2252",
+            "foreground": "#646464",
             "fontStyle": "italic"
           },
           "constructor": {
@@ -182,6 +182,11 @@
           },
           {
             "regexp": "(.*)",
+            "message": 1
+          }
+          ,
+          {
+            "regexp": "(.*)",
             "message": 1,
             "loop": true
           }
@@ -232,24 +237,24 @@
     ],
     "keybindings": [
       {
-        "key": "ctrl+c ctrl+d",
+        "key": "ctrl+k ctrl+d",
         "command": "juvix-mode.doctor",
         "args": "Juvix: doctor"
       },
       {
-        "key": "ctrl+c ctrl+l",
+        "key": "ctrl+k ctrl+l",
         "command": "juvix-mode.typecheck",
         "args": "Juvix: typecheck",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+c ctrl+c",
+        "key": "ctrl+k ctrl+c",
         "command": "juvix-mode.compile",
         "args": "Juvix: compile",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+c ctrl+r",
+        "key": "ctrl+k ctrl+r",
         "command": "juvix-mode.run",
         "args": "Juvix: run",
         "when": "editorLangId == Juvix && editorTextFocus"
@@ -301,7 +306,7 @@
       "properties": {
         "juvix-mode.bin.name": {
           "type": "string",
-          "default": "juvsssix",
+          "default": "juvix",
           "scope": "machine-overridable",
           "description": "Name of the executable of Juvix. e.g. juvix-0.2.0"
         },

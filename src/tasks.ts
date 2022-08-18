@@ -3,6 +3,7 @@
  *--------------------------------------------------------*/
 
 import * as vscode from 'vscode';
+import * as user from './config';
 
 export const TASK_TYPE = 'Juvix';
 
@@ -13,6 +14,7 @@ export interface JuvixTaskDefinition extends vscode.TaskDefinition {
 
 export class JuvixTaskProvider implements vscode.TaskProvider {
   async provideTasks(): Promise<vscode.Task[]> {
+    const config = new user.JuvixConfig();
     const defs = [
       {
         command: 'doctor',
@@ -22,19 +24,19 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'typecheck',
-        args: ['${file}'],
+        args: [ '${file}' , config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Never,
       },
       {
         command: 'compile',
-        args: ['${file}'],
+        args: ['${file}' , config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Never,
       },
       {
         command: 'run',
-        args: ['${file}'],
+        args: ['${file}' , config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
@@ -52,7 +54,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'internal scope',
-        args: ['--show-name-ids', '${file}'],
+        args: [ '${file}'  , config.getGlobalFlags() ],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },

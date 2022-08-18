@@ -18,11 +18,11 @@ ext install heliax.juvix-mode
 
 | Command   |               Keymap                |
 | :-------- | :---------------------------------: |
-| typecheck | <kbd>Ctrl-c</kbd> <kbd>Ctrl-l</kbd> |
-| compile   | <kbd>Ctrl-c</kbd> <kbd>Ctrl-c</kbd> |
-| run       | <kbd>Ctrl-c</kbd> <kbd>Ctrl-r</kbd> |
+| typecheck | <kbd>Ctrl-k</kbd> <kbd>Ctrl-l</kbd> |
+| compile   | <kbd>Ctrl-k</kbd> <kbd>Ctrl-c</kbd> |
+| run       | <kbd>Ctrl-k</kbd> <kbd>Ctrl-r</kbd> |
 
-Discover other commands in the Command Pallete or as building tasks.
+Find out other commands in the Command Pallete.
 
 ## Configuration
 

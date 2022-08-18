@@ -77,7 +77,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const contentDisk : string = fs.readFileSync(filePath, 'utf8');
 
     if (content != contentDisk){
-      vscode.workspace.saveAll(false);
+      document.save();
     }
 
     const { spawnSync } = require('child_process');
