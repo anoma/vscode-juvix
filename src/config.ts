@@ -1,11 +1,10 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
-'use strict';
 
 import * as vscode from 'vscode';
 
-interface GlobalOptions {
+export interface GlobalOptions {
   noColors: boolean;
   showNameIds: boolean;
   onlyErrors: boolean;
@@ -14,29 +13,29 @@ interface GlobalOptions {
   noStdlib: boolean;
 }
 
-class JuvixConfig {
-  private vscodeConfig: vscode.WorkspaceConfiguration;
+export class JuvixConfig {
+  private uc: vscode.WorkspaceConfiguration;
   private globalOptions: GlobalOptions;
   private binaryName: string;
 
   constructor() {
-    this.vscodeConfig = vscode.workspace.getConfiguration();
+    this.uc = vscode.workspace.getConfiguration();
     this.binaryName = this.getBinaryName();
     this.globalOptions = this.getGlobalOptions();
   }
 
   public getBinaryName(): string {
-    return this.vscodeConfig.get('juvix-mode.bin.name') ?? 'juvix';
+    return this.uc.get('juvix-mode.bin.name') ?? 'juvix';
   }
 
   public getGlobalOptions(): GlobalOptions {
     return {
-      noColors: false,
-      showNameIds: false,
-      onlyErrors: false,
-      noTermination: false,
-      noPositivity: false,
-      noStdlib: false,
+      noColors: this.uc.get('juvix-mode.globalOptions.noColors') ?? false,
+      showNameIds: this.uc.get('juvix-mode.globalOptions.showNameIDs') ?? false,
+      onlyErrors: this.uc.get('juvix-mode.globalOptions.noColors') ?? false,
+      noTermination: this.uc.get('juvix-mode.globalOptions.noColors') ?? false,
+      noPositivity: this.uc.get('juvix-mode.globalOptions.noColors') ?? false,
+      noStdlib: this.uc.get('juvix-mode.globalOptions.noColors') ?? false,
     };
   }
 }

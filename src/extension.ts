@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 // import * as path from 'path';
 import * as syntax from './highlighting';
 import * as tasks from './tasks';
-import * as config from './config';
+import * as user from './config';
 
 let juvixStatusBarItem: vscode.StatusBarItem;
 
@@ -22,10 +22,11 @@ export function activate(context: vscode.ExtensionContext) {
   juvixStatusBarItem.text = 'Checking Juvix config...';
   juvixStatusBarItem.show();
 
-  const config = new JuvixConfig();
+  const config = new user.JuvixConfig();
+  const binaryName = config.getBinaryName();
 
   const { spawnSync } = require('child_process');
-  const ls = spawnSync(config.juvixBin, ['--version']);
+  const ls = spawnSync('juvix', ['--version']);
   let execJuvixVersion: string;
   if (ls.status !== 0) {
     vscode.window.showErrorMessage(

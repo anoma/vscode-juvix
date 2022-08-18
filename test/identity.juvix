@@ -16,9 +16,9 @@ id3 :  ((A -> B) -> (A -> B));
 id3  := id ((A -> B) -> A -> B) (id (A -> B));
 
 id4 : {C : Type} -> C -> C;
-id4 {D} := id ((A -> B) -> A -> B) (id (A -> B));
+id4 := id ((A -> B) -> A -> B) (id (A -> B));
 
--- id4 : {C : Type } -> C -> C;
+-- id4 : {C : Type } -> C -> C; 
 -- id4 {C}  := id ((A -> B) -> A -> B) (id (A -> B));
 
 -- (A -> B) -> (A -> B)

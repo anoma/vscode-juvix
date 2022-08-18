@@ -3,6 +3,7 @@
  *--------------------------------------------------------*/
 
 import * as vscode from 'vscode';
+import * as fs from 'fs';
 
 export const tokenTypes = new Map<string, number>();
 export const tokenModifiers = new Map<string, number>();
@@ -72,6 +73,13 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     token: vscode.CancellationToken
   ): Promise<vscode.SemanticTokens> {
     const filePath: string = document.fileName;
+    const content : string = document.getText();
+    const contentDisk : string = fs.readFileSync(filePath, 'utf8');
+
+    if (content != contentDisk){
+      vscode.workspace.saveAll(false);
+    }
+
     const { spawnSync } = require('child_process');
     const ls = spawnSync('juvix', [
       'internal',
