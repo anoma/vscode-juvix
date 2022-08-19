@@ -134,10 +134,10 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.window.showErrorMessage(err);
     });
 
-  context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration(() => {
-      vscode.window.showInformationMessage('Updating Juvix configuration ...');
-      vscode.commands.executeCommand('workbench.action.reloadWindow');
-    })
-  );
+  // context.subscriptions.push(
+  //   vscode.workspace.onDidChangeConfiguration(() => {
+  //     vscode.window.showInformationMessage('Updating Juvix configuration ...');
+  //     vscode.commands.executeCommand('workbench.action.reloadWindow');
+  //   })
+  // );
 }
