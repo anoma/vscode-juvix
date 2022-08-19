@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "license": "AGPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "juvix-mode",
@@ -179,6 +179,30 @@
             "column": 3,
             "endColumn": 4,
             "severity": 5
+          },
+          {
+            "regexp": "(.*)",
+            "message": 1
+          },
+          {
+            "regexp": "(.*)",
+            "message": 1
+          },
+          {
+            "regexp": "(.*)",
+            "message": 1
+          },
+          {
+            "regexp": "(.*)",
+            "message": 1
+          },
+          {
+            "regexp": "(.*)",
+            "message": 1
+          },
+          {
+            "regexp": "(.*)",
+            "message": 1
           },
           {
             "regexp": "(.*)",
