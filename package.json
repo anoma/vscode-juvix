@@ -46,20 +46,20 @@
   "devDependencies": {
     "@types/node": "^18.6.5",
     "@types/vscode": "^1.66.0",
-    "eslint": "^8.21.0",
-    "npm-run-all": "^4.1.5",
-    "tsc-watch": "^5.0.3",
-    "typescript": "^4.7.4",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
+    "@vscode/test-electron": "^1.6.1",
     "esbuild": "^0.15.0",
+    "eslint": "^8.21.0",
     "eslint-plugin-header": "^3.1.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
+    "tsc-watch": "^5.0.3",
+    "typescript": "^4.7.4",
+    "vsce": "^2.9.2",
     "vscode-dts": "^0.3.3",
-    "@vscode/test-electron": "^1.6.1",
-    "vscode-test-adapter-api": "^1.9.0",
-    "vsce": "^2.9.2"
+    "vscode-test-adapter-api": "^1.9.0"
   },
   "prettier": {
     "printWidth": 80,
@@ -75,6 +75,7 @@
     "workspaceContains:**/*.juvix"
   ],
   "editor.semanticHighlighting.enabled": true,
+  "editor.autoDetect": true,
   "contributes": {
     "configurationDefaults": {
       "[Juvix]": {
@@ -179,22 +180,6 @@
             "column": 3,
             "endColumn": 4,
             "severity": 5
-          },
-          {
-            "regexp": "(.*)",
-            "message": 1
-          },
-          {
-            "regexp": "(.*)",
-            "message": 1
-          },
-          {
-            "regexp": "(.*)",
-            "message": 1
-          },
-          {
-            "regexp": "(.*)",
-            "message": 1
           },
           {
             "regexp": "(.*)",
@@ -347,7 +332,7 @@
         },
         "juvix-mode.revealPanel": {
           "type": "string",
-          "default": "silent",
+          "default": "always",
           "enum": [
             "always",
             "silent",
@@ -432,5 +417,8 @@
     "publisherDisplayName": "Heliax",
     "publisherId": "9e6dae1a-f8fb-4b28-b2c6-bf8cc8ea4f11",
     "isPreReleaseVersion": false
+  },
+  "dependencies": {
+    "run": "^1.4.0"
   }
 }

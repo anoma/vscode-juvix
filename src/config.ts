@@ -2,6 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
+'use strict';
 import * as vscode from 'vscode';
 
 export class JuvixConfig {
@@ -20,7 +21,7 @@ export class JuvixConfig {
     this.uc = vscode.workspace.getConfiguration();
     this.binaryName = this.getBinaryName();
     this.statusBarIcons = this.uc.get('juvix-mode.statusBarIcons') ?? true;
-    this.revealPanel = this.uc.get('juvix-mode.revealPanel') ?? 'silent';
+    this.revealPanel = this.uc.get('juvix-mode.revealPanel') ?? 'always';
     this.noColors = this.uc.get('juvix-mode.opts.noColors') ?? false;
     this.showNameIds = this.uc.get('juvix-mode.opts.showNameIds') ?? false;
     this.onlyErrors = this.uc.get('juvix-mode.opts.onlyErrors') ?? false;
@@ -32,6 +33,11 @@ export class JuvixConfig {
   public getBinaryName(): string {
     return this.uc.get('juvix-mode.bin.name') ?? 'juvix';
   }
+
+  public getJuvixExec(): string {
+    return this.uc.get('juvix-mode.bin.path') + this.getBinaryName();
+  }
+
   public getCompilationFlags(): string {
     const flags = [];
     flags.push('--target');

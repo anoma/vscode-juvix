@@ -4,6 +4,7 @@
 
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import { JuvixConfig } from './config';
 
 export const tokenTypes = new Map<string, number>();
 export const tokenModifiers = new Map<string, number>();
@@ -75,10 +76,10 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const filePath: string = document.fileName;
     const content: string = document.getText();
     // const contentDisk: string = fs.readFileSync(filePath, 'utf8');
-
+    const config = new JuvixConfig();
     const { spawnSync } = require('child_process');
     const ls = spawnSync(
-      'juvix',
+      config.getJuvixExec(),
       ['internal', 'highlight', '--format', 'json', filePath, '--stdin'],
       { input: content }
     );

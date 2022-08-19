@@ -126,7 +126,7 @@ export async function JuvixTask(
 ): Promise<vscode.Task> {
   let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined =
     undefined;
-
+  const config = new user.JuvixConfig();
   // TODO: define a custom execution for the juvix binary
   let input = args.join(' ').trim();
   console.log('INPUT>>>>');
@@ -136,11 +136,12 @@ export async function JuvixTask(
       case 'run':
         input = args.slice(1).join(' ');
         exec = new vscode.ShellExecution(
-          `juvix compile ${input} && wasmer \${fileDirname}\${pathSeparator}\${fileBasenameNoExtension}.wasm`
+          config.getJuvixExec() +
+            ` compile ${input} && wasmer \${fileDirname}\${pathSeparator}\${fileBasenameNoExtension}.wasm`
         );
         break;
       default:
-        exec = new vscode.ShellExecution(`juvix ${input}`);
+        exec = new vscode.ShellExecution(config.getJuvixExec() + `  ${input}`);
         break;
     }
   }
