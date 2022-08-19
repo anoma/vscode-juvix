@@ -183,8 +183,7 @@
           {
             "regexp": "(.*)",
             "message": 1
-          }
-          ,
+          },
           {
             "regexp": "(.*)",
             "message": 1,
@@ -237,24 +236,24 @@
     ],
     "keybindings": [
       {
-        "key": "ctrl+k ctrl+d",
+        "key": "ctrl+c ctrl+d",
         "command": "juvix-mode.doctor",
         "args": "Juvix: doctor"
       },
       {
-        "key": "ctrl+k ctrl+l",
+        "key": "ctrl+c ctrl+l",
         "command": "juvix-mode.typecheck",
         "args": "Juvix: typecheck",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+k ctrl+c",
+        "key": "ctrl+c ctrl+c",
         "command": "juvix-mode.compile",
         "args": "Juvix: compile",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+k ctrl+r",
+        "key": "ctrl+c ctrl+r",
         "command": "juvix-mode.run",
         "args": "Juvix: run",
         "when": "editorLangId == Juvix && editorTextFocus"
@@ -304,6 +303,12 @@
     "configuration": {
       "title": "Juvix Mode",
       "properties": {
+        "juvix-mode.statusBarIcons": {
+          "type": "boolean",
+          "default": true,
+          "scope": "machine-overridable",
+          "description": "Show icons on the status bar to run Juvix commands"
+        },
         "juvix-mode.bin.name": {
           "type": "string",
           "default": "juvix",
@@ -316,34 +321,44 @@
           "scope": "machine-overridable",
           "description": "Path to the executable of Juvix. e.g. /usr/local/bin/"
         },
-        "juvix-mode.globalOptions": {
+        "juvix-mode.revealPanel": {
+          "type": "string",
+          "default": "silent",
+          "enum": [
+            "always",
+            "silent",
+            "never"
+          ],
+          "description": "Reveal panel for typechecking/compilation output"
+        },
+        "juvix-mode.opts": {
           "type": "object",
           "order": 1,
-          "description": "An example bool object setting.",
+          "description": "Global flags for the Juvix CLI.",
           "properties": {
             "noColors": {
               "type": "boolean",
-              "description": ""
+              "description": " Disable ANSI formatting"
             },
             "showNameIds": {
               "type": "boolean",
-              "description": ""
+              "description": "Show the unique number of each identifier when pretty printing"
             },
             "onlyErrors": {
               "type": "boolean",
-              "description": ""
+              "description": "Only print errors in a uniform format"
             },
             "noTermination": {
               "type": "boolean",
-              "description": ""
+              "description": "Disable termination checking"
             },
             "noPositivity": {
               "type": "boolean",
-              "description": ""
+              "description": "Disable positivity checking for inductive types"
             },
             "noStdlib": {
               "type": "boolean",
-              "description": ""
+              "description": "Do not use the standard library"
             }
           },
           "additionalProperties": false,
@@ -356,16 +371,34 @@
             "noStdlib": false
           }
         },
-        "juvix-mode.compileBackend": {
+        "juvix-mode.compilationTarget": {
           "type": "string",
-          "default": "C",
+          "default": "wasm",
           "enum": [
-            "C",
-            "Haskell",
-            "Html"
+            "c",
+            "native",
+            "wasm",
+            "html"
           ],
           "scope": "machine-overridable",
-          "description": "Backend"
+          "description": "Compilation backend"
+        },
+        "juvix-mode.compilationRuntime": {
+          "type": "string",
+          "default": "wasi-standalone",
+          "enum": [
+            "standalone",
+            "wasi-standalone",
+            "wasi-libc"
+          ],
+          "scope": "machine-overridable",
+          "description": "Runtime used for compilation"
+        },
+        "juvix-mode.compilationOutputFile": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "File name for the compiled file"
         }
       }
     }

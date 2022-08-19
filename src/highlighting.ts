@@ -73,21 +73,16 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     token: vscode.CancellationToken
   ): Promise<vscode.SemanticTokens> {
     const filePath: string = document.fileName;
-    const content : string = document.getText();
-    const contentDisk : string = fs.readFileSync(filePath, 'utf8');
-
-    if (content != contentDisk){
-      document.save();
-    }
+    const content: string = document.getText();
+    // const contentDisk: string = fs.readFileSync(filePath, 'utf8');
 
     const { spawnSync } = require('child_process');
-    const ls = spawnSync('juvix', [
-      'internal',
-      'highlight',
-      '--format',
-      'json',
-      filePath,
-    ]);
+    const ls = spawnSync(
+      'juvix',
+      ['internal', 'highlight', '--format', 'json', filePath, '--stdin'],
+      { input: content }
+    );
+
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
       vscode.window.showErrorMessage(errMsg);

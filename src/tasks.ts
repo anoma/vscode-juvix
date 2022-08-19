@@ -15,28 +15,49 @@ export interface JuvixTaskDefinition extends vscode.TaskDefinition {
 export class JuvixTaskProvider implements vscode.TaskProvider {
   async provideTasks(): Promise<vscode.Task[]> {
     const config = new user.JuvixConfig();
+    console.log('CONFIG');
+    console.log(config);
+    const setupPanel = () => {
+      let panelOpt: vscode.TaskRevealKind;
+      switch (config.revealPanel) {
+        case 'silent':
+          panelOpt = vscode.TaskRevealKind.Silent;
+          break;
+        case 'never':
+          panelOpt = vscode.TaskRevealKind.Never;
+          break;
+        default:
+          panelOpt = vscode.TaskRevealKind.Always;
+      }
+      return panelOpt;
+    };
+
     const defs = [
       {
         command: 'doctor',
         args: [],
         group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Silent,
+        reveal: vscode.TaskRevealKind.Always,
       },
       {
         command: 'typecheck',
-        args: [ '${file}' , config.getGlobalFlags()],
+        args: ['${file}', config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Never,
+        reveal: setupPanel(),
       },
       {
         command: 'compile',
-        args: ['${file}' , config.getGlobalFlags()],
+        args: [
+          config.getCompilationFlags(),
+          '${file}',
+          config.getGlobalFlags(),
+        ],
         group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Never,
+        reveal: setupPanel(),
       },
       {
         command: 'run',
-        args: ['${file}' , config.getGlobalFlags()],
+        args: ['${file}', config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
@@ -48,17 +69,19 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'internal parse',
-        args: ['${file}'],
+        args: ['${file}', config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
       {
         command: 'internal scope',
-        args: [ '${file}'  , config.getGlobalFlags() ],
+        args: ['${file}', config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
     ];
+    console.log('CMDS');
+    console.log(defs);
 
     const tasks: vscode.Task[] = [];
 
@@ -105,17 +128,19 @@ export async function JuvixTask(
     undefined;
 
   // TODO: define a custom execution for the juvix binary
-  let input = args.join(' ');
+  let input = args.join(' ').trim();
+  console.log('INPUT>>>>');
+  console.log(input);
   if (!exec) {
     switch (name) {
       case 'run':
-        exec = new vscode.ShellExecution(`juvix ${input}`);
-        break;
-      default:
         input = args.slice(1).join(' ');
         exec = new vscode.ShellExecution(
           `juvix compile ${input} && wasmer \${fileDirname}\${pathSeparator}\${fileBasenameNoExtension}.wasm`
         );
+        break;
+      default:
+        exec = new vscode.ShellExecution(`juvix ${input}`);
         break;
     }
   }
