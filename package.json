@@ -245,24 +245,24 @@
     ],
     "keybindings": [
       {
-        "key": "ctrl+j ctrl+d",
+        "key": "ctrl+shift+d",
         "command": "juvix-mode.doctor",
         "args": "Juvix: doctor"
       },
       {
-        "key": "ctrl+j ctrl+t",
+        "key": "ctrl+shift+t",
         "command": "juvix-mode.typecheck",
         "args": "Juvix: typecheck",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+j ctrl+c",
+        "key": "ctrl+shift+c",
         "command": "juvix-mode.compile",
         "args": "Juvix: compile",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+j ctrl+r",
+        "key": "ctrl+shift+r",
         "command": "juvix-mode.run",
         "args": "Juvix: run",
         "when": "editorLangId == Juvix && editorTextFocus"
