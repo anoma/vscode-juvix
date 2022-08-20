@@ -382,7 +382,7 @@
         },
         "juvix-mode.compilationTarget": {
           "type": "string",
-          "default": "wasm",
+          "default": "native",
           "enum": [
             "c",
             "native",
