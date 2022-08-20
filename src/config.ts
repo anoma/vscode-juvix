@@ -41,9 +41,9 @@ export class JuvixConfig {
   public getCompilationFlags(): string {
     const flags = [];
     flags.push('--target');
-    flags.push(this.uc.get('juvix-mode.compilationTarget') ?? 'c');
+    flags.push(this.uc.get('juvix-mode.compilationTarget'));
     flags.push('--runtime');
-    flags.push(this.uc.get('juvix-mode.compilationRuntime') ?? 'native');
+    flags.push(this.uc.get('juvix-mode.compilationRuntime'));
     const outputFile: string =
       this.uc.get('juvix-mode.compilationOutput') ?? '';
     if (outputFile != '') {
