@@ -1,7 +1,7 @@
 {
   "name": "juvix-mode",
   "version": "0.0.17",
-  "license": "AGPL-3.0",
+  "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "juvix-mode",
   "publisher": "Heliax",
