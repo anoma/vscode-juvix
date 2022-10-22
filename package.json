@@ -231,14 +231,14 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "command": "juvix-mode.internal-parse",
-        "title": "[internal] parse",
+        "command": "juvix-mode.dev-parse",
+        "title": "dev parse",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "command": "juvix-mode.internal-scope",
-        "title": "[internal] scope",
+        "command": "juvix-mode.dev-scope",
+        "title": "dev scope",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       }

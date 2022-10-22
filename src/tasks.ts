@@ -68,13 +68,13 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
-        command: 'internal parse',
+        command: 'dev parse',
         args: ['${file}', config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
       {
-        command: 'internal scope',
+        command: 'dev scope',
         args: ['${file}', config.getGlobalFlags()],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
