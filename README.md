@@ -18,9 +18,10 @@ ext install heliax.juvix-mode
 
 | Command   |               Keymap                |
 | :-------- | :---------------------------------: |
-| typecheck | <kbd>Ctrl-k</kbd> <kbd>Ctrl-l</kbd> |
-| compile   | <kbd>Ctrl-k</kbd> <kbd>Ctrl-c</kbd> |
-| run       | <kbd>Ctrl-k</kbd> <kbd>Ctrl-r</kbd> |
+| typecheck | <kbd>Ctrl+Shift+T</kbd> |
+| compile   | <kbd>Ctrl+Shift+C</kbd> |
+| run       | <kbd>Ctrl+Shift+R</kbd> |
+| doctor    | <kbd>Ctrl+Shift+D</kbd> |
 
 Find out other commands in the Command Pallete.
 

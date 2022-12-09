@@ -13,3 +13,4 @@ HACKING.md
 *.dhall
 **/.eslintrc.json
 output/**
+node_modules/**

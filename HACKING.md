@@ -41,7 +41,9 @@ vsce ls
 To publish a new version (minor), run:
 
 ```
-vsce publish minor
+vsce publish name-of-the-version
 ```
+
+The name-of-the-version must correspond to the version in the `package.json` file.
 
 TODO: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#verify-a-publisher
