@@ -63,7 +63,7 @@ interface FaceProperty {
   tokenType: string;
 }
 
-interface InternalHighlightOutput {
+interface DevHighlightOutput {
   face: [Array<Array<string | number> | string>];
   goto: [[string, number, number, number], string, number, number][];
 }
@@ -80,7 +80,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const { spawnSync } = require('child_process');
     const ls = spawnSync(
       config.getJuvixExec(),
-      ['internal', 'highlight', '--format', 'json', filePath, '--stdin'],
+      ['dev', 'highlight', '--format', 'json', filePath, '--stdin'],
       { input: content }
     );
 
@@ -90,7 +90,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       throw new Error(errMsg);
     }
     const stdout = ls.stdout;
-    const output: InternalHighlightOutput = JSON.parse(stdout.toString());
+    const output: DevHighlightOutput = JSON.parse(stdout.toString());
     const allTokens = output.face;
 
     defLocation.set(filePath, new Map());

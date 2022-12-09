@@ -1,9 +1,9 @@
 {
   "name": "juvix-mode",
-  "version": "0.0.18",
-  "license": "AGPL-3.0",
+  "version": "0.1.0",
+  "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
-  "displayName": "juvix-mode",
+  "displayName": "Juvix",
   "publisher": "Heliax",
   "icon": "assets/tara.png",
   "repository": {
@@ -17,7 +17,7 @@
     "test": "test"
   },
   "engines": {
-    "vscode": "^1.66.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Programming Languages",
@@ -44,20 +44,19 @@
   "main": "./out/extension.js",
   "extensionDependencies": [],
   "devDependencies": {
-    "@types/node": "^18.6.5",
-    "@types/vscode": "^1.66.0",
-    "@typescript-eslint/eslint-plugin": "^5.33.0",
-    "@typescript-eslint/parser": "^5.33.0",
-    "@vscode/test-electron": "^1.6.1",
-    "esbuild": "^0.15.0",
-    "eslint": "^8.21.0",
+    "@types/node": "^18.11.12",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.46.0",
+    "@vscode/test-electron": "^2.2.1",
+    "esbuild": "^0.16.3",
+    "eslint": "^8.29.0",
     "eslint-plugin-header": "^3.1.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
-    "tsc-watch": "^5.0.3",
-    "typescript": "^4.7.4",
-    "vsce": "^2.9.2",
+    "tsc-watch": "^6.0.0",
+    "typescript": "^4.9.4",
     "vscode-dts": "^0.3.3",
     "vscode-test-adapter-api": "^1.9.0"
   },
@@ -231,14 +230,14 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "command": "juvix-mode.internal-parse",
-        "title": "[internal] parse",
+        "command": "juvix-mode.dev-parse",
+        "title": "[dev] parse",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "command": "juvix-mode.internal-scope",
-        "title": "[internal] scope",
+        "command": "juvix-mode.dev-scope",
+        "title": "[dev] scope",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       }
@@ -419,6 +418,7 @@
     "isPreReleaseVersion": false
   },
   "dependencies": {
+    "@vscode/vsce": "^2.15.0",
     "run": "^1.4.0"
   }
 }
