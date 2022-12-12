@@ -69,8 +69,9 @@
   },
   "activationEvents": [
     "onLanguage:Juvix",
-    "workspaceContains:**/juvix-mode.yaml",
-    "workspaceContains:**/*.juvix"
+    "onLanguage:JuvixAsm",
+    "onLanguage:JuvixCore",
+    "workspaceContains:**/juvix-mode.yaml"
   ],
   "editor.semanticHighlighting.enabled": true,
   "editor.autoDetect": true,
@@ -138,6 +139,38 @@
           "juvix"
         ],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "JuvixAsm",
+        "aliases": [
+          "JuvixAsm"
+        ],
+        "extensions": [
+          ".jva"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "JuvixCore",
+        "aliases": [
+          "JuvixCore"
+        ],
+        "extensions": [
+          ".jvc"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "JuvixCore",
+        "scopeName": "source.JuvixCore",
+        "path": "./syntaxes/JuvixCore.tmLanguage.json"
+      },
+      {
+        "language": "JuvixAsm",
+        "scopeName": "source.JuvixAsm",
+        "path": "./syntaxes/JuvixAsm.tmLanguage.json"
       }
     ],
     "semanticTokenScopes": [],
@@ -165,10 +198,7 @@
         "name": "juvixerror",
         "owner": "juvixerror",
         "source": "Juvix Error",
-        "fileLocation": [
-          "autoDetect",
-          "${workspaceFolder}"
-        ],
+        "fileLocation": "autoDetect",
         "pattern": [
           {
             "kind": "location",

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "JuvixCore",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numeric"
+    },
+    {
+      "include": "#line-comment"
+    },
+    {
+      "include": "#block-comment"
+    },
+    { "include": "#constants" }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.JuvixCore",
+          "match": "(\\b(def|pop|push|alloc|case|of|add|div|mul|ret|call|true|false|inductive|if|then|else|let|writeLn|constr|letrec)\\b)"
+        },
+        {
+          "name": "keyword.control.JuvixCore",
+          "match": "(:=|->|;|>>|\\+|\\*|=)"
+        }
+      ]
+    },
+    "line-comment": {
+      "name": "comment.line.double-dash.JuvixCore",
+      "begin": "--",
+      "end": "$"
+    },
+    "block-comment": {
+      "name": "comment.block.JuvixCore",
+      "begin": "\\{-",
+      "end": "-\\}",
+      "patterns": [
+        {
+          "include": "#block-comment"
+        }
+      ]
+    },
+    "constants": {
+      "name": "constant.numeric.JuvixCore",
+      "match": "\\b([0-9]+)\\b"
+    },
+    "strings": {
+      "name": "string.quoted.double.JuvixCore",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.JuvixCore",
+          "match": "\\\\."
+        }
+      ]
+    }
+  },
+  "scopeName": "source.JuvixCore"
+}

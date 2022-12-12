@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "JuvixAsm",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#line-comment"
+    },
+    {
+      "include": "#block-comment"
+    },
+    {
+      "include": "#constants"
+    }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.JuvixAsm",
+          "match": "(\\b(function|br|pop|push|alloc|calloc|tcall|case|add|div|mul|ret|call|true|false|inductive|integer)\\b)"
+        },
+        {
+          "name": "keyword.control.JuvixAsm",
+          "match": "(->|;|\\$|\\:|\\*|,)"
+        }
+      ]
+    },
+    "line-comment": {
+      "name": "comment.line.double-dash.JuvixAsm",
+      "begin": "--",
+      "end": "$"
+    },
+    "block-comment": {
+      "name": "comment.block.JuvixAsm",
+      "begin": "\\{-",
+      "end": "-\\}",
+      "patterns": [
+        {
+          "include": "#block-comment"
+        }
+      ]
+    },
+    "constants": {
+      "name": "constant.numeric.JuvixAsm",
+      "match": "\\b([0-9]+)\\b"
+    },
+    "strings": {
+      "name": "string.quoted.double.JuvixAsm",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.JuvixAsm",
+          "match": "\\\\."
+        }
+      ]
+    }
+  },
+  "scopeName": "source.JuvixAsm"
+}

@@ -6,7 +6,11 @@
 import * as vscode from 'vscode';
 
 export class JuvixConfig {
-  private uc: vscode.WorkspaceConfiguration;
+  private uc = vscode.workspace.getConfiguration(
+    'extension',
+    vscode.window.activeTextEditor?.document.uri
+  );
+
   private binaryName: string;
   public revealPanel: string;
   public statusBarIcons: boolean;
