@@ -8,7 +8,7 @@ This extension provides support for the Juvix programming language.
 
 ## Quick start
 
-You can find the latest version of the `juvix-mode` on the VSCode extension marketplace. Otherwise, you can launch VS Code Quick Open (<kbd>Ctrl</kbd><kbd>P</kbd>), paste the following command, and press enter.
+Find "Juvix" in the VSCode marketplace and install it. Otherwise, launch VS Code Quick Open (<kbd>Ctrl</kbd><kbd>P</kbd>), paste the following command, and press enter.
 
 ```
 ext install heliax.juvix-mode
@@ -16,8 +16,8 @@ ext install heliax.juvix-mode
 
 ## Juvix main commands
 
-| Command   |               Keymap                |
-| :-------- | :---------------------------------: |
+| Command   |         Keymap          |
+| :-------- | :---------------------: |
 | typecheck | <kbd>Ctrl+Shift+T</kbd> |
 | compile   | <kbd>Ctrl+Shift+C</kbd> |
 | run       | <kbd>Ctrl+Shift+R</kbd> |

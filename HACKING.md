@@ -9,41 +9,14 @@ git clone https://github.com/anoma/vscode-juvix ~/.vscode/extensions
 
 ## Development
 
-You must install `npm` , `purescript` , `typescript` , `spago`.
+You must install `npm`, `typescript` and `vsce` to build the extension.
 
-To build the extension:
+Run the following command to publish the extension to the marketplace.
 
 ```
 npm run vscode:prepublish
-```
-
-For debugging:
-
-```
-npm run ts:watch
-npm run ps:watch
-```
-
-## Publishing
-
-Before to publish, run
-
-```
 vsce package
-```
-
-To see the content of the VSIX file, run:
-
-```
-vsce ls
-```
-
-To publish a new version (minor), run:
-
-```
 vsce publish name-of-the-version
 ```
 
 The name-of-the-version must correspond to the version in the `package.json` file.
-
-TODO: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#verify-a-publisher
