@@ -95,15 +95,19 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      vscode.window.showErrorMessage(errMsg);
+      debug.log('error', 'highlighting provider error', errMsg);
       throw new Error(errMsg);
     }
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
-    const allTokens = output.face;
+    // // too verbose but useful for debugging location mapping
+    // debug.log('info', 'Highlighting output: ' +
+    //   JSON.stringify(output, null, 2)
+    // );
 
     def.locationMap.set(filePath, new Map());
     output.goto.forEach(entry => {
+      // The juvix's output is 1-indexed and vscode's is 0-indexed
       const line: number = Number(entry[0][1]) - 1;
       const startLoc: number = Number(entry[0][2]) - 1;
       const targetLocation: def.TargetLocation = {
@@ -115,14 +119,21 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
         targetLine: Number(entry[2]) - 1,
         targetStartCharacter: Number(entry[3]) - 1,
       };
-      if (!def.locationMap.get(filePath)?.has(line)) {
+      if (!def.locationMap.get(filePath)?.get(line)) {
         def.locationMap.get(filePath)?.set(line, []);
-      } else {
-        def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
       }
+      def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
     });
 
+    debug.log(
+      'info',
+      'Highlighting output: ' +
+        JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
+    );
+
     debug.log('info', 'Active file: ' + filePath);
+
+    const allTokens = output.face;
     debug.log('info', '> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
@@ -147,7 +158,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       file: intervalInfo[0].toString(),
       line: Number(intervalInfo[1]) - 1,
       startCharacter: Number(intervalInfo[2]) - 1,
-      length: Number(intervalInfo[3]),
+      length: Number(intervalInfo[3]) - 1,
     };
     const token: FaceProperty = {
       interval: rawInterval,

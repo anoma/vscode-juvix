@@ -91,8 +91,7 @@
             "fontStyle": "italic"
           },
           "constructor": {
-            "foreground": "#a37acc",
-            "fontStyle": "italic"
+            "foreground": "#a37acc"
           },
           "error": {
             "foreground": "#bd3744",
@@ -102,23 +101,19 @@
             "foreground": "#f2ae49"
           },
           "inductive": {
-            "foreground": "#86b300",
-            "fontStyle": "italic"
+            "foreground": "#86b300"
           },
           "keyword": {
-            "foreground": "#399ee6",
-            "fontStyle": "italic"
+            "foreground": "#399ee6"
           },
           "module": {
             "foreground": "#4e5e78"
           },
           "number": {
-            "foreground": "#8c48d0",
-            "fontStyle": "italic"
+            "foreground": "#8c48d0"
           },
           "string": {
-            "foreground": "#f07171",
-            "fontStyle": "italic"
+            "foreground": "#f07171"
           }
         }
       }

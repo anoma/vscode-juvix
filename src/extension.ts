@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import * as debug from './utils/debug';
 import * as tasks from './tasks';
 import * as user from './config';
-import * as statusBar from './statusBar';
+import * as statusBar from './statusbar';
 import * as syntaxHighlighter from './highlighting';
 import * as goToDefinition from './definitions';
 
@@ -17,4 +17,5 @@ export function activate(context: vscode.ExtensionContext) {
   statusBar.activate(config, context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
+  debug.log('info', '------------------');
 }

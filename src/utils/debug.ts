@@ -5,7 +5,10 @@
 
 import * as vscode from 'vscode';
 
-const juvixChannel = vscode.window.createOutputChannel('Juvix Extension');
+const juvixChannel = vscode.window.createOutputChannel(
+  'Juvix Extension',
+  'json'
+);
 
 export function log(cat: string, ...o: any) {
   switch (cat.toLowerCase()) {

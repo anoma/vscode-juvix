@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import * as debug from './utils/debug';
 
 export let definitionProvider: vscode.DefinitionProvider;
-export let locationMap = new Map<string, Map<number, TargetLocation[]>>();
+export const locationMap = new Map<string, Map<number, TargetLocation[]>>();
 
 export interface ColInterval {
   start: number;
@@ -44,31 +44,57 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
     token: vscode.CancellationToken
   ): Promise<vscode.Location | vscode.Location[] | undefined> {
     const filePath: string = document.fileName;
-    const line = position.line;
+    const line: number = position.line;
     const col: number = position.character;
-    debug.log('info', 'Definition requested ------------------------');
-    debug.log('info', 'Looking for definition at: ' + line + ':' + col);
+    debug.log('info', 'Find def. requested ------------------------');
+    debug.log(
+      'info',
+      'Looking for definition of the symbol at: ' + (line + 1) + ':' + (col + 1)
+    );
     debug.log('info', 'Active file: ' + filePath);
+
     if (!locationMap.has(filePath)) {
-      debug.log('info', 'There is no definitions registered in file: ' + filePath);
+      debug.log(
+        'info',
+        'There is no definitions registered in file: ' + filePath
+      );
       return undefined;
     } else {
       if (!locationMap.get(filePath)!.has(line)) {
-        debug.log('info', 'There is no defnition registered at line: ' + line);
+        debug.log(
+          'info',
+          'There is no defnition registered at line: ' + (line + 1)
+        );
         return undefined;
       } else {
         const locsByLine: TargetLocation[] = locationMap
           .get(filePath)!
           .get(line)!;
+        debug.log(
+          'info',
+          '> Found ' + locsByLine.length + ' definitions at line: ' + (line + 1)
+        );
         for (let i = 0; i < locsByLine.length; i++) {
           const info: TargetLocation = locsByLine[i];
-          debug.log('info', 'Checking if symbol is between colummns: ' +
-            info.interval.start + ' and ' + info.interval.end);
-            
+          // debug.log(
+          //   'info',
+          //   '+ Checking if symbol is between colummns: ' +
+          //     (info.interval.start + 1) +
+          //     ' and ' +
+          //     (info.interval.end + 1)
+          // );
+
           if (info.interval.start <= col && info.interval.end >= col) {
-            debug.log('info', 'Found definition at: ' + info.targetFile + ':' +
-              info.targetLine + ':' + info.targetStartCharacter);
-            let definitionFound = new vscode.Location(
+            debug.log(
+              'info',
+              '[!] Found definition at: ' +
+                info.targetFile +
+                ':' +
+                (info.targetLine + 1) +
+                ':' +
+                (info.targetStartCharacter + 1)
+            );
+            const definitionFound = new vscode.Location(
               vscode.Uri.file(info.targetFile),
               new vscode.Position(info.targetLine, info.targetStartCharacter)
             );

@@ -11,10 +11,7 @@ export let juvixStatusBarItemTypecheck: vscode.StatusBarItem;
 export let juvixStatusBarItemCompile: vscode.StatusBarItem;
 export let juvixStatusBarItemRun: vscode.StatusBarItem;
 
-export function activate(
-  config: any,
-  context: vscode.ExtensionContext
-) {
+export function activate(config: any, context: vscode.ExtensionContext) {
   juvixStatusBarItemVersion = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right
   );
@@ -76,27 +73,6 @@ export function activate(
 //   vscode.commands.registerCommand('juvix-mode.getBinaryVersion', () => {
 //     vscode.window.showInformationMessage(execJuvixVersion, { modal: true });
 //   })
-// );
-
-// /*
-//   Semantic syntax highlight
-// */
-// context.subscriptions.push(
-//   vscode.languages.registerDocumentSemanticTokensProvider(
-//     { language: 'Juvix', scheme: 'file' },
-//     new syntax.Highlighter(),
-//     syntax.legend
-//   )
-// );
-
-// /*
-//   Go to definition
-//     */
-// context.subscriptions.push(
-//   vscode.languages.registerDefinitionProvider(
-//     { language: 'Juvix', scheme: 'file' },
-//     new syntax.JuvixDefinitionProvider()
-//   )
 // );
 
 // /* Task provider and command creation per task.
