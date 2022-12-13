@@ -125,11 +125,12 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
     });
 
-    debug.log(
-      'info',
-      'Highlighting output: ' +
-        JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
-    );
+    // // too verbose but useful for debugging location mapping
+    // debug.log(
+    //   'info',
+    //   'Highlighting output: ' +
+    //     JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
+    // );
 
     debug.log('info', 'Active file: ' + filePath);
 

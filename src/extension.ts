@@ -14,8 +14,9 @@ import * as goToDefinition from './definitions';
 export function activate(context: vscode.ExtensionContext) {
   const config = new user.JuvixConfig();
   debug.log('info', config.toString());
-  statusBar.activate(config, context);
+  statusBar.activate(context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
+  tasks.activate(context);
   debug.log('info', '------------------');
 }

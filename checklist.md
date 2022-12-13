@@ -21,7 +21,7 @@
 - [x] semantic syntax highlighting
 - [x] snippets
 - [x] go to definition (not for stdlib symbols)
-- [ ] user configuration
+- [x] user configuration
 - [ ] go to implementation
 - [ ] find all references
 - [ ] types on hover
