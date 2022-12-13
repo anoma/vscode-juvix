@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -136,7 +136,7 @@
           ".juvix"
         ],
         "aliases": [
-          "juvix"
+          "Juvix"
         ],
         "configuration": "./language-configuration.json"
       },
@@ -342,7 +342,7 @@
       "properties": {
         "juvix-mode.statusBarIcons": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "scope": "machine-overridable",
           "description": "Show icons on the status bar to run Juvix commands"
         },
