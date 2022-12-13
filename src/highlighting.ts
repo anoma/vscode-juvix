@@ -35,6 +35,8 @@ export const legend = (function () {
     'number',
     'string',
   ];
+
+
   tokenTypesLegend.forEach((tokenType, index) =>
     tokenTypes.set(tokenType, index)
   );
@@ -73,6 +75,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     document: vscode.TextDocument,
     token: vscode.CancellationToken
   ): Promise<vscode.SemanticTokens> {
+
     const filePath: string = document.fileName;
     const content: string = document.getText();
     // const contentDisk: string = fs.readFileSync(filePath, 'utf8');
