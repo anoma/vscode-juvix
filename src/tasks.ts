@@ -45,7 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
           vscode.tasks.executeTask(task);
         });
         context.subscriptions.push(cmd);
-        debug.log('info', '[!] "' + cmdName + '" command registered');
+        // debug.log('info', '[!] "' + cmdName + '" command registered');
       }
     })
     .catch(err => {

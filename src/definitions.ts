@@ -46,11 +46,11 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
     const filePath: string = document.fileName;
     const line: number = position.line;
     const col: number = position.character;
-    debug.log('info', 'Find def. requested ------------------------');
-    debug.log(
-      'info',
-      'Looking for definition of the symbol at: ' + (line + 1) + ':' + (col + 1)
-    );
+    // debug.log('info', 'Find def. requested ------------------------');
+    // debug.log(
+    //   'info',
+    //   'Looking for definition of the symbol at: ' + (line + 1) + ':' + (col + 1)
+    // );
     // debug.log('info', 'Active file: ' + filePath);
 
     if (!locationMap.has(filePath)) {

@@ -21,4 +21,6 @@ export function activate(context: vscode.ExtensionContext) {
   tasks.activate(context);
   inputMethod.activate(context);
   debug.log('info', 'Ready!');
+  debug.juvixChannel.hide();
+  
 }

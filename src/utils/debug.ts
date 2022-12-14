@@ -5,7 +5,7 @@
 
 import * as vscode from 'vscode';
 
-const juvixChannel = vscode.window.createOutputChannel(
+export const juvixChannel = vscode.window.createOutputChannel(
   'Juvix Extension',
   'json'
 );
