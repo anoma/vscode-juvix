@@ -1,0 +1,3 @@
+# Licences
+
+This folder contains licences from each of the projects from which we have borrowed some code.

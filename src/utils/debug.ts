@@ -10,7 +10,7 @@ const juvixChannel = vscode.window.createOutputChannel(
   'json'
 );
 
-export function log(cat: string, ...o: any) {
+export function log(cat: string, ...o: any): void {
   switch (cat.toLowerCase()) {
     case 'info':
       o.map((args: any) => {

@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -44,11 +44,12 @@
   "main": "./out/extension.js",
   "extensionDependencies": [],
   "devDependencies": {
-    "@types/node": "^18.11.12",
-    "@typescript-eslint/eslint-plugin": "^5.46.0",
-    "@typescript-eslint/parser": "^5.46.0",
+    "@types/node": "^18.11.15",
+    "@types/vscode": "^1.73.0",
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
     "@vscode/test-electron": "^2.2.1",
-    "esbuild": "^0.16.3",
+    "esbuild": "^0.16.6",
     "eslint": "^8.29.0",
     "eslint-plugin-header": "^3.1.1",
     "npm-run-all": "^4.1.5",
@@ -56,6 +57,7 @@
     "rimraf": "^3.0.2",
     "tsc-watch": "^6.0.0",
     "typescript": "^4.9.4",
+    "vsce": "^1.91.0",
     "vscode-dts": "^0.3.3",
     "vscode-test-adapter-api": "^1.9.0"
   },
@@ -431,6 +433,43 @@
           "default": "",
           "scope": "machine-overridable",
           "description": "File name for the compiled file"
+        },
+        "juvix-mode.input.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable Juvix input mode."
+        },
+        "juvix-mode.input.customTranslations": {
+          "type": "object",
+          "items": {
+            "type": "string",
+            "description": "Unicode character to translate to"
+          },
+          "default": {},
+          "markdownDescription": "Add additional input Unicode translations. Example: `{\"foo\": \"☺\"}` will correct `\\foo` to `☺`."
+        },
+        "juvix-mode.input.languages": {
+          "type": "array",
+          "default": [
+            "Juvix",
+            "JuvixASM",
+            "JuvixCore"
+          ],
+          "markdownDescription": "Enable Juvix Unicode input in other file types.",
+          "items": {
+            "type": "string",
+            "description": "the name of a language, e.g. 'haskell', 'markdown'"
+          }
+        },
+        "juvix-mode.input.leader": {
+          "type": "string",
+          "default": "\\",
+          "markdownDescription": "Leader key to trigger input mode."
+        },
+        "juvix-mode.input.eagerReplacementEnabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable eager replacement of abbreviations that uniquely identify a symbol."
         }
       }
     }
@@ -443,6 +482,7 @@
   },
   "dependencies": {
     "@vscode/vsce": "^2.15.0",
-    "run": "^1.4.0"
+    "mobx": "6.7.0",
+    "run": "^1.4.0",
   }
 }

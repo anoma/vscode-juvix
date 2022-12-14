@@ -9,7 +9,9 @@
     "sourceMap": true,
     "strict": true,
     "pretty": true,
+    "resolveJsonModule": true,
     "noUnusedParameters": true,
+    "experimentalDecorators": true,
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */
   },
   "include": ["src/**/*.ts"],
