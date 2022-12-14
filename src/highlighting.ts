@@ -5,22 +5,30 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { JuvixConfig } from './config';
+import * as debug from './utils/debug';
+import * as def from './definitions';
+
+export function activate(context: vscode.ExtensionContext) {
+  /*
+    Semantic syntax highlight
+  */
+  try {
+    const semanticTokensProvider = new Highlighter();
+    context.subscriptions.push(
+      vscode.languages.registerDocumentSemanticTokensProvider(
+        { language: 'Juvix', scheme: 'file' },
+        semanticTokensProvider,
+        legend
+      )
+    );
+    debug.log('info', 'Semantic syntax highlighter registered');
+  } catch (error) {
+    debug.log('error', 'No semantic provider', error);
+  }
+}
 
 export const tokenTypes = new Map<string, number>();
 export const tokenModifiers = new Map<string, number>();
-const defLocation = new Map<string, Map<number, TargetLocation[]>>();
-
-interface ColInterval {
-  start: number;
-  end: number;
-}
-
-interface TargetLocation {
-  interval: ColInterval;
-  targetFile: string;
-  targetLine: number;
-  targetStartCharacter: number;
-}
 
 export const legend = (function () {
   const tokenTypesLegend = [
@@ -35,7 +43,6 @@ export const legend = (function () {
     'number',
     'string',
   ];
-
 
   tokenTypesLegend.forEach((tokenType, index) =>
     tokenTypes.set(tokenType, index)
@@ -75,7 +82,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     document: vscode.TextDocument,
     token: vscode.CancellationToken
   ): Promise<vscode.SemanticTokens> {
-
     const filePath: string = document.fileName;
     const content: string = document.getText();
     // const contentDisk: string = fs.readFileSync(filePath, 'utf8');
@@ -89,18 +95,22 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      vscode.window.showErrorMessage(errMsg);
+      debug.log('error', 'highlighting provider error', errMsg);
       throw new Error(errMsg);
     }
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
-    const allTokens = output.face;
+    // // too verbose but useful for debugging location mapping
+    // debug.log('info', 'Highlighting output: ' +
+    //   JSON.stringify(output, null, 2)
+    // );
 
-    defLocation.set(filePath, new Map());
+    def.locationMap.set(filePath, new Map());
     output.goto.forEach(entry => {
+      // The juvix's output is 1-indexed and vscode's is 0-indexed
       const line: number = Number(entry[0][1]) - 1;
       const startLoc: number = Number(entry[0][2]) - 1;
-      const targetLocation: TargetLocation = {
+      const targetLocation: def.TargetLocation = {
         interval: {
           start: startLoc,
           end: startLoc + Number(entry[0][3]) - 1,
@@ -109,15 +119,24 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
         targetLine: Number(entry[2]) - 1,
         targetStartCharacter: Number(entry[3]) - 1,
       };
-      if (!defLocation.get(filePath)?.has(line)) {
-        defLocation.get(filePath)?.set(line, []);
-      } else {
-        defLocation.get(filePath)?.get(line)?.push(targetLocation);
+      if (!def.locationMap.get(filePath)?.get(line)) {
+        def.locationMap.get(filePath)?.set(line, []);
       }
+      def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
     });
 
-    console.log('filePath: ' + filePath);
-    console.log('tokens length: ' + allTokens.length);
+    // // too verbose but useful for debugging location mapping
+    // debug.log(
+    //   'info',
+    //   'Highlighting output: ' +
+    //     JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
+    // );
+
+    debug.log('info', 'Active file: ' + filePath);
+
+    const allTokens = output.face;
+    debug.log('info', '> Tokens length: ' + allTokens.length);
+
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {
       const tk: FaceProperty = this.getFaceProperty(entry);
@@ -140,7 +159,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       file: intervalInfo[0].toString(),
       line: Number(intervalInfo[1]) - 1,
       startCharacter: Number(intervalInfo[2]) - 1,
-      length: Number(intervalInfo[3]),
+      length: Number(intervalInfo[3]) - 1,
     };
     const token: FaceProperty = {
       interval: rawInterval,
@@ -169,55 +188,5 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       }
     }
     return result;
-  }
-}
-
-export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
-  async provideDefinition(
-    document: vscode.TextDocument,
-    position: vscode.Position,
-    token: vscode.CancellationToken
-  ): Promise<vscode.Location | vscode.Location[] | undefined> {
-    const filePath: string = document.fileName;
-    const line = position.line;
-    const col: number = position.character;
-    console.log('filePath: ' + filePath);
-    if (!defLocation.has(filePath)) {
-      console.log('no defLocation for filePath: ' + filePath);
-      return undefined;
-    } else {
-      if (!defLocation.get(filePath)!.has(line)) {
-        console.log('no defLocation for line: ' + line);
-        return undefined;
-      } else {
-        const locsByLine: TargetLocation[] = defLocation
-          .get(filePath)!
-          .get(line)!;
-        console.log('checking symbol at: ' + [line, col]);
-        console.log('locsByLine: ' + locsByLine);
-        for (let i = 0; i < locsByLine.length; i++) {
-          const info: TargetLocation = locsByLine[i];
-          console.log(
-            'char in interval?: ' +
-              [
-                info.interval.start,
-                info.interval.end,
-                info.targetFile,
-                info.targetLine,
-                info.targetStartCharacter,
-              ]
-          );
-          if (info.interval.start <= col && info.interval.end >= col) {
-            // check if the target file is in the standrd library
-            return new vscode.Location(
-              vscode.Uri.file(info.targetFile),
-              new vscode.Position(info.targetLine, info.targetStartCharacter)
-            );
-          }
-        }
-      }
-    }
-
-    return undefined;
   }
 }

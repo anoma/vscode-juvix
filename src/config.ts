@@ -5,41 +5,58 @@
 'use strict';
 import * as vscode from 'vscode';
 
-export class JuvixConfig {
-  private uc = vscode.workspace.getConfiguration(
-    'extension',
-    vscode.window.activeTextEditor?.document.uri
-  );
+export let config: JuvixConfig;
 
-  private binaryName: string;
-  public revealPanel: string;
-  public statusBarIcons: boolean;
-  public noColors: boolean;
-  public showNameIds: boolean;
-  public onlyErrors: boolean;
-  public noTermination: boolean;
-  public noPositivity: boolean;
-  public noStdlib: boolean;
+export function getConfig() {
+  config = new JuvixConfig();
+  return config;
+}
+
+export class JuvixConfig {
+  public uc: vscode.WorkspaceConfiguration;
 
   constructor() {
-    this.uc = vscode.workspace.getConfiguration();
-    this.binaryName = this.getBinaryName();
-    this.statusBarIcons = this.uc.get('juvix-mode.statusBarIcons') ?? true;
-    this.revealPanel = this.uc.get('juvix-mode.revealPanel') ?? 'always';
-    this.noColors = this.uc.get('juvix-mode.opts.noColors') ?? false;
-    this.showNameIds = this.uc.get('juvix-mode.opts.showNameIds') ?? false;
-    this.onlyErrors = this.uc.get('juvix-mode.opts.onlyErrors') ?? false;
-    this.noTermination = this.uc.get('juvix-mode.opts.noTermination') ?? false;
-    this.noPositivity = this.uc.get('juvix-mode.opts.noPositivity') ?? false;
-    this.noStdlib = this.uc.get('juvix-mode.opts.noStdlib') ?? false;
+    this.uc = vscode.workspace.getConfiguration(
+      'extension',
+      vscode.window.activeTextEditor?.document.uri
+    );
   }
 
-  public getBinaryName(): string {
+  public binaryName(): string {
     return this.uc.get('juvix-mode.bin.name') ?? 'juvix';
   }
 
+  public binaryPath(): string {
+    return this.uc.get('juvix-mode.bin.path') ?? '';
+  }
+
   public getJuvixExec(): string {
-    return this.uc.get('juvix-mode.bin.path') + this.getBinaryName();
+    return this.binaryPath() + this.binaryName();
+  }
+
+  public statusBarIcons(): boolean {
+    return this.uc.get('juvix-mode.statusBarIcons') ?? false;
+  }
+  public revealPanel(): string {
+    return this.uc.get('juvix-mode.revealPanel') ?? 'always';
+  }
+  public noColors(): boolean {
+    return this.uc.get('juvix-mode.opts.noColors') ?? false;
+  }
+  public showNameIds(): boolean {
+    return this.uc.get('juvix-mode.opts.showNameIds') ?? false;
+  }
+  public onlyErrors(): boolean {
+    return this.uc.get('juvix-mode.opts.onlyErrors') ?? false;
+  }
+  public noTermination(): boolean {
+    return this.uc.get('juvix-mode.opts.noTermination') ?? false;
+  }
+  public noPositivity(): boolean {
+    return this.uc.get('juvix-mode.opts.noPositivity') ?? false;
+  }
+  public noStdlib(): boolean {
+    return this.uc.get('juvix-mode.opts.noStdlib') ?? false;
   }
 
   public getCompilationFlags(): string {
@@ -58,24 +75,42 @@ export class JuvixConfig {
   }
   public getGlobalFlags(): string {
     const flags = [];
-    if (this.noColors) {
+    if (this.noColors()) {
       flags.push('--no-colors');
     }
-    if (this.showNameIds) {
+    if (this.showNameIds()) {
       flags.push('--show-name-ids');
     }
-    if (this.onlyErrors) {
+    if (this.onlyErrors()) {
       flags.push('--only-errors');
     }
-    if (this.noTermination) {
+    if (this.noTermination()) {
       flags.push('--no-termination');
     }
-    if (this.noPositivity) {
+    if (this.noPositivity()) {
       flags.push('--no-positivity');
     }
-    if (this.noStdlib) {
+    if (this.noStdlib()) {
       flags.push('--no-stdlib');
     }
     return flags.join(' ');
   }
+
+  public toString = (): string => {
+    return `JuvixConfig {
+     binaryName: ${this.binaryName()},
+     binaryPath: ${this.binaryPath()},
+     juvixExec: ${this.getJuvixExec()},
+     statusBarIcons: ${this.statusBarIcons()},
+     revealPanel: ${this.revealPanel()},
+     noColors: ${this.noColors()},
+     showNameIds: ${this.showNameIds()},
+     onlyErrors: ${this.onlyErrors()},
+     noTermination: ${this.noTermination()},
+     noPositivity: ${this.noPositivity()},
+     noStdlib: ${this.noStdlib()},
+     compilationFlags: ${this.getCompilationFlags()},
+     globalFlags: ${this.getGlobalFlags()}
+    }`;
+  };
 }
