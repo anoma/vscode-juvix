@@ -42,7 +42,7 @@ export class AbbreviationProvider implements Disposable {
 
   getAllAbbreviations(symbol: string): string[] {
     return Object.entries(this.symbolsByAbbreviation)
-      .filter(([abbr, sym]) => sym === symbol)
+      .filter(([_abbr, sym]) => sym === symbol)
       .map(([abbr]) => abbr);
   }
 

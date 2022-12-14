@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
         legend
       )
     );
-    debug.log('info', 'Semantic syntax highlighter registered');
+    // debug.log('info', 'Semantic syntax highlighter registered');
   } catch (error) {
     debug.log('error', 'No semantic provider', error);
   }
@@ -80,7 +80,7 @@ interface DevHighlightOutput {
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   async provideDocumentSemanticTokens(
     document: vscode.TextDocument,
-    token: vscode.CancellationToken
+    _token: vscode.CancellationToken
   ): Promise<vscode.SemanticTokens> {
     const filePath: string = document.fileName;
     const content: string = document.getText();
@@ -132,10 +132,10 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     //     JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
     // );
 
-    debug.log('info', 'Active file: ' + filePath);
+    // debug.log('info', 'Active file: ' + filePath);
 
     const allTokens = output.face;
-    debug.log('info', '> Tokens length: ' + allTokens.length);
+    // debug.log('info', '> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {

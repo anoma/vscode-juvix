@@ -118,7 +118,7 @@ export class AbbreviationRewriter {
         replacements.push({
           range: abbr.range,
           newText,
-          transformOffsetInRange: offset => cursorOffset,
+          transformOffsetInRange: _offset => cursorOffset,
         });
       }
     }

@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
       'info',
       'Juvix binary is not installed. Please check the instructions on https://docs.juvix.org'
     );
-    debug.log('info', 'Juvix exec: ' + config.getJuvixExec());
+    // debug.log('info', 'Juvix exec: ' + config.getJuvixExec());
     return;
   } else {
     execJuvixVersion = ls.stdout.toString().replace('version ', 'v');

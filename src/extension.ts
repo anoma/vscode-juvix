@@ -14,11 +14,11 @@ import * as inputMethod from './abbreviation';
 
 export function activate(context: vscode.ExtensionContext) {
   const config = new user.JuvixConfig();
-  debug.log('info', config.toString());
+  // debug.log('info', config.toString());
   statusBar.activate(context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
   tasks.activate(context);
   inputMethod.activate(context);
-  debug.log('info', '------------------');
+  debug.log('info', 'Ready!');
 }

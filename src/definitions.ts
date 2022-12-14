@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
         definitionProvider
       )
     );
-    debug.log('info', 'Go to definition registered');
+    // debug.log('info', 'Go to definition registered');
   } catch (error) {
     debug.log('error', 'No definition provider', error);
   }
@@ -41,7 +41,7 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
   async provideDefinition(
     document: vscode.TextDocument,
     position: vscode.Position,
-    token: vscode.CancellationToken
+    _token: vscode.CancellationToken
   ): Promise<vscode.Location | vscode.Location[] | undefined> {
     const filePath: string = document.fileName;
     const line: number = position.line;
@@ -51,29 +51,29 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
       'info',
       'Looking for definition of the symbol at: ' + (line + 1) + ':' + (col + 1)
     );
-    debug.log('info', 'Active file: ' + filePath);
+    // debug.log('info', 'Active file: ' + filePath);
 
     if (!locationMap.has(filePath)) {
-      debug.log(
-        'info',
-        'There is no definitions registered in file: ' + filePath
-      );
+      // debug.log(
+      //   'info',
+      //   'There is no definitions registered in file: ' + filePath
+      // );
       return undefined;
     } else {
       if (!locationMap.get(filePath)!.has(line)) {
-        debug.log(
-          'info',
-          'There is no defnition registered at line: ' + (line + 1)
-        );
+        // debug.log(
+        //   'info',
+        //   'There is no defnition registered at line: ' + (line + 1)
+        // );
         return undefined;
       } else {
         const locsByLine: TargetLocation[] = locationMap
           .get(filePath)!
           .get(line)!;
-        debug.log(
-          'info',
-          '> Found ' + locsByLine.length + ' definitions at line: ' + (line + 1)
-        );
+        // debug.log(
+        //   'info',
+        //   '> Found ' + locsByLine.length + ' definitions at line: ' + (line + 1)
+        // );
         for (let i = 0; i < locsByLine.length; i++) {
           const info: TargetLocation = locsByLine[i];
           // debug.log(
@@ -85,15 +85,15 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
           // );
 
           if (info.interval.start <= col && info.interval.end >= col) {
-            debug.log(
-              'info',
-              '[!] Found definition at: ' +
-                info.targetFile +
-                ':' +
-                (info.targetLine + 1) +
-                ':' +
-                (info.targetStartCharacter + 1)
-            );
+            // debug.log(
+            //   'info',
+            //   '[!] Found definition at: ' +
+            //     info.targetFile +
+            //     ':' +
+            //     (info.targetLine + 1) +
+            //     ':' +
+            //     (info.targetStartCharacter + 1)
+            // );
             const definitionFound = new vscode.Location(
               vscode.Uri.file(info.targetFile),
               new vscode.Position(info.targetLine, info.targetStartCharacter)
@@ -103,7 +103,7 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
         }
       }
     }
-    debug.log('info', 'No definition found');
+    // debug.log('info', 'No definition found');
     return undefined;
   }
 }

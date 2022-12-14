@@ -13,9 +13,11 @@ import { AbbreviationHoverProvider } from './AbbreviationHoverProvider';
 import { AbbreviationProvider } from './AbbreviationProvider';
 import { AbbreviationRewriterFeature } from './rewriter/AbbreviationRewriterFeature';
 import { AbbreviationConfig } from './config';
+import * as debug from '../utils/debug';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(new AbbreviationFeature());
+  // debug.log('info', 'Input method registered');
 }
 
 export class AbbreviationFeature {
