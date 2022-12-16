@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
     execJuvixVersion = ls.stdout.toString().replace('version ', 'v');
     const juvixBinaryVersion: string = execJuvixVersion.split('\n')[0];
     juvixStatusBarItemVersion.text = juvixBinaryVersion;
-    debug.log('info', 'Juvix binary version: ' + juvixBinaryVersion);
+    // debug.log('info', 'Juvix binary version: ' + juvixBinaryVersion);
   }
   context.subscriptions.push(
     vscode.commands.registerCommand('juvix-mode.getBinaryVersion', () => {

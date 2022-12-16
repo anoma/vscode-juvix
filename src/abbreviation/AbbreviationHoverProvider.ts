@@ -42,7 +42,7 @@ export class AbbreviationHoverProvider implements HoverProvider {
     const hoverMarkdown = allAbbrevs
       .map(
         ({ symbol, abbrevs }) =>
-          `Type ${symbol} using ${abbrevs
+          `To get '${symbol}' type: ${abbrevs
             .map(a => '`' + leader + a + '`')
             .join(' or ')}`
       )

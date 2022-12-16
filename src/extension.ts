@@ -10,17 +10,16 @@ import * as user from './config';
 import * as statusBar from './statusbar';
 import * as syntaxHighlighter from './highlighting';
 import * as goToDefinition from './definitions';
-import * as inputMethod from './abbreviation';
+import * as inputMethod from './input';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   const config = new user.JuvixConfig();
   // debug.log('info', config.toString());
   statusBar.activate(context);
+  inputMethod.activate(context);
+  tasks.activate(context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
-  tasks.activate(context);
-  inputMethod.activate(context);
-  debug.log('info', 'Ready!');
+  debug.log('info', 'Juvix extension is ready!');
   debug.juvixChannel.hide();
-  
 }

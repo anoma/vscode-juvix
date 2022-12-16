@@ -8,7 +8,7 @@ import { JuvixConfig } from './config';
 import * as debug from './utils/debug';
 import * as def from './definitions';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   /*
     Semantic syntax highlight
   */

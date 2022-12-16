@@ -12,11 +12,14 @@ export const juvixChannel = vscode.window.createOutputChannel(
 
 export function log(cat: string, ...o: any): void {
   switch (cat.toLowerCase()) {
+    case 'clear':
+      juvixChannel.clear();
+      return;
     case 'info':
       o.map((args: any) => {
         juvixChannel.appendLine('' + mapObject(args));
       });
-      juvixChannel.show();
+      juvixChannel.show(true);
       return;
 
     case 'warn':
@@ -24,7 +27,7 @@ export function log(cat: string, ...o: any): void {
       o.map((args: any) => {
         juvixChannel.appendLine('' + mapObject(args));
       });
-      juvixChannel.show();
+      juvixChannel.show(true);
       return;
 
     case 'error':
@@ -36,7 +39,7 @@ export function log(cat: string, ...o: any): void {
       });
       juvixChannel.appendLine(err);
       vscode.window.showErrorMessage(err); //.replace(/(\r\n|\n|\r)/gm,"")
-      juvixChannel.show();
+      juvixChannel.show(true);
       return;
 
     default:
@@ -45,7 +48,7 @@ export function log(cat: string, ...o: any): void {
       o.map((args: any) => {
         juvixChannel.appendLine('' + mapObject(args));
       });
-      juvixChannel.show();
+      juvixChannel.show(true);
       return;
   }
 }

@@ -24,7 +24,7 @@ export class AbbreviationConfig {
   );
 
   readonly languages = new VsCodeSetting('juvix-mode.input.languages', {
-    serializer: serializerWithDefault(['juvix-mode']),
+    serializer: serializerWithDefault(['Juvix']),
   });
 
   readonly inputModeCustomTranslations = new VsCodeSetting(

@@ -21,7 +21,7 @@ export interface TargetLocation {
   targetStartCharacter: number;
 }
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   /* Go to definition  */
   try {
     definitionProvider = new JuvixDefinitionProvider();

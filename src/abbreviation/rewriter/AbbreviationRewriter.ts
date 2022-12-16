@@ -1,6 +1,7 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import * as debug from '../../utils/debug';
 import * as vscode from 'vscode';
 import { commands, Disposable, TextEditor, window, workspace } from 'vscode';
 import { assert } from '../../utils/assert';
@@ -12,6 +13,9 @@ import { TrackedAbbreviation } from './TrackedAbbreviation';
 /**
  * Tracks abbreviations in a given text editor and replaces them when dynamically.
  */
+
+const changesCounter = 0;
+
 export class AbbreviationRewriter {
   private readonly disposables = new Array<Disposable>();
   /**
@@ -29,6 +33,9 @@ export class AbbreviationRewriter {
     private readonly abbreviationProvider: AbbreviationProvider,
     private readonly textEditor: TextEditor
   ) {
+    //   debug.log('info', workspace.name);
+    //   debug.log('info', workspace.getWorkspaceFolder(textEditor.document.uri));
+
     this.disposables.push(this.decorationType);
 
     this.disposables.push(
@@ -36,13 +43,18 @@ export class AbbreviationRewriter {
         if (e.document !== this.textEditor.document) {
           return;
         }
-
+        // debug.log('info', 'looking at' , this.textEditor.document.fileName);
+        // debug.log('info', 'looking at' , this.textEditor.document.fileName);
+        // debug.log('info', 'changes:', (changesCounter++).toString());
         const changes = e.contentChanges.slice(0);
         // We need to process the changes at the bottom first.
         // Otherwise, changes at the top will move spans at the bottom down.
         changes.sort((c1, c2) => c2.rangeOffset - c1.rangeOffset);
 
+        // debug.log('info', 'changes:' + (changesCounter++).toString());
+
         for (const c of changes) {
+          // debug.log('info', c.text);
           const range = new Range(c.rangeOffset, c.rangeLength);
           this.processChange(range, c.text);
         }

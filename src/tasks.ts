@@ -10,7 +10,7 @@ const config = new user.JuvixConfig();
 
 export const TASK_TYPE = 'Juvix';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   /* Task provider.
       This is used to register the tasks that can be run from the command palette.
   */
