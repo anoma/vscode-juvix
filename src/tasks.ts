@@ -4,26 +4,23 @@
 
 import * as vscode from 'vscode';
 import * as user from './config';
-import * as debug from './utils/debug';
-
-const config = new user.JuvixConfig();
+import { debugChannel } from './utils/debug';
 
 export const TASK_TYPE = 'Juvix';
 
 export async function activate(context: vscode.ExtensionContext) {
   /* Task provider.
-      This is used to register the tasks that can be run from the command palette.
+  This is used to register the tasks that can be run from the command palette.
   */
 
   // At the moment, vscode requires at least one workspace folder to be open
   // in order to register a task provider. This is a limitation of the API.
   // If this changes in the future, we can remove the following error message.
   if (vscode.workspace.workspaceFolders === undefined) {
-    debug.log(
-      'error',
+    const msg =
       'Juvix extension requires at least one workspace open.\n' +
-        'Open a folder containing a Juvix project and try again.'
-    );
+      'Open a folder containing a Juvix project and try again    debugChannel.error(msg)';
+    vscode.window.showErrorMessage(msg);
     return;
   }
 
@@ -45,11 +42,11 @@ export async function activate(context: vscode.ExtensionContext) {
           vscode.tasks.executeTask(task);
         });
         context.subscriptions.push(cmd);
-        // debug.log('info', '[!] "' + cmdName + '" command registered');
+        debugChannel.debug('[!] "' + cmdName + '" command registered');
       }
     })
     .catch(err => {
-      debug.log('error', 'Task provider error: ' + err);
+      debugChannel.error('Task provider error: ' + err);
     });
 }
 
@@ -60,6 +57,7 @@ export interface JuvixTaskDefinition extends vscode.TaskDefinition {
 
 export class JuvixTaskProvider implements vscode.TaskProvider {
   async provideTasks(): Promise<vscode.Task[]> {
+    const config = new user.JuvixConfig();
     const setupPanel = () => {
       let panelOpt: vscode.TaskRevealKind;
       switch (config.revealPanel.toString()) {
@@ -91,9 +89,9 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       {
         command: 'compile',
         args: [
+          config.getGlobalFlags(),
           config.getCompilationFlags(),
           '${file}',
-          config.getGlobalFlags(),
         ],
         group: vscode.TaskGroup.Build,
         reveal: setupPanel(),
@@ -145,8 +143,8 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       };
       tasks.push(vscodeTask);
     }
-    // debug.log('info', 'Tasks to be added:');
-    // debug.log('info', tasks);
+    debugChannel.debug('Tasks to be added:');
+    debugChannel.debug(JSON.stringify(tasks).toString());
     return tasks;
   }
 
@@ -156,7 +154,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       const args = [definition.command].concat(definition.args ?? []);
       return await JuvixTask(definition, task.name, args);
     }
-    debug.log('warn', 'resolveTask: fail to resolve', task);
+    debugChannel.warn('resolveTask: fail to resolve', task);
     return undefined;
   }
 }
@@ -169,21 +167,22 @@ export async function JuvixTask(
   let input = args.join(' ').trim();
 
   let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined;
+  const config = new user.JuvixConfig();
   switch (name) {
     case 'run':
-      input = args.slice(1).join(' ');
+      input = args.slice(1).join(' ').trim();
       exec = new vscode.ShellExecution(
         config.getJuvixExec() +
-          ` compile ${input} && wasmer \${fileDirname}\${pathSeparator}\${fileBasenameNoExtension}.wasm`
+          ` compile ${input} && \${fileDirname}\${pathSeparator}\${fileBasenameNoExtension}`
       );
       break;
     default:
-      exec = new vscode.ShellExecution(config.getJuvixExec() + `  ${input}`);
+      const call = config.getJuvixExec() + `  ${input}`;
+      exec = new vscode.ShellExecution(call);
       break;
   }
-  // debug.log('info', 'INPUT', input);
-  // debug.log('info', 'EXEC', exec);
-
+  debugChannel.info('INPUT', input);
+  debugChannel.info('EXEC', exec);
   return new vscode.Task(
     definition,
     vscode.TaskScope.Global,

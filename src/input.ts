@@ -16,6 +16,7 @@ import { AbbreviationRewriter } from './abbreviation/rewriter/AbbreviationRewrit
 import { autorunDisposable } from './utils/autorunDisposable';
 import { Disposable, languages, TextEditor, window } from 'vscode';
 import { observable } from 'mobx';
+import { debugChannel } from './utils/debug';
 
 export function activate(context: vscode.ExtensionContext) {
   const config = new AbbreviationConfig();
@@ -29,7 +30,9 @@ export function activate(context: vscode.ExtensionContext) {
     );
   });
   context.subscriptions.push(hover);
+  debugChannel.info('Hover input information added');
   context.subscriptions.push(new AbbreviationRewriterFeature(config, trans));
+  debugChannel.info('Abbreviation rewriter registered');
 }
 
 /**

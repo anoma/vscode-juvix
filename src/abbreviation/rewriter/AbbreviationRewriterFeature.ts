@@ -49,7 +49,7 @@ export class AbbreviationRewriterFeature {
   }
 
   private shouldEnableRewriterForEditor(editor: TextEditor): boolean {
-    if (!this.config.inputModeEnabled) {
+    if (!this.config.inputModeEnabled.get()) {
       return false;
     }
     if (!languages.match(this.config.languages.get(), editor.document)) {

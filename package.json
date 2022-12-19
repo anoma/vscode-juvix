@@ -315,24 +315,24 @@
     ],
     "keybindings": [
       {
-        "key": "ctrl+shift+d",
+        "key": "shift+alt+d",
         "command": "juvix-mode.doctor",
         "args": "Juvix: doctor"
       },
       {
-        "key": "ctrl+shift+t",
+        "key": "shift+alt+t",
         "command": "juvix-mode.typecheck",
         "args": "Juvix: typecheck",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+c",
+        "key": "shift+alt+c",
         "command": "juvix-mode.compile",
         "args": "Juvix: compile",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+r",
+        "key": "shift+alt+l",
         "command": "juvix-mode.run",
         "args": "Juvix: run",
         "when": "editorLangId == Juvix && editorTextFocus"
@@ -450,9 +450,13 @@
             "noStdlib": false
           }
         },
+        "juvix-mode.enableSemanticSyntax": {
+          "default": true,
+          "type": "boolean",
+          "description": "Use semantic information for highlighting (recommended)"
+        },
         "juvix-mode.compilationTarget": {
           "type": "string",
-          "default": "native",
           "enum": [
             "c",
             "native",
@@ -464,8 +468,9 @@
         },
         "juvix-mode.compilationRuntime": {
           "type": "string",
-          "default": "wasi-standalone",
+          "default": "",
           "enum": [
+            "",
             "standalone",
             "wasi-standalone",
             "wasi-libc"
@@ -475,7 +480,6 @@
         },
         "juvix-mode.compilationOutputFile": {
           "type": "string",
-          "default": "",
           "scope": "machine-overridable",
           "description": "File name for the compiled file"
         },

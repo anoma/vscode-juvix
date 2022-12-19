@@ -5,25 +5,40 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { JuvixConfig } from './config';
-import * as debug from './utils/debug';
+import { debugChannel } from './utils/debug';
 import * as def from './definitions';
+import { JuvixTaskProvider } from './tasks';
+
+/*
+Semantic syntax highlighting
+*/
 
 export async function activate(context: vscode.ExtensionContext) {
-  /*
-    Semantic syntax highlight
-  */
+  const config = new JuvixConfig();
+  if (!config.enableSemanticSyntax.get()) return;
   try {
     const semanticTokensProvider = new Highlighter();
-    context.subscriptions.push(
+    const highlighterProvider =
       vscode.languages.registerDocumentSemanticTokensProvider(
         { language: 'Juvix', scheme: 'file' },
         semanticTokensProvider,
         legend
-      )
+      );
+    context.subscriptions.push(highlighterProvider);
+    context.subscriptions.push(
+      vscode.workspace.onDidChangeConfiguration(e => {
+        const updated = e.affectsConfiguration(
+          'juvix-mode.enableSemanticSyntax'
+        );
+        if (updated) {
+          if (!config.enableSemanticSyntax.get()) highlighterProvider.dispose();
+          else activate(context);
+        }
+      })
     );
-    // debug.log('info', 'Semantic syntax highlighter registered');
+    debugChannel.info('Semantic syntax highlighter registered');
   } catch (error) {
-    debug.log('error', 'No semantic provider', error);
+    debugChannel.error('No semantic provider', error);
   }
 }
 
@@ -95,15 +110,15 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      debug.log('error', 'highlighting provider error', errMsg);
+      debugChannel.error('highlighting provider error', errMsg);
       throw new Error(errMsg);
     }
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
-    // // too verbose but useful for debugging location mapping
-    // debug.log('info', 'Highlighting output: ' +
-    //   JSON.stringify(output, null, 2)
-    // );
+    // too verbose but useful for debugging location mapping
+    debugChannel.debug(
+      'Highlighting output: ' + JSON.stringify(output, null, 2)
+    );
 
     def.locationMap.set(filePath, new Map());
     output.goto.forEach(entry => {
@@ -126,16 +141,15 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     });
 
     // // too verbose but useful for debugging location mapping
-    // debug.log(
-    //   'info',
-    //   'Highlighting output: ' +
-    //     JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
-    // );
+    debugChannel.debug(
+      'Highlighting output: ' +
+        JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
+    );
 
-    // debug.log('info', 'Active file: ' + filePath);
+    debugChannel.debug('Active file: ' + filePath);
 
     const allTokens = output.face;
-    // debug.log('info', '> Tokens length: ' + allTokens.length);
+    debugChannel.debug('> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {

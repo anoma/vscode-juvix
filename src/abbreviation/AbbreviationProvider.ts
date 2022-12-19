@@ -8,7 +8,8 @@
  */
 
 import { computed } from 'mobx';
-import { Disposable } from 'vscode';
+import { Disposable, EventEmitter, TextEditor } from 'vscode';
+
 import { autorunDisposable } from '../utils/autorunDisposable';
 import { SymbolsByAbbreviation, AbbreviationConfig } from './config';
 
@@ -18,6 +19,9 @@ import { SymbolsByAbbreviation, AbbreviationConfig } from './config';
 export class AbbreviationProvider implements Disposable {
   private readonly disposables = new Array<Disposable>();
   private cache: Record<string, string | undefined> = {};
+
+  private abbreviationCompletedEmitter = new EventEmitter<TextEditor>();
+  abbreviationCompleted = this.abbreviationCompletedEmitter.event;
 
   constructor(private readonly config: AbbreviationConfig) {
     this.disposables.push(
@@ -30,8 +34,12 @@ export class AbbreviationProvider implements Disposable {
     );
   }
 
+  onAbbreviationsCompleted(editor: TextEditor): void {
+    this.abbreviationCompletedEmitter.fire(editor);
+  }
+
   @computed
-  private get symbolsByAbbreviation(): SymbolsByAbbreviation {
+  get symbolsByAbbreviation(): SymbolsByAbbreviation {
     // There are only like 1000 symbols. Building an index is not required yet.
     return {
       ...this.config.inputModeCustomTranslations.get(),

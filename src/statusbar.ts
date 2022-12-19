@@ -3,13 +3,13 @@
  *--------------------------------------------------------*/
 'use strict';
 import * as vscode from 'vscode';
-import * as debug from './utils/debug';
+import { debugChannel } from './utils/debug';
 import * as user from './config';
 
 export let juvixStatusBarItemVersion: vscode.StatusBarItem;
 
-const config = new user.JuvixConfig();
 export function activate(context: vscode.ExtensionContext) {
+  const config = new user.JuvixConfig();
   juvixStatusBarItemVersion = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right
   );
@@ -23,8 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   let execJuvixVersion: string;
   if (ls.status !== 0) {
-    debug.log(
-      'info',
+    debugChannel.info(
       'Juvix binary is not installed. Please check the instructions on https://docs.juvix.org'
     );
     // debug.log('info', 'Juvix exec: ' + config.getJuvixExec());

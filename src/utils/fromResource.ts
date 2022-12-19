@@ -9,6 +9,7 @@
 
 import { createAtom, _allowStateChanges } from 'mobx';
 import { Disposable } from 'vscode';
+import { debugChannel } from './debug';
 
 function invariant(_condition: boolean, _message?: string) {
   // Empty function
@@ -44,7 +45,9 @@ export function fromResource<T>(
         } else if (getValue) {
           value = getValue();
         } else {
-          throw new Error('Either an argument or getValue must be provided');
+          const msg = 'Either an argument or getValue must be provided';
+          debugChannel.error(msg);
+          throw new Error(msg);
         }
         atom.reportChanged();
       });
@@ -68,7 +71,7 @@ export function fromResource<T>(
         if (getValue) {
           return getValue();
         } else {
-          console.warn(
+          debugChannel.warn(
             'Called `get` of a subscribingObservable outside a reaction. Current value will be returned but no new subscription has started'
           );
         }
