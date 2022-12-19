@@ -218,6 +218,7 @@
     "semanticTokenScopes": [],
     "taskDefinitions": [
       {
+        "when": "editorLangId == Juvix",
         "type": "Juvix",
         "required": [
           "command"
@@ -317,7 +318,8 @@
       {
         "key": "shift+alt+d",
         "command": "juvix-mode.doctor",
-        "args": "Juvix: doctor"
+        "args": "Juvix: doctor",
+        "when": "editorLangId == Juvix"
       },
       {
         "key": "shift+alt+t",
@@ -339,25 +341,29 @@
       },
       {
         "key": "alt+,",
-        "command": "workbench.action.navigateBack"
+        "command": "workbench.action.navigateBack",
+        "when": "editorLangId == Juvix"
       },
       {
         "key": "alt+.",
-        "command": "workbench.action.navigateForward"
+        "command": "workbench.action.navigateForward",
+        "when": "editorLangId == Juvix"
       }
     ],
     "submenus": [
       {
         "id": "juvix-submenu",
         "label": "Juvix Tasks",
-        "icon": "🛠️"
+        "icon": "🛠️",
+        "when": "editorLangId == Juvix"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "submenu": "juvix-submenu",
-          "group": "navigation"
+          "group": "navigation",
+          "when": "editorLangId == Juvix"
         }
       ],
       "juvix-submenu": [

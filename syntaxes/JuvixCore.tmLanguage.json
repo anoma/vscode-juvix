@@ -24,7 +24,7 @@
       "patterns": [
         {
           "name": "keyword.control.JuvixCore",
-          "match": "(\\b(def|match|with|case|of|true|false|inductive|if|then|else|let|letrec|writeLn|constr|write|return)\\b)"
+          "match": "(\\b(def|match|with|case|of|true|false|inductive|if|then|else|let|letrec|writeLn|constr|write|return|builtin)\\b)"
         },
         {
           "name": "keyword.control.JuvixCore",
