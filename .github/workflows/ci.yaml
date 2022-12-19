@@ -1,0 +1,39 @@
+name: vscode-juvix
+
+on:
+  pull_request:
+    branches:
+    - '*'
+  push:
+    branches:
+    - '*'
+
+jobs:
+  build-and-test:
+    strategy:
+      matrix:
+        include:
+          - name: Linux
+            os: ubuntu-latest
+            artifact: build-Linux release
+          - name: Windows
+            os: windows-latest
+            artifact: build-Windows
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.12.1'
+      - name: Build
+        run: |
+          npm install    
+      - name: Build
+        run: |
+          npm run compile
+          npm run package
+      - name: Lint
+        run: npm run lint
