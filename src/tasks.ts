@@ -40,7 +40,7 @@ export async function activate(context: vscode.ExtensionContext) {
         const cmdName = task.name.replace(' ', '-');
         const qualifiedCmdName = 'juvix-mode.' + task.name.replace(' ', '-');
         const cmd = vscode.commands.registerCommand(qualifiedCmdName, () => {
-          vscode.tasks.executeTask(task);
+          vscode.tasks.executeTask(task), { when: 'editorLangId == juvix' };
         });
         context.subscriptions.push(cmd);
         debugChannel.debug('[!] "' + cmdName + '" command registered');
@@ -182,8 +182,6 @@ export async function JuvixTask(
       exec = new vscode.ShellExecution(call);
       break;
   }
-  debugChannel.info('INPUT', input);
-  debugChannel.info('EXEC', exec);
   return new vscode.Task(
     definition,
     vscode.TaskScope.Global,

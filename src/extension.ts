@@ -11,10 +11,12 @@ import * as statusBar from './statusbar';
 import * as syntaxHighlighter from './highlighting';
 import * as goToDefinition from './definitions';
 import * as inputMethod from './input';
+import * as repl from './repl';
 
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
   const config = new user.JuvixConfig();
+  repl.activate(context);
   statusBar.activate(context);
   inputMethod.activate(context);
   tasks.activate(context);

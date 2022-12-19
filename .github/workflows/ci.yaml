@@ -3,10 +3,10 @@ name: vscode-juvix
 on:
   pull_request:
     branches:
-    - '*'
+      - '*'
   push:
     branches:
-    - '*'
+      - '*'
 
 jobs:
   build-and-test:
@@ -30,7 +30,7 @@ jobs:
           node-version: '18.12.1'
       - name: Build
         run: |
-          npm install    
+          npm install
       - name: Build
         run: |
           npm run compile

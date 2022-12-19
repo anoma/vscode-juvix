@@ -105,6 +105,7 @@ export class AbbreviationRewriter {
     );
 
     this.disposables.push(
+      // TODO: if( ! commands.getCommands().includes('juvix-mode.input.convert') )
       commands.registerTextEditorCommand('juvix-mode.input.convert', async () =>
         this.forceReplace([...this.trackedAbbreviations])
       )

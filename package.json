@@ -50,9 +50,9 @@
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "18.x",
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
-    "@typescript-eslint/parser": "^5.46.1",
-    "eslint": "^8.29.0",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
+    "eslint": "^8.30.0",
     "glob": "^8.0.3",
     "mocha": "^10.2.0",
     "typescript": "^4.9.4",
@@ -302,6 +302,12 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
+        "command": "juvix-mode.repl",
+        "title": "Load file in REPL",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
         "command": "juvix-mode.dev-parse",
         "title": "[dev] parse",
         "category": "Juvix",
@@ -334,10 +340,22 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "shift+alt+l",
+        "key": "shift+alt+x",
         "command": "juvix-mode.run",
         "args": "Juvix: run",
         "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
+        "key": "shift+alt+l",
+        "command": "juvix-mode.repl",
+        "args": "Juvix: repl",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixCore)  && editorTextFocus"
+      },
+      {
+        "key": "shift+alt+a",
+        "command": "juvix-mode.selection",
+        "args": "Juvix: selection",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixCore)  && editorTextFocus"
       },
       {
         "key": "alt+,",
