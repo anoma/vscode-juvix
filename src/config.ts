@@ -53,6 +53,10 @@ export class JuvixConfig {
     'juvix-mode.compilationOutput'
   );
 
+  readonly reloadReplOnSave = new VsCodeSetting('juvix-mode.reloadReplOnSave', {
+    serializer: serializerWithDefault(false),
+  });
+
   public getCompilationFlags(): string {
     const target = this.compilationTarget.get();
     const runtime = this.compilationRuntime.get();

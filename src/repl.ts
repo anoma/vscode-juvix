@@ -5,137 +5,142 @@
 import { debugChannel } from './utils/debug';
 import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
-import { debug } from 'console';
 import { observable } from 'mobx';
-import { REPLServer } from 'repl';
+import * as path from 'path';
+import { debug } from 'console';
 
 export const terminalName = 'Juvix REPL';
 
+export const juvixTerminals = new Map<string, JuvixRepl>();
+
+class TermLocationOpts implements vscode.TerminalEditorLocationOptions {
+  terminalLocation: vscode.TerminalLocation = vscode.TerminalLocation.Editor;
+  viewColumn: vscode.ViewColumn = vscode.ViewColumn.Beside;
+  preserveFocus = true;
+}
+
 export class JuvixRepl {
-  private _terminal: vscode.Terminal;
-  public name = terminalName;
+  private terminal: vscode.Terminal;
+  private terminalOptions: vscode.TerminalOptions = {
+    name: terminalName,
+    hideFromUser: true,
+    env: process.env,
+    isTransient: false, // terminal persistence on restart and reload
+    location: new TermLocationOpts(),
+  };
+
+  readonly config: JuvixConfig = new JuvixConfig();
+  private reloadNextTime = false;
 
   @observable
-  public activeDocument: vscode.TextDocument | undefined;
+  public document: vscode.TextDocument;
 
-  constructor(fresh = true, name: string = terminalName) {
-    const oldTerminal = vscode.window.terminals.find(
-      terminal => terminal.name === this.name
-    );
-    if (fresh) {
-      oldTerminal?.dispose();
-    }
-    if (!fresh && oldTerminal) this._terminal = oldTerminal;
-    else {
-      this._terminal = vscode.window.createTerminal(this.name);
-      this.clear();
-    }
-    if (name) this.name = name;
+  constructor(document: vscode.TextDocument) {
+    debugChannel.info('Creating Juvix REPL');
+    this.document = document;
+    debugChannel.info('document: ' + document.fileName);
+    const folder = path.dirname(document.fileName);
+    debugChannel.info('folder: ' + folder);
+    if (folder) this.terminalOptions.cwd = folder;
+    this.terminal = vscode.window.createTerminal(this.terminalOptions);
+    juvixTerminals.set(document.fileName, this);
+    this.execRepl();
+    this.sendText(':h');
   }
 
   public sendText(msg: string) {
     debugChannel.info('Sending text to REPL: ' + msg);
-    this._terminal.sendText(msg);
+    this.terminal.sendText(msg);
   }
 
   public dispose() {
     debugChannel.info('Disposing Juvix REPL');
-    this._terminal.dispose();
+    this.terminal.dispose();
   }
   public clear() {
-    this._terminal.sendText('\x0C');
-    // this._terminal.sendText('\x0C');
+    vscode.commands.executeCommand('workbench.action.terminal.clear');
   }
   public show() {
-    this._terminal.show(false);
+    this.terminal.show(true);
   }
-}
+  public exitStatus() {
+    this.terminal.exitStatus;
+  }
 
-export async function activate(context: vscode.ExtensionContext) {
-  vscode.window.terminals
-    .find(terminal => terminal.name === terminalName)
-    ?.dispose();
-  /* Create a new terminal and send the command to load the current file */
-  const cmdVscode = vscode.commands.registerCommand('juvix-mode.repl', () => {
-    const repl = new JuvixRepl(true);
-    const config = new JuvixConfig();
-    const activeEditor = vscode.window.activeTextEditor;
-    if (!activeEditor) {
+  public notAvailable() {
+    return this.terminal.exitStatus && this.terminal.exitStatus.code != 0;
+  }
+
+  /* Open the REPL for the current file */
+  public execRepl() {
+    if (this.notAvailable()) {
+      juvixTerminals.delete(this.document.fileName);
       return;
     }
-    repl.activeDocument = activeEditor.document;
-    const filename = repl.activeDocument.fileName;
-    let shellCmd = config.getJuvixExec();
-    if (repl.activeDocument.languageId == 'Juvix') {
+    debugChannel.info('Exec juvix repl');
+    let shellCmd = this.config.getJuvixExec();
+    if (this.document.languageId == 'Juvix') {
       shellCmd += ' ' + 'repl';
-      repl.sendText(shellCmd);
-      repl.show();
-      repl.sendText(`:load ${filename}`);
-    } else if (repl.activeDocument.languageId == 'JuvixCore') {
-      shellCmd += ' ' + 'dev core eval' + ' ' + filename;
-      repl.sendText(shellCmd);
-      repl.show();
+      this.terminal.sendText(shellCmd);
+    } else if (this.document.languageId == 'JuvixCore') {
+      shellCmd += ' ' + 'dev core repl';
+      this.terminal.sendText(shellCmd);
     } else {
       debugChannel.error('Unknown language');
       return;
     }
+    this.terminal.show();
+  }
+
+  /* Load the current file in the REPL */
+  public loadFileRepl() {
+    if (this.notAvailable()) {
+      juvixTerminals.delete(this.document.fileName);
+      return;
+    }
+    const filename = this.document.fileName;
+    debugChannel.info('Loading file in REPL: ' + filename);
+    if (this.document.languageId == 'Juvix') {
+      if (!this.reloadNextTime) this.terminal.sendText(`:load ${filename}`);
+      else this.terminal.sendText(`\n:reload ${filename}`);
+    } else if (this.document.languageId == 'JuvixCore') {
+      debugChannel.info('It is a core file');
+      this.terminal.sendText(`:l ${filename}`);
+    } else return;
+    this.reloadNextTime = true;
+    this.show();
+  }
+}
+
+export async function activate(context: vscode.ExtensionContext) {
+  /* Create a new terminal and send the command to load the current file */
+  const cmdVscode = vscode.commands.registerCommand('juvix-mode.repl', () => {
+    const document = vscode.window.activeTextEditor?.document;
+    if (document) {
+      let repl = juvixTerminals.get(document.fileName);
+      debugChannel.info('repl: ' + repl?.document.fileName);
+      if (!repl || repl.notAvailable()) repl = new JuvixRepl(document);
+      repl.loadFileRepl();
+    }
   });
   context.subscriptions.push(cmdVscode);
 
-  /* Send selections to the active Juvix REPL */
-  // const sendSelection = vscode.commands.registerCommand(
-  //   'juvix-mode.selection',
-  //   () => {
-  //     const repl = new JuvixRepl();
-  //     const activeEditor = vscode.window.activeTextEditor;
-  //     if (!activeEditor) {
-  //       return;
-  //     }
-  //     // const selection =
-  //     //   ':{\n' +
-  //     //   activeEditor.document.getText(activeEditor.selection) +
-  //     //   '\n:}\n';
-  //     const selection =
-  //     ':multiline\n' + activeEditor.document.getText(activeEditor.selection);
-  //     repl.sendText(selection);
-  //     repl.sendText('^D');
-  //     repl.show();
-  //   }
-  // );
-  // context.subscriptions.push(sendSelection);
+  const juvixREPL = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left
+  );
+  juvixREPL.command = 'juvix-mode.repl';
+  juvixREPL.text = 'Open Juvix REPL';
+  juvixREPL.show();
+
+  context.subscriptions.push(juvixREPL);
 
   /* Reload the current file in the active Juvix REPL */
   context.subscriptions.push(
     vscode.workspace.onDidSaveTextDocument(async document => {
-      const juvixTerminal = vscode.window.terminals.find(
-        terminal => terminal.name === terminalName
-      );
-      if (!juvixTerminal) return;
-      const activeTerminal = vscode.window.activeTerminal;
-      if (activeTerminal?.name === terminalName) {
-        const repl = new JuvixRepl(false);
-        const filename = document.fileName;
-        if (
-          document.languageId == 'Juvix' ||
-          document.languageId == 'JuvixCore'
-        )
-          repl.sendText(`:reload ${filename}`);
-      }
-    })
-  );
-  context.subscriptions.push(
-    vscode.workspace.onDidCloseTextDocument(async document => {
-      if (
-        !(document.languageId == 'Juvix' || document.languageId == 'JuvixCore')
-      )
-        return;
-
-      const activeTerminal = vscode.window.activeTerminal;
-      if (activeTerminal?.name === terminalName) {
-        const repl = new JuvixRepl(false);
-        repl.sendText(`:quit`);
-        repl.dispose();
-      }
+      const config = new JuvixConfig();
+      if (!config.reloadReplOnSave.get()) return;
+      const repl = juvixTerminals.get(document.fileName);
+      if (repl) repl.loadFileRepl();
     })
   );
 }

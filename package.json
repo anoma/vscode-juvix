@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -352,12 +352,6 @@
         "when": "(editorLangId == Juvix || editorLangId == JuvixCore)  && editorTextFocus"
       },
       {
-        "key": "shift+alt+a",
-        "command": "juvix-mode.selection",
-        "args": "Juvix: selection",
-        "when": "(editorLangId == Juvix || editorLangId == JuvixCore)  && editorTextFocus"
-      },
-      {
         "key": "alt+,",
         "command": "workbench.action.navigateBack",
         "when": "editorLangId == Juvix"
@@ -434,6 +428,11 @@
           ],
           "description": "Reveal panel for typechecking/compilation output"
         },
+        "juvix-mode.reloadReplOnSave": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Reload REPL on save"
+        },
         "juvix-mode.opts": {
           "type": "object",
           "order": 1,
@@ -441,7 +440,7 @@
           "properties": {
             "noColors": {
               "type": "boolean",
-              "description": " Disable ANSI formatting"
+              "description": "Disable ANSI formatting"
             },
             "showNameIds": {
               "type": "boolean",
