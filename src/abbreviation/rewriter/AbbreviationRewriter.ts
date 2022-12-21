@@ -45,11 +45,10 @@ export class AbbreviationRewriter {
   constructor(
     private readonly config: AbbreviationConfig,
     private readonly abbreviationProvider: AbbreviationProvider,
-    private readonly textEditor: TextEditor
+    private readonly textEditor: TextEditor,
+    private readonly stderrOutputChannel: OutputChannel
   ) {
-    //   debug.log('info', workspace.name);
-    //   debug.log('info', workspace.getWorkspaceFolder(textEditor.document.uri));
-
+    this.stderrOutput = stderrOutputChannel;
     this.disposables.push(this.decorationType);
 
     this.disposables.push(
@@ -63,10 +62,7 @@ export class AbbreviationRewriter {
         // Otherwise, changes at the top will move spans at the bottom down.
         changes.sort((c1, c2) => c2.rangeOffset - c1.rangeOffset);
 
-        // debug.log('info', 'changes:' + (changesCounter++).toString());
-
         for (const c of changes) {
-          // debug.log('info', c.text);
           const range = new Range(c.rangeOffset, c.rangeLength);
           this.processChange(range, c.text);
         }
@@ -105,7 +101,6 @@ export class AbbreviationRewriter {
     );
 
     this.disposables.push(
-      // TODO: if( ! commands.getCommands().includes('juvix-mode.input.convert') )
       commands.registerTextEditorCommand('juvix-mode.input.convert', async () =>
         this.forceReplace([...this.trackedAbbreviations])
       )
