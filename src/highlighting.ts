@@ -190,17 +190,4 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     }
     return 0;
   }
-
-  private encodeTokenModifiers(strTokenModifiers: string[]): number {
-    let result = 0;
-    for (let i = 0; i < strTokenModifiers.length; i++) {
-      const tokenModifier = strTokenModifiers[i];
-      if (tokenModifiers.has(tokenModifier)) {
-        result = result | (1 << tokenModifiers.get(tokenModifier)!);
-      } else if (tokenModifier === 'notInLegend') {
-        result = result | (1 << (tokenModifiers.size + 2));
-      }
-    }
-    return result;
-  }
 }
