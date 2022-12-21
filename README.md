@@ -16,6 +16,20 @@ followed by pressing enter.
 ext install heliax.juvix-mode
 ```
 
+If you, for some reason, want to install the extension manually to your
+personal VSCode extensions folder, you can run the following command.
+
+```bash
+git clone https://github.com/anoma/vscode-juvix ~/.vscode/extensions
+```
+
+To get the latest version of the extension, you can run the following command.
+
+```bash
+cd ~/.vscode/extensions/vscode-juvix
+git pull origin main
+```
+
 ## Pre-requisites
 
 To be able to use the extension, you need to have the latest binary of Juvix
