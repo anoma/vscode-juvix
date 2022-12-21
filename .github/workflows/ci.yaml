@@ -1,39 +1,92 @@
-name: vscode-juvix
+# Adapted from https://github.com/HaaLeo/vscode-timing/.github/workflows/cicd.yml
+name: Build, Lint, Test and Deploy
 
 on:
-  pull_request:
-    branches:
-      - '*'
   push:
     branches:
-      - '*'
+      - "*"
+  pull_request:
+    branches:
+      - master
+  release:
+    types:
+      - published
 
 jobs:
-  build-and-test:
-    strategy:
-      matrix:
-        include:
-          - name: Linux
-            os: ubuntu-latest
-            artifact: build-Linux release
-          - name: Windows
-            os: windows-latest
-            artifact: build-Windows
-    name: ${{ matrix.name }}
+  build-lint:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        node:
+          - 18.12.1
+    outputs:
+      vsixPath: ${{ steps.packageExtension.outputs.vsixPath }}
     steps:
-      - name: Checkout
+      - name: Checkout Source
         uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Install Node ${{ matrix.node }}
+        uses: actions/setup-node@v1
         with:
-          node-version: '18.12.1'
-      - name: Build
-        run: |
-          npm install
-      - name: Build
-        run: |
-          npm run compile
-          npm run package
-      - name: Lint
+          node-version: ${{ matrix.node }}
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Linter
         run: npm run lint
+      - name: Build Code
+        run: npm run compile
+      - name: Package Extension
+        id: packageExtension
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: stub
+          dryRun: true
+      - name: Upload Extension Package as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}
+          path: ${{ steps.packageExtension.outputs.vsixPath }}
+
+  publish:
+    name: Publish Github Action
+    needs:
+      - build-lint
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v2
+      - name: Install Node v18
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.12.1
+      - name: Install Dependencies
+        run: npm ci
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ubuntu-latest
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: false
+          name: ${{ github.ref_name }}
+          fail_on_unmatched_files: true
+          files: ${{ needs.build-lint.outputs.vsixPath }}
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          extensionFile: ${{ needs.build-lint.outputs.vsixPath }}
+          registryUrl: https://marketplace.visualstudio.com
+      - name: Publish to Open VSX Registry
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          extensionFile: ${{ needs.build-lint.outputs.vsixPath }}

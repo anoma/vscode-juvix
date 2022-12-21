@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -46,25 +46,25 @@
     "fix": "prettier --write . && eslint -c .eslintrc.js --ext ts ./src  --fix"
   },
   "devDependencies": {
-    "@types/vscode": "^1.74.0",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "18.x",
+    "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
+    "@vscode/test-electron": "^2.2.1",
+    "@vscode/vsce": "^2.15.0",
     "eslint": "^8.30.0",
+    "eslint-plugin-header": "^3.1.1",
     "glob": "^8.0.3",
     "mocha": "^10.2.0",
-    "typescript": "^4.9.4",
-    "ts-loader": "^9.4.2",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1",
-    "eslint-plugin-header": "^3.1.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
-    "@vscode/test-electron": "^2.2.1",
-    "@vscode/vsce": "^2.15.0"
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "prettier": {
     "printWidth": 80,
@@ -518,6 +518,16 @@
             "description": "Unicode character to translate to"
           },
           "default": {
+            "0": "₀",
+            "1": "₁",
+            "2": "₂",
+            "3": "₃",
+            "4": "₄",
+            "5": "₅",
+            "6": "₆",
+            "7": "₇",
+            "8": "₈",
+            "9": "₉",
             "\\": "\\",
             "a": "α",
             "b": "β",
@@ -540,16 +550,6 @@
             ".": "·",
             "*": "⋆",
             "?": "¿",
-            "1": "₁",
-            "2": "₂",
-            "3": "₃",
-            "4": "₄",
-            "5": "₅",
-            "6": "₆",
-            "7": "₇",
-            "8": "₈",
-            "9": "₉",
-            "0": "₀",
             "l": "←",
             "<": "⟨",
             ">": "⟩",
@@ -2336,6 +2336,7 @@
   "dependencies": {
     "@vscode/vsce": "^2.15.0",
     "mobx": "6.7.0",
+    "npx": "^10.2.2",
     "run": "^1.4.0"
   }
 }

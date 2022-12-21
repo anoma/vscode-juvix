@@ -16,18 +16,22 @@ followed by pressing enter.
 ext install heliax.juvix-mode
 ```
 
-If you, for some reason, want to install the extension manually to your
-personal VSCode extensions folder, you can run the following command.
+If you, for some reason, want to install the extension manually,
+you can do it by running the following commands.
 
 ```bash
-git clone https://github.com/anoma/vscode-juvix ~/.vscode/extensions
+git clone https://github.com/anoma/vscode-juvix
+cd vscode-juvix
+npm install
+npx vsce package
+code --install-extension juvix-0.1.8.vsix
 ```
 
-To get the latest version of the extension, you can run the following command.
+If you don't have `vsce` or `npx` installed, you can install it by running the following:
 
 ```bash
-cd ~/.vscode/extensions/vscode-juvix
-git pull origin main
+npm install -g vsce
+npm install -g npx
 ```
 
 ## Pre-requisites
@@ -80,4 +84,4 @@ settings.
 - Support for light and dark themes.
 - Support for Unicode input (e.g. λ, Π, Σ, etc.), as pressing <kbd>\</kbd> + `alpha` to type α.
 - Support for user configuration options.
-- Support for Juvix's REPL (coming soon).
+- Support for Juvix's REPL.
