@@ -64,13 +64,12 @@ properly.
 | :-------- | :--------------------: |
 | typecheck | <kbd>Shift+Alt+T</kbd> |
 | compile   | <kbd>Shift+Alt+C</kbd> |
-| run       | <kbd>Shift+Alt+L</kbd> |
+| run       | <kbd>Shift+Alt+X</kbd> |
+| repl      | <kbd>Shift+Alt+L</kbd> |
 | doctor    | <kbd>Shift+Alt+D</kbd> |
 
 However, we recommend using the Command Palette (<kbd>Ctrl</kbd><kbd>P</kbd>) to
-see which other commands are available. You can also use the Command Palette to
-run any of the commands above. To do so, type `Juvix` and select the command you
-want to run.
+see which other commands are available by typing `Juvix` and select the command you want to run.
 
 ## Configuration
 
@@ -82,6 +81,6 @@ settings.
 - Command palette with typechecking, compilation, and running Juvix files.
 - Semantic syntax highlighting.
 - Support for light and dark themes.
-- Support for Unicode input (e.g. λ, Π, Σ, etc.), as pressing <kbd>\</kbd> + `alpha` to type α.
+- Support for Unicode input (e.g. λ, Π, Σ, etc.) pressing e.g. `\` + "alpha" + `space`.
 - Support for user configuration options.
 - Support for Juvix's REPL.

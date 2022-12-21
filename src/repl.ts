@@ -33,7 +33,7 @@ export class JuvixRepl {
       name: terminalName,
       cwd: path.dirname(document.fileName),
       isTransient: false,
-      shellPath : '/usr/bin/bash',
+      shellPath: '/usr/bin/bash',
       location: {
         viewColumn: vscode.ViewColumn.Beside,
         preserveFocus: true,
@@ -99,7 +99,8 @@ export class JuvixRepl {
       debugChannel.error('Unknown language');
       return;
     }
-    const ready: Promise<vscode.TerminalExitStatus> = this.promiseCall(shellCmd);
+    const ready: Promise<vscode.TerminalExitStatus> =
+      this.promiseCall(shellCmd);
     ready.then(status => {
       if (status.code == 0) {
         vscode.window.showInformationMessage('Juvix REPL ready');
