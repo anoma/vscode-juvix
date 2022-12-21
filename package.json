@@ -2327,7 +2327,7 @@
         },
         "juvix-mode.input.eagerReplacementEnabled": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "markdownDescription": "Enable eager replacement of abbreviations that uniquely identify a symbol."
         }
       }
