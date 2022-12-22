@@ -66,7 +66,6 @@ class Abbr {
       }
     });
     this.disposables.push(changeEditor);
-  
   }
 
   shouldEnableRewriterForEditor(editor: TextEditor): boolean {
