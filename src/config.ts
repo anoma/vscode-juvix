@@ -32,6 +32,14 @@ export class JuvixConfig {
   readonly noPositivity = new VsCodeSetting('juvix-mode.opts.noPositivity');
   readonly noStdlib = new VsCodeSetting('juvix-mode.opts.noStdlib');
 
+  // Dev
+  readonly enableDevViews = new VsCodeSetting('juvix-mode.enableDevViews', {
+    serializer: serializerWithDefault(false),
+  });
+  readonly devViews = new VsCodeSetting('juvix-mode.devViews', {
+    serializer: serializerWithDefault<TaggedList>({}),
+  });
+
   public getGlobalFlags(): string {
     const flags = [];
     if (this.noColors.get()) flags.push('--no-colors');
@@ -102,7 +110,7 @@ export class JuvixConfig {
   readonly inputModeCustomTranslations = new VsCodeSetting(
     'juvix-mode.input.customTranslations',
     {
-      serializer: serializerWithDefault<SymbolsByAbbreviation>({}),
+      serializer: serializerWithDefault<TaggedList>({}),
     }
   );
 
@@ -114,6 +122,6 @@ export class JuvixConfig {
   );
 }
 
-export interface SymbolsByAbbreviation {
+export interface TaggedList {
   [abbrev: string]: string;
 }

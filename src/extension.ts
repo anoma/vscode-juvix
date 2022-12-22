@@ -12,6 +12,7 @@ import * as syntaxHighlighter from './highlighting';
 import * as goToDefinition from './definitions';
 import * as inputMethod from './input';
 import * as repl from './repl';
+import * as dev from './dev';
 
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
@@ -22,5 +23,6 @@ export async function activate(context: vscode.ExtensionContext) {
   tasks.activate(context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
+  dev.activate(context);
   debugChannel.info('Juvix extension is ready!');
 }

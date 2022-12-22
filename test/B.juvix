@@ -1,3 +1,4 @@
+-- DEBUG: ALL
 module B;
 
 axiom A : Type;
