@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -302,7 +302,7 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "command": "juvix-mode.repl",
+        "command": "juvix-mode.loadFileRepl",
         "title": "Load file in REPL",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
@@ -347,7 +347,7 @@
       },
       {
         "key": "shift+alt+l",
-        "command": "juvix-mode.repl",
+        "command": "juvix-mode.loadFileRepl",
         "args": "Juvix: repl",
         "when": "(editorLangId == Juvix || editorLangId == JuvixCore)  && editorTextFocus"
       },
@@ -410,13 +410,13 @@
           "type": "string",
           "default": "juvix",
           "scope": "machine-overridable",
-          "description": "Name of the executable of Juvix. e.g. juvix-0.2.0"
+          "description": "Name of the executable of Juvix. (e.g. juvix-v0.3.0)"
         },
         "juvix-mode.bin.path": {
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "description": "Path to the executable of Juvix. e.g. /usr/local/bin/"
+          "description": "Absolute path to the executable of Juvix. (e.g. /usr/local/bin/)"
         },
         "juvix-mode.revealPanel": {
           "type": "string",
@@ -480,9 +480,10 @@
         },
         "juvix-mode.compilationTarget": {
           "type": "string",
+          "default": "",
           "enum": [
-            "c",
             "native",
+            "c",
             "wasm",
             "html"
           ],
@@ -504,7 +505,7 @@
         "juvix-mode.compilationOutputFile": {
           "type": "string",
           "scope": "machine-overridable",
-          "description": "File name for the compiled file"
+          "description": "Path to the output file (-o --output)."
         },
         "juvix-mode.input.enabled": {
           "type": "boolean",
