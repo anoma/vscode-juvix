@@ -350,16 +350,6 @@
         "command": "juvix-mode.loadFileRepl",
         "args": "Juvix: repl",
         "when": "(editorLangId == Juvix || editorLangId == JuvixCore)  && editorTextFocus"
-      },
-      {
-        "key": "alt+,",
-        "command": "workbench.action.navigateBack",
-        "when": "editorLangId == Juvix"
-      },
-      {
-        "key": "alt+.",
-        "command": "workbench.action.navigateForward",
-        "when": "editorLangId == Juvix"
       }
     ],
     "submenus": [
