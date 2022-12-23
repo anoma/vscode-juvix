@@ -42,24 +42,24 @@ class DevEnv {
     if (this.document) this.makeViews();
 
     const changeEditor = vscode.window.onDidChangeActiveTextEditor(e => {
-      this.disposables.push(changeEditor);
-      if (e) {
-        if (e.document) {
-          if (e.document !== this.document) this.disposeViews();
+      if (e && e.document) {
+        if (e.document !== this.document) {
+          this.disposeViews();
           this.document = e.document;
           this.makeViews();
         }
       }
+      this.disposables.push(changeEditor);
     });
 
     const closeD = vscode.workspace.onDidCloseTextDocument(doc => {
-      this.disposables.push(closeD);
       if (doc === this.document) this.disposeViews();
+      this.disposables.push(closeD);
     });
 
     const saveDoc = vscode.workspace.onDidSaveTextDocument(doc => {
-      this.disposables.push(saveDoc);
       if (doc === this.document) this.makeViews();
+      this.disposables.push(saveDoc);
     });
   }
 
@@ -70,7 +70,7 @@ class DevEnv {
     const txt: string = this.document!.getText();
     const debug = txt.indexOf(debugStr) > -1;
     if (!debug || txt.indexOf('NO-DEBUG!') > -1) return;
-    const all = txt.indexOf(debugStr + ' ALL') > -1;
+    const all = txt.indexOf(debugStr + ' All') > -1;
     const views = config.devTasks.get();
     Object.entries(views).forEach(([title, cmd], _) => {
       if (all || txt.indexOf(debugStr + ' ' + title) > -1)

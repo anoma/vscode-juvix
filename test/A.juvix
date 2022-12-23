@@ -3,4 +3,5 @@ open import B;
 axiom a : A;
 axiom b : A;
 end;
--- DEBUG: Internal-Arity
+
+{- DEBUG: All -}

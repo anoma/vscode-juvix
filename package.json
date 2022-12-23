@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -169,6 +169,9 @@
       {
         "language": "Juvix",
         "path": "./snippets/Juvix.json"
+      },
+      {
+        "path": "./snippets/Debug.code-snippets"
       }
     ],
     "languages": [
@@ -2329,16 +2332,32 @@
         "juvix-mode.devTasks": {
           "type": "object",
           "items": {
-            "description": "Internal commands that run on save. Juvix executable is passed as $juvix, the filename as $filename. Example command: $juvix dev internal pretty $filename"
+            "description": "Internal commands that run on save. Juvix executable is passed as $juvix, the filename as $filename. "
           },
           "default": {
+            "CatFile": "cat $filename",
             "Parsed": "$juvix dev parse $filename",
             "Scoped": "$juvix dev scope $filename",
-            "EvalCore": "$juvix dev core-eval $filename",
-            "Internal-Pretty": "$juvix dev internal pretty $filename",
-            "Internal-Arity": "$juvix dev internal arity $filename",
-            "Highlighting": "$juvix dev highlight --format json $filename",
-            "CoreLifting": "$juvix dev core read -t lifting $filename"
+            "HighlightJSON": "$juvix dev highlight --format json $filename",
+            "Highlight": "$juvix dev highlight $filename",
+            "InternalPretty": "$juvix dev internal pretty $filename",
+            "InternalArity": "$juvix dev internal arity $filename",
+            "InternalTypecheck": "$juvix dev internal typecheck $filename",
+            "InternalCoreEval": "$juvix dev internal core-eval $filename",
+            "InternalCoreEvalShowDeBruijn": "$juvix dev internal core-eval --show-de-brujin $filename",
+            "InternalCoreEvalTransformsLifting": "$juvix dev internal core-eval --transforms lifting $filename",
+            "InternalCoreEvalTransformsMoveApps": "$juvix dev internal core-eval --transforms move-apps $filename",
+            "InternalCoreEvalTransformsRemoveTypeArgs": "$juvix dev internal core-eval --transforms remove-type-args $filename",
+            "InternalCoreEvalTransformsRemoveTopEtaExpand": "$juvix dev internal core-eval --transforms top-eta-expand $filename",
+            "CoreEval": "$juvix dev core eval $filename",
+            "CoreRead": "$juvix dev core read $filename",
+            "AsmRun": "$juvix dev asm run $filename",
+            "AsmValidate": "$juvix dev asm validate $filename",
+            "AsmCompile": "$juvix dev asm compile $filename",
+            "RuntimeCompile": "$juvix dev runtime compile $filename",
+            "Root": "$juvix dev root",
+            "TerminationCalls": "$juvix dev termination calls -d $filename",
+            "TerminationGraph": "$juvix dev termination graph $filename"
           }
         }
       }

@@ -5,8 +5,8 @@
     "description": "module type"
   },
   "data types": {
-    "prefix": ["ind", "data"],
-    "body": "inductive ${1:typeName ${2:typeParameters?}} {\n  ${3:constructorName} : ${4:constructorArgs} -> ${5:returnType}; \n};\n",
+    "prefix": ["type", "inductive", "data"],
+    "body": "type ${1:typeName} {\n  ${3:constructorName} : ${4:constructorArgs} -> ${5:returnType} |\n  ${6:constructorName} : ${7:constructorArgs} -> ${8:returnType} \n};\n",
     "description": "inductive data type declaration"
   },
   "axiom": {
@@ -33,10 +33,5 @@
     "prefix": "doc",
     "body": "--- ${1:documentation}",
     "description": "documentation"
-  },
-  "set type": {
-    "prefix": "ty",
-    "body": "Type",
-    "description": "The type of all types"
   }
 }
