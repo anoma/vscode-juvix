@@ -30,4 +30,4 @@ id ((A → B) → A → B) (id (A → B)) :  ((A -> B) -> (A -> B))
 -}
 
 end;
--- DEBUG: Internal-Arity
+-- DEBUG: cat

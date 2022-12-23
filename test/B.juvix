@@ -1,4 +1,4 @@
--- DEBUG: ALL
+-- DEBUG: Scoped
 module B;
 
 axiom A : Type;

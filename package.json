@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -2331,24 +2331,24 @@
           "default": false,
           "markdownDescription": "Enable eager replacement of abbreviations that uniquely identify a symbol."
         },
-        "juvix-mode.enableDevViews": {
+        "juvix-mode.enableDevTasks": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Create on save views for debugging purposes."
         },
-        "juvix-mode.devViews": {
+        "juvix-mode.devTasks": {
           "type": "object",
           "items": {
             "description": "Internal commands that run on save. Juvix executable is passed as $juvix, the filename as $filename. Example command: $juvix dev internal pretty $filename"
           },
           "default": {
-            "EvalCore": "$juvix dev $filename",
             "Parsed": "$juvix dev parse $filename",
             "Scoped": "$juvix dev scope $filename",
+            "EvalCore": "$juvix dev core-eval $filename",
             "Internal-Pretty": "$juvix dev internal pretty $filename",
-            "Internal-Arity": "$juvix dev internal pretty $filename",
-            "highlighting": "$juvix dev highlight $filename",
-            "minic": "$juvix dev minic $filename"
+            "Internal-Arity": "$juvix dev internal arity $filename",
+            "Highlighting": "$juvix dev highlight --format json $filename",
+            "CoreLifting": "$juvix dev core read -t lifting $filename"
           }
         }
       }

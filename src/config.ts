@@ -33,10 +33,10 @@ export class JuvixConfig {
   readonly noStdlib = new VsCodeSetting('juvix-mode.opts.noStdlib');
 
   // Dev
-  readonly enableDevViews = new VsCodeSetting('juvix-mode.enableDevViews', {
+  readonly enableDevTasks = new VsCodeSetting('juvix-mode.enableDevTasks', {
     serializer: serializerWithDefault(false),
   });
-  readonly devViews = new VsCodeSetting('juvix-mode.devViews', {
+  readonly devTasks = new VsCodeSetting('juvix-mode.devTasks', {
     serializer: serializerWithDefault<TaggedList>({}),
   });
 

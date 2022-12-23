@@ -27,10 +27,7 @@ export async function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(highlighterProvider);
     context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration(e => {
-        const updated = e.affectsConfiguration(
-          'juvix-mode.enableSemanticSyntax'
-        );
-        if (updated) {
+        if (e.affectsConfiguration('juvix-mode.enableSemanticSyntax')) {
           if (!config.enableSemanticSyntax.get()) highlighterProvider.dispose();
           else activate(context);
         }
