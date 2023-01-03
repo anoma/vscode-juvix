@@ -311,7 +311,8 @@
         "command": "juvix-mode.loadFileRepl",
         "title": "Load file in REPL",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "editorLangId == Juvix && editorTextFocus",
+        "icon": "$(open-preview)"
       },
       {
         "command": "juvix-mode.dev-parse",
@@ -368,6 +369,11 @@
     ],
     "menus": {
       "editor/title": [
+        {
+          "when": "editorLangId == Juvix",
+          "command": "juvix-mode.loadFileRepl",
+          "group": "navigation@0"
+        },
         {
           "when": "editorLangId == Juvix",
           "command": "juvix-mode.typecheck",
