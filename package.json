@@ -290,19 +290,22 @@
         "command": "juvix-mode.typecheck",
         "title": "typecheck",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "editorLangId == Juvix && editorTextFocus",
+        "icon" : "$(check)"
       },
       {
         "command": "juvix-mode.compile",
         "title": "compile",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "editorLangId == Juvix && editorTextFocus",
+        "icon" : "$(preview)"
       },
       {
         "command": "juvix-mode.run",
         "title": "run",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "editorLangId == Juvix && editorTextFocus",
+        "icon" : "$(run)"
       },
       {
         "command": "juvix-mode.loadFileRepl",
@@ -334,7 +337,8 @@
         "key": "shift+alt+t",
         "command": "juvix-mode.typecheck",
         "args": "Juvix: typecheck",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "editorLangId == Juvix && editorTextFocus",
+        "icon": "$(debug-start)"
       },
       {
         "key": "shift+alt+c",
@@ -359,11 +363,27 @@
       {
         "id": "juvix-submenu",
         "label": "Juvix Tasks",
-        "icon": "🛠️",
         "when": "editorLangId == Juvix"
       }
     ],
     "menus": {
+      "editor/title": [
+        {
+          "when": "editorLangId == Juvix",
+          "command": "juvix-mode.typecheck",
+          "group": "navigation@1"
+        },
+        {
+          "when": "editorLangId == Juvix",
+          "command": "juvix-mode.compile",
+          "group": "navigation@2"
+        },
+        {
+          "when": "editorLangId == Juvix",
+          "command": "juvix-mode.run",
+          "group": "navigation@2"
+        }
+      ],
       "editor/context": [
         {
           "submenu": "juvix-submenu",
