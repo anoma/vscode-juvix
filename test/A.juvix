@@ -3,5 +3,3 @@ open import B;
 axiom a : A;
 axiom b : A;
 end;
-
-{- DEBUG: All -}

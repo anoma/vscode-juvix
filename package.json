@@ -50,11 +50,11 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "18.x",
     "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^5.47.0",
-    "@typescript-eslint/parser": "^5.47.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
     "@vscode/test-electron": "^2.2.1",
-    "@vscode/vsce": "^2.15.0",
-    "eslint": "^8.30.0",
+    "@vscode/vsce": "^2.16.0",
+    "eslint": "^8.31.0",
     "eslint-plugin-header": "^3.1.1",
     "glob": "^8.0.3",
     "mocha": "^10.2.0",
@@ -2384,7 +2384,7 @@
     }
   },
   "dependencies": {
-    "@vscode/vsce": "^2.15.0",
+    "@vscode/vsce": "^2.16.0",
     "mobx": "6.7.0",
     "npx": "^10.2.2",
     "run": "^1.4.0"
