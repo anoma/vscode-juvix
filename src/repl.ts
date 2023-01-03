@@ -154,6 +154,34 @@ export class JuvixRepl {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
+
+  const justOpenREPL = vscode.commands.registerCommand(
+    'juvix-mode.openRepl',
+    () => {
+      const document = vscode.window.activeTextEditor?.document;
+      if (document) { let repl = juvixTerminals.get(document.fileName);
+        if (!repl || repl.notAvailable()) {
+          repl?.dispose();
+          repl = new JuvixRepl(document);
+        }
+      } else {
+        const tempTerminal = vscode.window.createTerminal(
+          {
+            name: terminalName,
+            isTransient: false,
+            shellPath: '/usr/bin/bash',
+            location: {
+              viewColumn: vscode.ViewColumn.Beside,
+              preserveFocus: true,
+            }
+          })
+        tempTerminal.show();
+        tempTerminal.sendText('juvix repl');
+        context.subscriptions.push(
+          tempTerminal
+        );
+      }
+    });
   /* Create a new terminal and send the command to load the current file */
   const loadFile = vscode.commands.registerCommand(
     'juvix-mode.loadFileRepl',

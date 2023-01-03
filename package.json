@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -306,6 +306,11 @@
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon" : "$(run)"
+      },
+      {
+        "command": "juvix-mode.openRepl",
+        "title": "Open REPL",
+        "category": "Juvix"
       },
       {
         "command": "juvix-mode.loadFileRepl",
