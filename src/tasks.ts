@@ -43,7 +43,7 @@ export async function activate(context: vscode.ExtensionContext) {
           vscode.tasks.executeTask(task), { when: 'editorLangId == juvix' };
         });
         context.subscriptions.push(cmd);
-        debugChannel.debug('[!] "' + cmdName + '" command registered');
+        debugChannel.info('[!] "' + cmdName + '" command registered');
       }
     })
     .catch(err => {
@@ -144,8 +144,8 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       };
       tasks.push(vscodeTask);
     }
-    debugChannel.debug('Tasks to be added:');
-    debugChannel.debug(JSON.stringify(tasks).toString());
+    debugChannel.info('Tasks to be added:');
+    debugChannel.info(JSON.stringify(tasks).toString());
     return tasks;
   }
 

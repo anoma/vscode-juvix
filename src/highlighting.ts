@@ -111,7 +111,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
     // too verbose but useful for debugging location mapping
-    debugChannel.debug(
+    debugChannel.info(
       'Highlighting output: ' + JSON.stringify(output, null, 2)
     );
 
@@ -136,15 +136,15 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     });
 
     // // too verbose but useful for debugging location mapping
-    debugChannel.debug(
+    debugChannel.info(
       'Highlighting output: ' +
         JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
     );
 
-    debugChannel.debug('Active file: ' + filePath);
+    debugChannel.info('Active file: ' + filePath);
 
     const allTokens = output.face;
-    debugChannel.debug('> Tokens length: ' + allTokens.length);
+    debugChannel.info('> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {

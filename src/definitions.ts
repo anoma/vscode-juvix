@@ -46,21 +46,21 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
     const filePath: string = document.fileName;
     const line: number = position.line;
     const col: number = position.character;
-    debugChannel.debug('Find def. requested ------------------------');
-    debugChannel.debug(
+    debugChannel.info('Find def. requested ------------------------');
+    debugChannel.info(
       'info',
       'Looking for definition of the symbol at: ' + (line + 1) + ':' + (col + 1)
     );
-    debugChannel.debug('Active file: ' + filePath);
+    debugChannel.info('Active file: ' + filePath);
 
     if (!locationMap.has(filePath)) {
-      debugChannel.debug(
+      debugChannel.info(
         'There is no definitions registered in file: ' + filePath
       );
       return undefined;
     } else {
       if (!locationMap.get(filePath)!.has(line)) {
-        debugChannel.debug(
+        debugChannel.info(
           'There is no defnition registered at line: ' + (line + 1)
         );
         return undefined;
@@ -68,12 +68,12 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
         const locsByLine: TargetLocation[] = locationMap
           .get(filePath)!
           .get(line)!;
-        debugChannel.debug(
+        debugChannel.info(
           '> Found ' + locsByLine.length + ' definitions at line: ' + (line + 1)
         );
         for (let i = 0; i < locsByLine.length; i++) {
           const info: TargetLocation = locsByLine[i];
-          debugChannel.debug(
+          debugChannel.info(
             '>> Checking if symbol is between colummns: ' +
               (info.interval.start + 1) +
               ' and ' +
@@ -81,7 +81,7 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
           );
 
           if (info.interval.start <= col && info.interval.end >= col) {
-            debugChannel.debug(
+            debugChannel.info(
               'info',
               '[!] Found definition at: ' +
                 info.targetFile +
@@ -99,7 +99,7 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
         }
       }
     }
-    debugChannel.debug('No definition found');
+    debugChannel.info('No definition found');
     return undefined;
   }
 }
