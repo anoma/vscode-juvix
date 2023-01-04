@@ -1,8 +1,8 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "license": "GPL-3.0",
-  "description": "Juvix IDE support for VSCode",
+  "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
   "publisher": "Heliax",
   "icon": "assets/tara.png",
@@ -29,7 +29,7 @@
     "programming"
   ],
   "galleryBanner": {
-    "theme": "light"
+    "theme": "dark"
   },
   "main": "./out/extension.js",
   "scripts": {
@@ -40,7 +40,7 @@
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src --ext ts --fix",
     "test": "node ./out/test/runTest.js",
     "upgrade-dependencies": "ncu -u",
     "fix": "prettier --write . && eslint -c .eslintrc.js --ext ts ./src  --fix"
@@ -360,7 +360,7 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "key": "shift+alt+l",
+        "key": "shift+alt+r",
         "command": "juvix-mode.loadFileRepl",
         "args": "Juvix: repl",
         "when": "(editorLangId == Juvix || editorLangId == JuvixCore)  && editorTextFocus"
