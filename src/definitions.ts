@@ -90,9 +90,12 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
                 ':' +
                 (info.targetStartCharacter + 1)
             );
+            let rangeBegin = new vscode.Position(info.targetLine, info.targetStartCharacter);
+            let rangeEnd = new vscode.Position(info.targetLine + 1, 0);
+            let positionRange = new vscode.Range(rangeBegin, rangeEnd);
             const definitionFound = new vscode.Location(
               vscode.Uri.file(info.targetFile),
-              new vscode.Position(info.targetLine, info.targetStartCharacter)
+              positionRange
             );
             return definitionFound;
           }

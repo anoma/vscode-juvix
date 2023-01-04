@@ -112,7 +112,7 @@
               "foreground": "#d98200"
             },
             "inductive": {
-              "foreground": "#89b503"
+              "foreground": "#769c03"
             },
             "keyword": {
               "foreground": "#0083e1"
@@ -121,7 +121,7 @@
               "foreground": "#1b1b1b"
             },
             "number": {
-              "foreground": "#a1d014"
+              "foreground": "#a0d500"
             },
             "string": {
               "foreground": "#ff4d00"
