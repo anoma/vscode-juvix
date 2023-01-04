@@ -1,4 +1,4 @@
-# Juvix Plugin for VSCode
+# Juvix Plugin for VSCode [![Build, Lint, and Deploy](https://github.com/anoma/vscode-juvix/actions/workflows/ci.yaml/badge.svg)](https://github.com/anoma/vscode-juvix/actions/workflows/ci.yaml)
 
 This VS Code extension provides support for [Juvix Lang](https://github.com/anoma/juvix).
 
@@ -24,7 +24,7 @@ git clone https://github.com/anoma/vscode-juvix
 cd vscode-juvix
 npm install
 npx vsce package
-code --install-extension juvix-0.1.8.vsix
+code --install-extension juvix-X.X.X.vsix
 ```
 
 If you don't have `vsce` or `npx` installed, you can install it by running the following:
@@ -65,7 +65,7 @@ properly.
 | typecheck | <kbd>Shift+Alt+T</kbd> |
 | compile   | <kbd>Shift+Alt+C</kbd> |
 | run       | <kbd>Shift+Alt+X</kbd> |
-| repl      | <kbd>Shift+Alt+L</kbd> |
+| repl      | <kbd>Shift+Alt+R</kbd> |
 | doctor    | <kbd>Shift+Alt+D</kbd> |
 
 However, we recommend using the Command Palette (<kbd>Ctrl</kbd><kbd>P</kbd>) to

@@ -5,6 +5,9 @@
 import * as vscode from 'vscode';
 import * as user from './config';
 import { debugChannel } from './utils/debug';
+import * as fs from 'fs';
+import * as path from 'path';
+import { tmpdir } from 'os';
 
 export const TASK_TYPE = 'Juvix';
 
@@ -31,8 +34,6 @@ export async function activate(context: vscode.ExtensionContext) {
     TASK_TYPE,
     provider
   );
-
-  context.subscriptions.push(taskProvider);
 
   juvixTasks
     .then(tasks => {
@@ -172,9 +173,12 @@ export async function JuvixTask(
   switch (name) {
     case 'run':
       input = args.slice(1).join(' ').trim();
+      const tmp = path.join(tmpdir(),fs.mkdtempSync('juvix'));
+      fs.mkdirSync(tmp);
       exec = new vscode.ShellExecution(
         config.getJuvixExec() +
-          ` compile ${input} && \${fileDirname}\${pathSeparator}\${fileBasenameNoExtension}`
+          ` compile --output ${tmp}\${pathSeparator}out ${input} && ${tmp}\${pathSeparator}out && rm -rf \${fileDirname}\${pathSeparator}.juvix-build`
+          , { cwd: tmp} 
       );
       break;
     default:

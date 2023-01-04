@@ -31,7 +31,7 @@ export async function activate(context: vscode.ExtensionContext) {
         }
       })
     );
-    debugChannel.info('Semantic syntax highlighter registered');
+    debugChannel.debug('Semantic syntax highlighter registered');
   } catch (error) {
     debugChannel.error('No semantic provider', error);
   }
@@ -111,7 +111,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
     // too verbose but useful for debugging location mapping
-    debugChannel.info(
+    debugChannel.debug(
       'Highlighting output: ' + JSON.stringify(output, null, 2)
     );
 
@@ -136,15 +136,15 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     });
 
     // // too verbose but useful for debugging location mapping
-    debugChannel.info(
+    debugChannel.debug(
       'Highlighting output: ' +
         JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
     );
 
-    debugChannel.info('Active file: ' + filePath);
+    debugChannel.debug('Active file: ' + filePath);
 
     const allTokens = output.face;
-    debugChannel.info('> Tokens length: ' + allTokens.length);
+    debugChannel.debug('> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {

@@ -5,7 +5,6 @@
 import * as vscode from 'vscode';
 import { debugChannel } from './utils/debug';
 import * as user from './config';
-
 export let juvixStatusBarItemVersion: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
