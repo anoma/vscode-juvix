@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "license": "GPL-3.0",
   "description": "Juvix IDE support for VSCode",
   "displayName": "Juvix",
@@ -85,7 +85,8 @@
   "contributes": {
     "configurationDefaults": {
       "[Juvix]": {
-        "editor.insertSpaces": false,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
         "editor.unicodeHighlight.invisibleCharacters": true,
         "editor.trimAutoWhitespace": true
       },
@@ -94,7 +95,7 @@
         "[*Light*]": {
           "rules": {
             "axiom": {
-              "foreground": "#ff2f2f"
+              "foreground": "#e70000"
             },
             "comment": {
               "foreground": "#a8a8a8",
@@ -108,22 +109,22 @@
               "fontStyle": "bold"
             },
             "function": {
-              "foreground": "#ef8f00"
+              "foreground": "#d98200"
             },
             "inductive": {
               "foreground": "#89b503"
             },
             "keyword": {
-              "foreground": "#0f8ee8"
+              "foreground": "#0083e1"
             },
             "module": {
-              "foreground": "#126af9"
+              "foreground": "#1b1b1b"
             },
             "number": {
               "foreground": "#a3d801"
             },
             "string": {
-              "foreground": "#fb4b00"
+              "foreground": "#ff4d00"
             }
           }
         },
@@ -305,7 +306,7 @@
         "title": "run",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
-        "icon" : "$(run)"
+        "icon" : "$(debug-start)"
       },
       {
         "command": "juvix-mode.openRepl",

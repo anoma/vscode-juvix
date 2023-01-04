@@ -3,11 +3,9 @@
  *--------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import * as fs from 'fs';
 import { JuvixConfig } from './config';
 import { debugChannel } from './utils/debug';
 import * as def from './definitions';
-import { JuvixTaskProvider } from './tasks';
 
 /*
 Semantic syntax highlighting
