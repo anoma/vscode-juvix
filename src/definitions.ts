@@ -40,8 +40,7 @@ export async function activate(context: vscode.ExtensionContext) {
 export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
   async provideDefinition(
     document: vscode.TextDocument,
-    position: vscode.Position,
-    _token: vscode.CancellationToken
+    position: vscode.Position
   ): Promise<vscode.Location | vscode.Location[] | undefined> {
     const filePath: string = document.fileName;
     const line: number = position.line;
@@ -90,9 +89,9 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
                 ':' +
                 (info.targetStartCharacter + 1)
             );
-            let rangeBegin = new vscode.Position(info.targetLine, info.targetStartCharacter);
-            let rangeEnd = new vscode.Position(info.targetLine + 1, 0);
-            let positionRange = new vscode.Range(rangeBegin, rangeEnd);
+            const rangeBegin = new vscode.Position(info.targetLine, info.targetStartCharacter);
+            const rangeEnd = new vscode.Position(info.targetLine + 1, 0);
+            const positionRange = new vscode.Range(rangeBegin, rangeEnd);
             const definitionFound = new vscode.Location(
               vscode.Uri.file(info.targetFile),
               positionRange
