@@ -15,9 +15,7 @@ import { AbbreviationProvider } from './abbreviation/AbbreviationProvider';
 import { AbbreviationRewriter } from './abbreviation/rewriter/AbbreviationRewriter';
 import { autorunDisposable } from './utils/autorunDisposable';
 import { Disposable, languages, TextEditor, window } from 'vscode';
-import { observable } from 'mobx';
 import { debugChannel } from './utils/debug';
-import { debug } from 'console';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(new Abbr());

@@ -7,6 +7,7 @@ import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
 import { observable } from 'mobx';
 import * as path from 'path';
+import {canRunRepl, isJuvixCoreFile, isJuvixFile} from './utils/base';
 
 export const terminalName = 'Juvix REPL';
 
@@ -89,9 +90,9 @@ export class JuvixRepl {
   public openRepl(): void {
     debugChannel.info('Exec juvix repl');
     let shellCmd = this.config.getJuvixExec();
-    if (this.document.languageId == 'Juvix') {
+    if (isJuvixFile(this.document)) {
       shellCmd += ' ' + 'repl';
-    } else if (this.document.languageId == 'JuvixCore') {
+    } else if (isJuvixCoreFile(this.document)) {
       shellCmd += ' ' + 'dev core repl';
     } else {
       debugChannel.error('Unknown language');
@@ -116,11 +117,11 @@ export class JuvixRepl {
     const filename = this.document.fileName;
     debugChannel.info('Loading file in REPL: ' + filename);
     if (canRunRepl(this.document)) this.document.save();
-    if (this.document.languageId == 'Juvix') {
+    if (isJuvixFile(this.document)) {
       if (!this.reloadNextTime) this.terminal.sendText(`:load ${filename}`);
       else this.terminal.sendText(`\n:reload ${filename}`);
-    } else if (this.document.languageId == 'JuvixCore') {
-      debugChannel.info('It is a core file');
+    } else if (isJuvixCoreFile(this.document)) {
+      debugChannel.info('Loading to the Repl a Juvix core file');
       this.terminal.sendText(`:l ${filename}`);
     } else return;
     this.reloadNextTime = true;
@@ -222,6 +223,3 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(watchButton);
 }
 
-function canRunRepl(document: vscode.TextDocument): boolean {
-  return document.languageId == 'Juvix' || document.languageId == 'JuvixCore';
-}

@@ -4,8 +4,6 @@
 
 'use strict';
 
-import { debugChannel } from './utils/debug';
-import * as vscode from 'vscode';
 import { serializerWithDefault, VsCodeSetting } from './utils/VsCodeSetting';
 import * as path from 'path';
 

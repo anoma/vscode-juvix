@@ -16,7 +16,6 @@ import * as dev from './dev';
 
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
-  const config = new user.JuvixConfig();
   repl.activate(context);
   statusBar.activate(context);
   inputMethod.activate(context);
