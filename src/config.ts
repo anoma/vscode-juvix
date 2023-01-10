@@ -5,7 +5,10 @@
 'use strict';
 
 import { serializerWithDefault, VsCodeSetting } from './utils/VsCodeSetting';
+import * as fs from 'fs';
 import * as path from 'path';
+import { tmpdir } from 'os';
+import { debugChannel } from './utils/debug';
 
 export class JuvixConfig {
   readonly binaryName = new VsCodeSetting('juvix-mode.bin.name', {
@@ -15,6 +18,7 @@ export class JuvixConfig {
   readonly binaryPath = new VsCodeSetting('juvix-mode.bin.path', {
     serializer: serializerWithDefault(''),
   });
+
 
   public getJuvixExec(): string {
     return path.join(this.binaryPath.get(), this.binaryName.get());
@@ -29,7 +33,21 @@ export class JuvixConfig {
   readonly noTermination = new VsCodeSetting('juvix-mode.opts.noTermination');
   readonly noPositivity = new VsCodeSetting('juvix-mode.opts.noPositivity');
   readonly noStdlib = new VsCodeSetting('juvix-mode.opts.noStdlib');
+  readonly internalBuildDir = new VsCodeSetting('juvix-mode.opts.internalBuildDir');
 
+  public getInternalBuildDir(): string {
+      const buildDir = this.internalBuildDir.get();
+      if (buildDir) return buildDir.toString();
+      const tmp = path.join(tmpdir(),fs.mkdtempSync('juvix'));
+      try {
+        fs.mkdirSync(tmp);
+        return tmp.toString();
+      } catch (e) {
+        debugChannel.error('Error creating temporary directory: ' + e);
+      }
+      return '.juvix-build';
+  }
+  
   // Dev
   readonly enableDevTasks = new VsCodeSetting('juvix-mode.enableDevTasks', {
     serializer: serializerWithDefault(false),
@@ -37,6 +55,7 @@ export class JuvixConfig {
   readonly devTasks = new VsCodeSetting('juvix-mode.devTasks', {
     serializer: serializerWithDefault<TaggedList>({}),
   });
+
 
   public getGlobalFlags(): string {
     const flags = [];
@@ -46,6 +65,8 @@ export class JuvixConfig {
     if (this.noTermination.get()) flags.push('--no-termination');
     if (this.noPositivity.get()) flags.push('--no-positivity');
     if (this.noStdlib.get()) flags.push('--no-stdlib');
+    flags.push('--internal-build-dir');
+    flags.push(this.getInternalBuildDir());
     return flags.join(' ').trim();
   }
 

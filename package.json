@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
@@ -486,6 +486,11 @@
             "noStdlib": {
               "type": "boolean",
               "description": "Do not use the standard library"
+            },
+            "internalBuildDir": {
+              "type": "string",
+              "default": ".juvix-build",
+              "description": "Directory for compiler internal output. Empty string will make the compiler use a temporary directory."
             }
           },
           "additionalProperties": false,

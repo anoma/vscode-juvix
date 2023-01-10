@@ -6,7 +6,6 @@
 import * as vscode from 'vscode';
 import { debugChannel } from './utils/debug';
 import * as tasks from './tasks';
-import * as user from './config';
 import * as statusBar from './statusbar';
 import * as syntaxHighlighter from './highlighting';
 import * as goToDefinition from './definitions';

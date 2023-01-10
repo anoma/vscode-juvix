@@ -5,9 +5,6 @@
 import * as vscode from 'vscode';
 import * as user from './config';
 import { debugChannel } from './utils/debug';
-import * as fs from 'fs';
-import * as path from 'path';
-import { tmpdir } from 'os';
 
 export const TASK_TYPE = 'Juvix';
 
@@ -84,14 +81,13 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'typecheck',
-        args: ['${file}', config.getGlobalFlags()],
+        args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: setupPanel(),
       },
       {
         command: 'compile',
         args: [
-          config.getGlobalFlags(),
           config.getCompilationFlags(),
           '${file}',
         ],
@@ -100,7 +96,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'run',
-        args: ['${file}', config.getGlobalFlags()],
+        args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
@@ -112,13 +108,13 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'dev parse',
-        args: ['${file}', config.getGlobalFlags()],
+        args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
       {
         command: 'dev scope',
-        args: ['${file}', config.getGlobalFlags()],
+        args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
@@ -167,23 +163,22 @@ export async function JuvixTask(
   args: string[]
 ): Promise<vscode.Task> {
   let input = args.join(' ').trim();
-
-  let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined;
   const config = new user.JuvixConfig();
+  const JuvixExec = [config.getJuvixExec(), config.getGlobalFlags()].join(' ');
+  let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined;
   switch (name) {
     case 'run':
       input = args.slice(1).join(' ').trim();
-      const tmp = path.join(tmpdir(),fs.mkdtempSync('juvix'));
-      fs.mkdirSync(tmp);
+      const buildDir = config.getInternalBuildDir();
+     
       exec = new vscode.ShellExecution(
-        config.getJuvixExec() +
-          ` compile --output ${tmp}\${pathSeparator}out ${input} && ${tmp}\${pathSeparator}out && rm -rf \${fileDirname}\${pathSeparator}.juvix-build`
-          , { cwd: tmp} 
+        JuvixExec +
+          ` compile --output ${buildDir}\${pathSeparator}out ${input} && ${buildDir}\${pathSeparator}out`
+          , { cwd: buildDir} 
       );
       break;
     default:
-      const call = config.getJuvixExec() + `  ${input}`;
-      exec = new vscode.ShellExecution(call);
+      exec = new vscode.ShellExecution(JuvixExec+ `  ${input}`);
       break;
   }
   return new vscode.Task(
