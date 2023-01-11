@@ -4,7 +4,7 @@
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
-  "publisher": "Heliax",
+  "publisher": "heliax",
   "icon": "assets/tara.png",
   "repository": {
     "type": "git",
@@ -425,12 +425,6 @@
     "configuration": {
       "title": "Juvix Mode",
       "properties": {
-        "juvix-mode.statusBarIcons": {
-          "type": "boolean",
-          "default": false,
-          "scope": "machine-overridable",
-          "description": "Show icons on the status bar to run Juvix commands"
-        },
         "juvix-mode.bin.name": {
           "type": "string",
           "default": "juvix",
@@ -534,8 +528,7 @@
         },
         "juvix-mode.compilationOutputFile": {
           "type": "string",
-          "scope": "machine-overridable",
-          "description": "Path to the output file (-o --output)."
+          "scope": "machine-overridable"
         },
         "juvix-mode.input.enabled": {
           "type": "boolean",

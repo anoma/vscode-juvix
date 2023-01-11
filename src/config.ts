@@ -24,7 +24,6 @@ export class JuvixConfig {
     return path.join(this.binaryPath.get(), this.binaryName.get());
   }
 
-  readonly statusBarIcons = new VsCodeSetting('juvix-mode.statusBarIcons');
   readonly revealPanel = new VsCodeSetting('juvix-mode.revealPanel');
   readonly noColors = new VsCodeSetting('juvix-mode.opts.noColors');
 
