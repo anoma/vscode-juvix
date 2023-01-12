@@ -451,7 +451,7 @@
         },
         "juvix-mode.typecheckOnChange": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "markdownDescription": "Run typechecker on any change to the file."
         },
         "juvix-mode.reloadReplOnSave": {
