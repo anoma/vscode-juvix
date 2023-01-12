@@ -97,11 +97,25 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     // const contentDisk: string = fs.readFileSync(filePath, 'utf8');
     const config = new JuvixConfig();
     const { spawnSync } = require('child_process');
-    const ls = spawnSync(
+
+    const highlighterCall = [
       config.getJuvixExec(),
-      ['dev', 'highlight', '--format', 'json', filePath, '--stdin'],
-      { input: content }
-    );
+      config.getGlobalFlags(),
+      'dev',
+      'highlight',
+      '--format',
+      'json',
+      filePath,
+      '--stdin',
+    ].join(' ');
+
+    debugChannel.info('Highlighter call: ' + highlighterCall);
+
+    const ls = spawnSync(highlighterCall, {
+      input: content,
+      shell: true,
+      encoding: 'utf8',
+    });
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();

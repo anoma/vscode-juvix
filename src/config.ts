@@ -19,7 +19,6 @@ export class JuvixConfig {
     serializer: serializerWithDefault(''),
   });
 
-
   public getJuvixExec(): string {
     return path.join(this.binaryPath.get(), this.binaryName.get());
   }
@@ -32,29 +31,38 @@ export class JuvixConfig {
   readonly noTermination = new VsCodeSetting('juvix-mode.opts.noTermination');
   readonly noPositivity = new VsCodeSetting('juvix-mode.opts.noPositivity');
   readonly noStdlib = new VsCodeSetting('juvix-mode.opts.noStdlib');
-  readonly internalBuildDir = new VsCodeSetting('juvix-mode.opts.internalBuildDir');
+  readonly internalBuildDir = new VsCodeSetting(
+    'juvix-mode.opts.internalBuildDir'
+  );
 
   public getInternalBuildDir(): string {
-      const buildDir = this.internalBuildDir.get();
-      if (buildDir) return buildDir.toString();
-      const tmp = path.join(tmpdir(),fs.mkdtempSync('juvix'));
-      try {
-        fs.mkdirSync(tmp);
-        return tmp.toString();
-      } catch (e) {
-        debugChannel.error('Error creating temporary directory: ' + e);
-      }
-      return '.juvix-build';
+    const buildDir = this.internalBuildDir.get();
+    if (buildDir) return buildDir.toString();
+    const tmp = path.join(tmpdir(), fs.mkdtempSync('juvix'));
+    try {
+      fs.mkdirSync(tmp);
+      return tmp.toString();
+    } catch (e) {
+      debugChannel.error('Error creating temporary directory: ' + e);
+    }
+    return '.juvix-build';
   }
-  
+
+  readonly typecheckOnChange = new VsCodeSetting(
+    'juvix-mode.typecheckOnChange',
+    {
+      serializer: serializerWithDefault(false),
+    }
+  );
+
   // Dev
   readonly enableDevTasks = new VsCodeSetting('juvix-mode.enableDevTasks', {
     serializer: serializerWithDefault(false),
   });
+
   readonly devTasks = new VsCodeSetting('juvix-mode.devTasks', {
     serializer: serializerWithDefault<TaggedList>({}),
   });
-
 
   public getGlobalFlags(): string {
     const flags = [];

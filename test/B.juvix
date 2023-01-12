@@ -1,6 +1,5 @@
--- DEBUG: Scoped
 module B;
 
-axiom A : Type;
+axiom a : Type;
 
 end;

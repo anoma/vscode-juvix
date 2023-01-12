@@ -4,6 +4,7 @@
 
 import * as vscode from 'vscode';
 import * as user from './config';
+import { isJuvixFile } from './utils/base';
 import { debugChannel } from './utils/debug';
 
 export const TASK_TYPE = 'Juvix';
@@ -31,7 +32,9 @@ export async function activate(context: vscode.ExtensionContext) {
     TASK_TYPE,
     provider
   );
+  context.subscriptions.push(taskProvider);
 
+  const config = new user.JuvixConfig();
   juvixTasks
     .then(tasks => {
       for (const task of tasks) {
@@ -43,10 +46,54 @@ export async function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(cmd);
         debugChannel.info('[!] "' + cmdName + '" command registered');
       }
+
+      // Typecheck on save
+      let action = onDidChangeTypecheck(config);
+      if (action) context.subscriptions.push(action);
+      context.subscriptions.push(
+        vscode.workspace.onDidChangeConfiguration(e => {
+          if (e.affectsConfiguration('juvix-mode.typecheckOnChange')) {
+            if (!config.typecheckOnChange.get() && action) action.dispose();
+            else {
+              action = onDidChangeTypecheck(config);
+              if (action) context.subscriptions.push(action);
+            }
+          }
+        })
+      );
+
+      context.subscriptions.push(
+        vscode.workspace.onDidChangeConfiguration(e => {
+          if (
+            e.affectsConfiguration('juvix-mode.revealPanel') ||
+            e.affectsConfiguration('juvix-mode.opts') ||
+            e.affectsConfiguration('juvix-mode.compilationTarget') ||
+            e.affectsConfiguration('juvix-mode.compilationRuntime') ||
+            e.affectsConfiguration('juvix-mode.compilationOutputFile')
+          ) {
+            taskProvider.dispose();
+            // activate(context);
+          }
+        })
+      );
     })
     .catch(err => {
       debugChannel.error('Task provider error: ' + err);
     });
+}
+
+function onDidChangeTypecheck(
+  config: user.JuvixConfig
+): vscode.Disposable | undefined {
+  if (!config.typecheckOnChange.get()) return;
+  const action = vscode.workspace.onDidChangeTextDocument(e => {
+    const doc = e.document;
+    const activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor && activeEditor.document === doc && isJuvixFile(doc))
+      vscode.commands.executeCommand('juvix-mode.typecheck');
+  });
+  debugChannel.info('[!] Typecheck on changes enabled');
+  return action;
 }
 
 export interface JuvixTaskDefinition extends vscode.TaskDefinition {
@@ -87,12 +134,9 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'compile',
-        args: [
-          config.getCompilationFlags(),
-          '${file}',
-        ],
+        args: [config.getCompilationFlags(), '${file}'],
         group: vscode.TaskGroup.Build,
-        reveal: setupPanel(),
+        reveal: vscode.TaskRevealKind.Silent,
       },
       {
         command: 'run',
@@ -141,8 +185,8 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       };
       tasks.push(vscodeTask);
     }
-    debugChannel.info('Tasks to be added:');
-    debugChannel.info(JSON.stringify(tasks).toString());
+    // debugChannel.info('Tasks to be added:');
+    // debugChannel.info(JSON.stringify(tasks).toString());
     return tasks;
   }
 
@@ -170,15 +214,15 @@ export async function JuvixTask(
     case 'run':
       input = args.slice(1).join(' ').trim();
       const buildDir = config.getInternalBuildDir();
-     
+
       exec = new vscode.ShellExecution(
         JuvixExec +
-          ` compile --output ${buildDir}\${pathSeparator}out ${input} && ${buildDir}\${pathSeparator}out`
-          , { cwd: buildDir} 
+          ` compile --output ${buildDir}\${pathSeparator}out ${input} && ${buildDir}\${pathSeparator}out`,
+        { cwd: buildDir }
       );
       break;
     default:
-      exec = new vscode.ShellExecution(JuvixExec+ `  ${input}`);
+      exec = new vscode.ShellExecution(JuvixExec + `  ${input}`);
       break;
   }
   return new vscode.Task(

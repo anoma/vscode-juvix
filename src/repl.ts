@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
 import { observable } from 'mobx';
 import * as path from 'path';
-import {canRunRepl, isJuvixCoreFile, isJuvixFile} from './utils/base';
+import { canRunRepl, isJuvixCoreFile, isJuvixFile } from './utils/base';
 
 export const terminalName = 'Juvix REPL';
 
@@ -155,34 +155,39 @@ export class JuvixRepl {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-
+  const config = new JuvixConfig();
   const justOpenREPL = vscode.commands.registerCommand(
     'juvix-mode.openRepl',
     () => {
       const document = vscode.window.activeTextEditor?.document;
-      if (document) { let repl = juvixTerminals.get(document.fileName);
+      if (document) {
+        let repl = juvixTerminals.get(document.fileName);
         if (!repl || repl.notAvailable()) {
           repl?.dispose();
           repl = new JuvixRepl(document);
         }
       } else {
-        const tempTerminal = vscode.window.createTerminal(
-          {
-            name: terminalName,
-            isTransient: false,
-            shellPath: '/usr/bin/bash',
-            location: {
-              viewColumn: vscode.ViewColumn.Beside,
-              preserveFocus: true,
-            }
-          })
+        const tempTerminal = vscode.window.createTerminal({
+          name: terminalName,
+          isTransient: false,
+          shellPath: '/usr/bin/bash',
+          location: {
+            viewColumn: vscode.ViewColumn.Beside,
+            preserveFocus: true,
+          },
+        });
         tempTerminal.show();
-        tempTerminal.sendText('juvix repl');
-        context.subscriptions.push(
-          tempTerminal
-        );
+        const call = [
+          config.getJuvixExec(),
+          config.getGlobalFlags(),
+          'repl',
+        ].join(' ');
+        tempTerminal.sendText(call);
+        context.subscriptions.push(tempTerminal);
       }
-    });
+    }
+  );
+  context.subscriptions.push(justOpenREPL);
   /* Create a new terminal and send the command to load the current file */
   const loadFile = vscode.commands.registerCommand(
     'juvix-mode.loadFileRepl',
@@ -222,4 +227,3 @@ export async function activate(context: vscode.ExtensionContext) {
   });
   context.subscriptions.push(watchButton);
 }
-
