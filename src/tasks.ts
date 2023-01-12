@@ -40,9 +40,14 @@ export async function activate(context: vscode.ExtensionContext) {
       for (const task of tasks) {
         const cmdName = task.name.replace(' ', '-');
         const qualifiedCmdName = 'juvix-mode.' + task.name.replace(' ', '-');
-        const cmd = vscode.commands.registerCommand(qualifiedCmdName, () => {
-          vscode.tasks.executeTask(task), { when: 'editorLangId == juvix' };
-        });
+        const cmd = vscode.commands.registerTextEditorCommand(qualifiedCmdName, () => {
+          const ex = vscode.tasks.executeTask(task);
+          ex.then((v : vscode.TaskExecution) => {
+            debugChannel.info('Task "' + cmdName + '" executed');
+            v.terminate();
+          });
+        }
+        );
         context.subscriptions.push(cmd);
         debugChannel.info('[!] "' + cmdName + '" command registered');
       }
@@ -61,21 +66,7 @@ export async function activate(context: vscode.ExtensionContext) {
           }
         })
       );
-
-      context.subscriptions.push(
-        vscode.workspace.onDidChangeConfiguration(e => {
-          if (
-            e.affectsConfiguration('juvix-mode.revealPanel') ||
-            e.affectsConfiguration('juvix-mode.opts') ||
-            e.affectsConfiguration('juvix-mode.compilationTarget') ||
-            e.affectsConfiguration('juvix-mode.compilationRuntime') ||
-            e.affectsConfiguration('juvix-mode.compilationOutputFile')
-          ) {
-            taskProvider.dispose();
-            // activate(context);
-          }
-        })
-      );
+   
     })
     .catch(err => {
       debugChannel.error('Task provider error: ' + err);
@@ -84,7 +75,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 function onDidChangeTypecheck(
   config: user.JuvixConfig
-): vscode.Disposable | undefined {
+) {
   if (!config.typecheckOnChange.get()) return;
   const action = vscode.workspace.onDidChangeTextDocument(e => {
     const doc = e.document;
@@ -92,7 +83,6 @@ function onDidChangeTypecheck(
     if (activeEditor && activeEditor.document === doc && isJuvixFile(doc))
       vscode.commands.executeCommand('juvix-mode.typecheck');
   });
-  debugChannel.info('[!] Typecheck on changes enabled');
   return action;
 }
 

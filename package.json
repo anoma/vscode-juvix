@@ -301,7 +301,7 @@
         "title": "compile",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
-        "icon": "$(preview)"
+        "icon": "$(output)"
       },
       {
         "command": "juvix-mode.run",
@@ -321,6 +321,13 @@
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(open-preview)"
+      },
+      {
+        "command": "juvix-mode.createOrShowJudoc",
+        "title": "show Judoc viewer",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus",
+        "icon": "$(book)"
       },
       {
         "command": "juvix-mode.dev-parse",
@@ -395,7 +402,12 @@
         {
           "when": "editorLangId == Juvix",
           "command": "juvix-mode.run",
-          "group": "navigation@2"
+          "group": "navigation@3"
+        },
+        {
+          "when": "editorLangId == Juvix",
+          "command": "juvix-mode.createOrShowJudoc",
+          "group": "navigation@4"
         }
       ],
       "editor/context": [
