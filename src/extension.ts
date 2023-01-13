@@ -26,5 +26,3 @@ export async function activate(context: vscode.ExtensionContext) {
   judoc.activate(context);
   debugChannel.info('Juvix extension is ready!');
 }
-
-

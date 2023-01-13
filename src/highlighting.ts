@@ -94,7 +94,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   ): Promise<vscode.SemanticTokens> {
     const filePath: string = document.fileName;
     const content: string = document.getText();
-    
+
     const config = new JuvixConfig();
     const { spawnSync } = require('child_process');
 

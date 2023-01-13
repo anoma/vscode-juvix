@@ -40,13 +40,15 @@ export async function activate(context: vscode.ExtensionContext) {
       for (const task of tasks) {
         const cmdName = task.name.replace(' ', '-');
         const qualifiedCmdName = 'juvix-mode.' + task.name.replace(' ', '-');
-        const cmd = vscode.commands.registerTextEditorCommand(qualifiedCmdName, () => {
-          const ex = vscode.tasks.executeTask(task);
-          ex.then((v : vscode.TaskExecution) => {
-            debugChannel.info('Task "' + cmdName + '" executed');
-            v.terminate();
-          });
-        }
+        const cmd = vscode.commands.registerTextEditorCommand(
+          qualifiedCmdName,
+          () => {
+            const ex = vscode.tasks.executeTask(task);
+            ex.then((v: vscode.TaskExecution) => {
+              debugChannel.info('Task "' + cmdName + '" executed');
+              v.terminate();
+            });
+          }
         );
         context.subscriptions.push(cmd);
         debugChannel.info('[!] "' + cmdName + '" command registered');
@@ -66,16 +68,13 @@ export async function activate(context: vscode.ExtensionContext) {
           }
         })
       );
-   
     })
     .catch(err => {
       debugChannel.error('Task provider error: ' + err);
     });
 }
 
-function onDidChangeTypecheck(
-  config: user.JuvixConfig
-) {
+function onDidChangeTypecheck(config: user.JuvixConfig) {
   if (!config.typecheckOnChange.get()) return;
   const action = vscode.workspace.onDidChangeTextDocument(e => {
     const doc = e.document;

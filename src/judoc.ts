@@ -1,4 +1,3 @@
-
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -6,42 +5,55 @@ import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
 
-export const cats = {
-  'Coding Cat': 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
-  'Compiling Cat': 'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif',
-  'Testing Cat': 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif'
-};
-
 export function activate(context: vscode.ExtensionContext) {
-
   context.subscriptions.push(
-    vscode.commands.registerTextEditorCommand('juvix-mode.createOrShowJudoc', () => {
-      JudocPanel.createOrShow(context.extensionUri);
-    })
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('juvix-mode.doRefactor', () => {
-      if (JudocPanel.currentPanel) {
-        JudocPanel.currentPanel.doRefactor();
+    vscode.commands.registerTextEditorCommand(
+      'juvix-mode.createOrShowJudoc',
+      () => {
+        // if (JudocPanel.currentPanel) {
+        //   // JudocPanel.;
+        // }
+        // else
+        JudocPanel.createOrShow();
       }
-    })
+    )
   );
+
+  // // context.subscriptions.push(
+  // //   vscode.window.onDidChangeActiveTextEditor((editor) => {
+  // //     if (editor) {
+  // //       JudocPanel.dispose();
+  // //       JudocPanel.update(editor.document);
+  // //     }
+
+  // //   })
+  // // );
+
+
+  //   vscode.commands.registerCommand('juvix-mode.doRefactor', () => {
+  //     if (JudocPanel.currentPanel) {
+  //       JudocPanel.currentPanel.doRefactor();
+  //     }
+  //   })
+  // );
 
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
     vscode.window.registerWebviewPanelSerializer(JudocPanel.viewType, {
-      async deserializeWebviewPanel(webviewPanel: vscode.WebviewPanel, state: any) {
+      async deserializeWebviewPanel(
+        webviewPanel: vscode.WebviewPanel,
+        state: any
+      ) {
         console.log(`Got state: ${state}`);
         // Reset the webview options so we use latest uri for `localResourceRoots`.
-        webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
-        JudocPanel.revive(webviewPanel, context.extensionUri);
-      }
+        webviewPanel.webview.options = getWebviewOptions();
+        JudocPanel.revive(webviewPanel);
+      },
     });
   }
 }
 
-function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
+function getWebviewOptions(): vscode.WebviewOptions {
   return {
     // Enable javascript in the webview
     enableScripts: true,
@@ -55,17 +67,20 @@ function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
  * Manages Judoc webview panels
  */
 export class JudocPanel {
-
   public static currentPanel: JudocPanel | undefined;
+  public static juvixDocument: vscode.TextDocument;
 
   public static readonly viewType = 'juvix-mode';
   public readonly assetsPath = 'assets';
 
   private readonly _panel: vscode.WebviewPanel;
-  private readonly _extensionUri: vscode.Uri;
   private _disposables: vscode.Disposable[] = [];
 
-  public static createOrShow(extensionUri: vscode.Uri) {
+  public static createOrShow() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor || !isJuvixFile(editor.document)) return;
+    this.juvixDocument = editor.document;
+
 
     // If we already have a panel, show it.
     if (JudocPanel.currentPanel) {
@@ -76,24 +91,23 @@ export class JudocPanel {
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
       JudocPanel.viewType,
-      'Juvix Documentation viewer',
+      'Juvix Documentation Viewer',
       {
         viewColumn: vscode.ViewColumn.Beside,
-        preserveFocus: false
+        preserveFocus: false,
       },
-      getWebviewOptions(extensionUri),
+      getWebviewOptions()
     );
 
-    JudocPanel.currentPanel = new JudocPanel(panel, extensionUri);
+    JudocPanel.currentPanel = new JudocPanel(panel);
   }
 
-  public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-    JudocPanel.currentPanel = new JudocPanel(panel, extensionUri);
+  public static revive(panel: vscode.WebviewPanel) {
+    JudocPanel.currentPanel = new JudocPanel(panel);
   }
 
-  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+  private constructor(panel: vscode.WebviewPanel) {
     this._panel = panel;
-    this._extensionUri = extensionUri;
 
     // Set the webview's initial html content
     this._update();
@@ -149,10 +163,6 @@ export class JudocPanel {
 
   private _update() {
     const webview = this._panel.webview;
-    this._updateForHTML(webview);
-  }
-
-  private _updateForHTML(webview: vscode.Webview) {
     this._panel.title = 'Juvix Documentation viewer';
     const html = this._getHtmlForWebview(webview);
     if (html) this._panel.webview.html = html;
@@ -160,13 +170,8 @@ export class JudocPanel {
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
-
-    const doc = vscode.window.activeTextEditor?.document;
-    if (!doc || doc && !isJuvixFile(doc)) return;
-    // const HTML =;
-
-    // doc.getText();
-    // const contentDisk: string = fs.readFileSync(filePath, 'utf8');
+    const doc = JudocPanel.juvixDocument;
+    if (!doc || (doc && !isJuvixFile(doc))) return;
 
     const docFolder = vscode.workspace.getWorkspaceFolder(doc.uri);
     if (!docFolder) return;
@@ -182,13 +187,15 @@ export class JudocPanel {
       'doc',
       '--output-dir',
       judocDocFolder.fsPath,
-      doc.uri.fsPath
+      '--base-dir',
+      judocDocFolder.toString(),
+      doc.uri.fsPath,
     ].join(' ');
     debugChannel.info('Judoc call', judocCall);
 
     const ls = spawnSync(judocCall, {
       shell: true,
-      encoding: 'utf8'
+      encoding: 'utf8',
     });
 
     if (ls.status !== 0) {
@@ -196,13 +203,34 @@ export class JudocPanel {
       debugChannel.error('Judoc failed', errMsg);
       throw new Error(errMsg);
     }
+  
+    const juvixRootCall = [
+        config.getJuvixExec(),
+        config.getGlobalFlags(),
+        'dev',
+        'root',
+        doc.uri.fsPath
+      ].join(' ');
+
+    const rootRun = spawnSync(juvixRootCall, { shell:true, encoding: 'utf8'});
+    if (rootRun.status !== 0) {
+      const errMsg: string = "Juvix's Error: " + rootRun.stderr.toString();
+      debugChannel.error('Juvix root failed for Judoc gen:', errMsg);
+      throw new Error(errMsg);
+    };
+    const juvixRoot = rootRun.stdout.toString().trim();
+    const htmlFilename =  doc.uri.fsPath
+      .replace(juvixRoot, '')
+      .replace('/', '.')
+      .replace('.juvix', '.html');
+
     const htmlByJudocForDoc = vscode.Uri.joinPath(
-      judocDocFolder,
-      path.basename(doc.uri.fsPath).replace('.juvix', '.html')).fsPath;
+        judocDocFolder,
+        htmlFilename
+      ).fsPath;
     debugChannel.info('Rendering...', htmlByJudocForDoc);
 
-    const contentDisk: string = fs.readFileSync(
-      htmlByJudocForDoc, 'utf8');
+    const contentDisk: string = fs.readFileSync(htmlByJudocForDoc, 'utf8');
 
     const assetsUri = vscode.Uri.joinPath(judocDocFolder, 'assets');
 
@@ -210,17 +238,25 @@ export class JudocPanel {
     const highlightUri = webview.asWebviewUri(highlightJS);
 
     // Local path to css styles
-    const sourceAyuLightCss = vscode.Uri.joinPath(assetsUri,
-      'source-ayu-light.css');
-    const linuwialCss = vscode.Uri.joinPath(assetsUri,
-      'linuwial.css');
-    const sourceNordCss = vscode.Uri.joinPath(assetsUri,
-      'source-nord.cs');
+    const sourceAyuLightCss = vscode.Uri.joinPath(
+      assetsUri,
+      'source-ayu-light.css'
+    );
+    const linuwialCss = vscode.Uri.joinPath(assetsUri, 'linuwial.css');
+    const sourceNordCss = vscode.Uri.joinPath(assetsUri, 'source-nord.cs');
 
-    const taraSeatingSVG = vscode.Uri.joinPath(assetsUri, 'seating-mascot.051c86a.svg');
-    const taraTeachingSVG = vscode.Uri.joinPath(assetsUri, 'teaching-mascot.f828959.svg');
-    const taraSmilingSVG = vscode.Uri.joinPath(assetsUri, 'Seating_Tara_smiling.svg');
-
+    const taraSeatingSVG = vscode.Uri.joinPath(
+      assetsUri,
+      'seating-mascot.051c86a.svg'
+    );
+    const taraTeachingSVG = vscode.Uri.joinPath(
+      assetsUri,
+      'teaching-mascot.f828959.svg'
+    );
+    const taraSmilingSVG = vscode.Uri.joinPath(
+      assetsUri,
+      'Seating_Tara_smiling.svg'
+    );
 
     // Uri to load styles into webview
     const sourceAyuLightUri = webview.asWebviewUri(sourceAyuLightCss);
@@ -232,18 +268,38 @@ export class JudocPanel {
 
     const withVScodeInfo = contentDisk
       .replace(
-      'href="assets/source-ayu-light.css"', 'href="' + sourceAyuLightUri + '"')
+        'href="assets/source-ayu-light.css"',
+        'href="' + sourceAyuLightUri + '"'
+      )
+      .replace('href="assets/linuwial.css"', 'href="' + linuwialUri + '"')
+      .replace('href="assets/source-nord.cs"', 'href="' + sourceNordUri + '"')
       .replace(
-        'href="assets/linuwial.css"', 'href="' + linuwialUri + '"')
+        'src="assets/seating-mascot.051c86a.svg"',
+        'src="' + taraSeatingSVG + '"'
+      )
       .replace(
-          'href="assets/source-nord.cs"', 'href="' + sourceNordUri + '"')
+        'src="assets/Seating_Tara_smiling.svg"',
+        'src="' + taraSmilingSVG + '"'
+      )
+      .replace(
+        'src="assets/teaching-mascot.f828959.svg"',
+        'src="' + taraTeachingSVG + '"'
+      )
       .replace(
         'src="assets/highlight.js"',
         'nonce="' + nonce + '" src="' + highlightUri + '"'
-        ).replace(
+      )
+      .replace(
         '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
-        "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src " + webview.cspSource + "; img-src " + webview.cspSource + " https:; script-src 'nonce-" + nonce + "';\">"
-        )
+        '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src ' +
+        webview.cspSource +
+        '; img-src ' +
+        webview.cspSource +
+        " https:; script-src 'nonce-" +
+        nonce +
+        '\';">'
+      );
+      // .replace('a href="
 
     debugChannel.info('withSecurityInfo', withVScodeInfo);
 
@@ -253,7 +309,8 @@ export class JudocPanel {
 
 export function getNonce() {
   let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < 32; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
