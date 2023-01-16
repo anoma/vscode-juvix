@@ -19,6 +19,25 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  vscode.languages.registerHoverProvider(
+    'javascript',
+    new (class implements vscode.HoverProvider {
+      provideHover(
+        document: vscode.TextDocument,
+        _position: vscode.Position,
+        _token: vscode.CancellationToken
+      ): vscode.ProviderResult<vscode.Hover> {
+        const args = [{ resourceUri: document.uri }];
+        const stageCommandUri = vscode.Uri.parse(
+          `command:git.stage?${encodeURIComponent(JSON.stringify(args))}`
+        );
+        const contents = new vscode.MarkdownString(`[Stage file](${stageCommandUri})`);
+        contents.isTrusted = true;
+        return new vscode.Hover(contents);
+      }
+    })()
+  );
+
   // // context.subscriptions.push(
   // //   vscode.window.onDidChangeActiveTextEditor((editor) => {
   // //     if (editor) {
@@ -57,7 +76,7 @@ function getWebviewOptions(): vscode.WebviewOptions {
   return {
     // Enable javascript in the webview
     enableScripts: true,
-
+    enableCommandUris: true,
     // And restrict the webview to only loading content from our extension's `media` directory.
     // localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
   };
@@ -80,8 +99,6 @@ export class JudocPanel {
     const editor = vscode.window.activeTextEditor;
     if (!editor || !isJuvixFile(editor.document)) return;
     this.juvixDocument = editor.document;
-
-
     // If we already have a panel, show it.
     if (JudocPanel.currentPanel) {
       JudocPanel.currentPanel._panel.reveal();
@@ -91,10 +108,10 @@ export class JudocPanel {
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
       JudocPanel.viewType,
-      'Juvix Documentation Viewer',
+      'Html preview',
       {
         viewColumn: vscode.ViewColumn.Beside,
-        preserveFocus: false,
+        preserveFocus: true,
       },
       getWebviewOptions()
     );
@@ -108,6 +125,31 @@ export class JudocPanel {
 
   private constructor(panel: vscode.WebviewPanel) {
     this._panel = panel;
+    this._disposables.push(
+      vscode.workspace.onDidSaveTextDocument((document) => {
+        if (document ===JudocPanel.juvixDocument) {
+          this._update();
+        }
+      })
+    );
+
+    this._disposables.push(
+      vscode.workspace.onDidCloseTextDocument((document) => {
+        if (document ===JudocPanel.juvixDocument) {
+          this._panel.dispose();
+          this.dispose();
+        }
+      })
+    );
+
+    this._disposables.push(
+      vscode.window.onDidChangeActiveTextEditor((e) => {
+        if (!e || !isJuvixFile(e.document)) return;
+        JudocPanel.juvixDocument = e.document;
+        this._update();
+      })
+    );
+
 
     // Set the webview's initial html content
     this._update();
@@ -118,7 +160,7 @@ export class JudocPanel {
 
     // Update the content based on view changes
     this._panel.onDidChangeViewState(
-      e => {
+      _e => {
         if (this._panel.visible) {
           this._update();
         }
@@ -175,20 +217,25 @@ export class JudocPanel {
 
     const docFolder = vscode.workspace.getWorkspaceFolder(doc.uri);
     if (!docFolder) return;
-    const judocDocFolder = vscode.Uri.joinPath(docFolder.uri, 'doc');
 
     const config = new JuvixConfig();
+    const judocDocFolder = config.getJudocdDir();
+    // const judocDocFolderUri = vscode.Uri.file(judocDocFolder);
+    const judocDocFolderUri = vscode.Uri.joinPath(docFolder.uri, 'html');
+
     const { spawnSync } = require('child_process');
 
+    const vscodePrefix = webview.asWebviewUri(judocDocFolderUri).toString()+"/";
     const judocCall = [
       config.getJuvixExec(),
       config.getGlobalFlags(),
-      'dev',
-      'doc',
+      'html',
       '--output-dir',
-      judocDocFolder.fsPath,
-      '--base-dir',
-      judocDocFolder.toString(),
+      judocDocFolderUri.fsPath,
+      '--prefix-assets',
+      vscodePrefix,
+      '--prefix-url',
+     vscodePrefix,
       doc.uri.fsPath,
     ].join(' ');
     debugChannel.info('Judoc call', judocCall);
@@ -225,70 +272,21 @@ export class JudocPanel {
       .replace('.juvix', '.html');
 
     const htmlByJudocForDoc = vscode.Uri.joinPath(
-        judocDocFolder,
+        judocDocFolderUri,
         htmlFilename
       ).fsPath;
     debugChannel.info('Rendering...', htmlByJudocForDoc);
 
     const contentDisk: string = fs.readFileSync(htmlByJudocForDoc, 'utf8');
 
-    const assetsUri = vscode.Uri.joinPath(judocDocFolder, 'assets');
-
-    const highlightJS = vscode.Uri.joinPath(assetsUri, 'highlight.js');
-    const highlightUri = webview.asWebviewUri(highlightJS);
-
-    // Local path to css styles
-    const sourceAyuLightCss = vscode.Uri.joinPath(
-      assetsUri,
-      'source-ayu-light.css'
-    );
-    const linuwialCss = vscode.Uri.joinPath(assetsUri, 'linuwial.css');
-    const sourceNordCss = vscode.Uri.joinPath(assetsUri, 'source-nord.cs');
-
-    const taraSeatingSVG = vscode.Uri.joinPath(
-      assetsUri,
-      'seating-mascot.051c86a.svg'
-    );
-    const taraTeachingSVG = vscode.Uri.joinPath(
-      assetsUri,
-      'teaching-mascot.f828959.svg'
-    );
-    const taraSmilingSVG = vscode.Uri.joinPath(
-      assetsUri,
-      'Seating_Tara_smiling.svg'
-    );
-
-    // Uri to load styles into webview
-    const sourceAyuLightUri = webview.asWebviewUri(sourceAyuLightCss);
-    const linuwialUri = webview.asWebviewUri(linuwialCss);
-    const sourceNordUri = webview.asWebviewUri(sourceNordCss);
+    const assetsUri = vscode.Uri.joinPath(judocDocFolderUri, 'assets');
+    debugChannel.info('Assets Path', assetsUri);
+    debugChannel.info('Assets URI', webview.asWebviewUri(assetsUri));
 
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
 
-    const withVScodeInfo = contentDisk
-      .replace(
-        'href="assets/source-ayu-light.css"',
-        'href="' + sourceAyuLightUri + '"'
-      )
-      .replace('href="assets/linuwial.css"', 'href="' + linuwialUri + '"')
-      .replace('href="assets/source-nord.cs"', 'href="' + sourceNordUri + '"')
-      .replace(
-        'src="assets/seating-mascot.051c86a.svg"',
-        'src="' + taraSeatingSVG + '"'
-      )
-      .replace(
-        'src="assets/Seating_Tara_smiling.svg"',
-        'src="' + taraSmilingSVG + '"'
-      )
-      .replace(
-        'src="assets/teaching-mascot.f828959.svg"',
-        'src="' + taraTeachingSVG + '"'
-      )
-      .replace(
-        'src="assets/highlight.js"',
-        'nonce="' + nonce + '" src="' + highlightUri + '"'
-      )
+    return contentDisk
       .replace(
         '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
         '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src ' +
@@ -299,11 +297,6 @@ export class JudocPanel {
         nonce +
         '\';">'
       );
-      // .replace('a href="
-
-    debugChannel.info('withSecurityInfo', withVScodeInfo);
-
-    return withVScodeInfo;
   }
 }
 

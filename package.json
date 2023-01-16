@@ -324,7 +324,7 @@
       },
       {
         "command": "juvix-mode.createOrShowJudoc",
-        "title": "show Judoc viewer",
+        "title": "Html preview",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(book)"
@@ -504,6 +504,11 @@
               "type": "string",
               "default": ".juvix-build",
               "description": "Directory for compiler internal output. Empty string will make the compiler use a temporary directory."
+            },
+            "judocDir": {
+              "type": "string",
+              "default": "html",
+              "description": "Directory for html output. Empty string will make the compiler use a temporary directory."
             }
           },
           "additionalProperties": false,

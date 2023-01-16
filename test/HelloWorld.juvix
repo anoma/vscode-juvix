@@ -1,6 +1,9 @@
 module HelloWorld;
+
 open import Stdlib.Prelude;
-  main : IO;
-  main := putStrLn "hello world!";
+
+  --- ESto es un comentario...
+  ASDFASDFASDFASDFASDFASDFs : IO;
+  ASDFASDFASDFASDFASDFASDFs := putStrLn "hello world!";
 
 end;
