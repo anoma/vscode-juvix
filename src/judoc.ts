@@ -1,3 +1,6 @@
+/*---------------------------------------------------------
+ * Copyright (C) Microsoft Corporation. All rights reserved.
+ *--------------------------------------------------------*/
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -6,6 +9,8 @@ import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
 
 export function activate(context: vscode.ExtensionContext) {
+  const config = new JuvixConfig();
+
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'juvix-mode.createOrShowJudoc',
@@ -14,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
         //   // JudocPanel.;
         // }
         // else
-        JudocPanel.createOrShow();
+        JudocPanel.createOrShow(config);
       }
     )
   );
@@ -38,24 +43,6 @@ export function activate(context: vscode.ExtensionContext) {
     })()
   );
 
-  // // context.subscriptions.push(
-  // //   vscode.window.onDidChangeActiveTextEditor((editor) => {
-  // //     if (editor) {
-  // //       JudocPanel.dispose();
-  // //       JudocPanel.update(editor.document);
-  // //     }
-
-  // //   })
-  // // );
-
-
-  //   vscode.commands.registerCommand('juvix-mode.doRefactor', () => {
-  //     if (JudocPanel.currentPanel) {
-  //       JudocPanel.currentPanel.doRefactor();
-  //     }
-  //   })
-  // );
-
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
     vscode.window.registerWebviewPanelSerializer(JudocPanel.viewType, {
@@ -72,13 +59,13 @@ export function activate(context: vscode.ExtensionContext) {
   }
 }
 
-function getWebviewOptions(): vscode.WebviewOptions {
+function getWebviewOptions(_contentPath?:string): vscode.WebviewOptions {
   return {
     // Enable javascript in the webview
     enableScripts: true,
     enableCommandUris: true,
     // And restrict the webview to only loading content from our extension's `media` directory.
-    // localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
+    // localResourceRoots: [contentPath ? vscode.Uri.file(contentPath) : vscode.Uri.file(path.join(__dirname, '..', 'media'))]
   };
 }
 
@@ -94,8 +81,9 @@ export class JudocPanel {
 
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
+  public  readonly htmlFolder : string;
 
-  public static createOrShow() {
+  public static createOrShow(config: JuvixConfig) {
     const editor = vscode.window.activeTextEditor;
     if (!editor || !isJuvixFile(editor.document)) return;
     this.juvixDocument = editor.document;
@@ -116,15 +104,17 @@ export class JudocPanel {
       getWebviewOptions()
     );
 
-    JudocPanel.currentPanel = new JudocPanel(panel);
+    JudocPanel.currentPanel = new JudocPanel(panel, config.getJudocdDir());
   }
 
   public static revive(panel: vscode.WebviewPanel) {
-    JudocPanel.currentPanel = new JudocPanel(panel);
+    const config = new JuvixConfig();
+    JudocPanel.currentPanel = new JudocPanel(panel,  config.getJudocdDir());
   }
 
-  private constructor(panel: vscode.WebviewPanel) {
+  private constructor(panel: vscode.WebviewPanel, htmlFolder: string) {
     this._panel = panel;
+    this.htmlFolder = htmlFolder;
     this._disposables.push(
       vscode.workspace.onDidSaveTextDocument((document) => {
         if (document ===JudocPanel.juvixDocument) {
@@ -217,10 +207,12 @@ export class JudocPanel {
 
     const docFolder = vscode.workspace.getWorkspaceFolder(doc.uri);
     if (!docFolder) return;
-
     const config = new JuvixConfig();
-    const judocDocFolder = config.getJudocdDir();
-    // const judocDocFolderUri = vscode.Uri.file(judocDocFolder);
+    
+    debugChannel.info("htmlFolder> " + this.htmlFolder);
+
+    // const judocDocFolderUri = vscode.Uri.file(this.htmlFolder);
+    // const judocDocFolderUri = vscode.Uri.file(config.getInternalBuildDir());
     const judocDocFolderUri = vscode.Uri.joinPath(docFolder.uri, 'html');
 
     const { spawnSync } = require('child_process');
@@ -231,6 +223,7 @@ export class JudocPanel {
       config.getGlobalFlags(),
       'html',
       '--output-dir',
+      // this.htmlFolder,
       judocDocFolderUri.fsPath,
       '--prefix-assets',
       vscodePrefix,
@@ -264,7 +257,7 @@ export class JudocPanel {
       const errMsg: string = "Juvix's Error: " + rootRun.stderr.toString();
       debugChannel.error('Juvix root failed for Judoc gen:', errMsg);
       throw new Error(errMsg);
-    };
+    }
     const juvixRoot = rootRun.stdout.toString().trim();
     const htmlFilename =  doc.uri.fsPath
       .replace(juvixRoot, '')
