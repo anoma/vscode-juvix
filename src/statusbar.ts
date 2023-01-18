@@ -22,9 +22,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   let execJuvixVersion: string;
   if (ls.status !== 0) {
-    debugChannel.info(
-      'Juvix binary is not installed. Please check the instructions on https://docs.juvix.org'
+    debugChannel.error(
+      'Juvix binary is not installed. Please check the binary path in the configuration page or the instructions on https://docs.juvix.or to install it.'
     );
+    juvixStatusBarItemVersion.hide();
     // debug.log('info', 'Juvix exec: ' + config.getJuvixExec());
     return;
   } else {

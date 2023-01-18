@@ -6,28 +6,4 @@ id A a := a;
 axiom A : Type;
 axiom B : Type;
 
-id1 : {C : Type } -> C -> C;
-id1 := id ((A -> B) -> A -> B) (id (A -> B));
-
-id2 : {A : Type } -> {B : Type} -> {C : Type } -> C -> C;
-id2 {A}{B} := id ((A -> B) -> A -> B) (id (A -> B));
-
-id3 :  ((A -> B) -> (A -> B));
-id3  := id ((A -> B) -> A -> B) (id (A -> B));
-
-id4 : {C : Type} -> C -> C;
-id4 := id ((A -> B) -> A -> B) (id (A -> B));
-
--- id4 : {C : Type } -> C -> C; 
--- id4 {C}  := id ((A -> B) -> A -> B) (id (A -> B));
-
--- (A -> B) -> (A -> B)
-
-{-
-(id (A -> B)) : (A -> B) -> (A -> B)
-id ((A -> B) -> (A -> B)) : ((A -> B) -> (A -> B)) -> ((A -> B) -> (A -> B))
-id ((A → B) → A → B) (id (A → B)) :  ((A -> B) -> (A -> B))
--}
-
 end;
--- DEBUG: cat
