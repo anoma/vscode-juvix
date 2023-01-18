@@ -9,39 +9,33 @@ import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
 
 export function activate(context: vscode.ExtensionContext) {
-  const config = new JuvixConfig();
-
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'juvix-mode.createOrShowJudoc',
       () => {
-        // if (JudocPanel.currentPanel) {
-        //   // JudocPanel.;
-        // }
-        // else
-        JudocPanel.createOrShow(config);
+        JudocPanel.createOrShow();
       }
     )
   );
 
-  vscode.languages.registerHoverProvider(
-    'javascript',
-    new (class implements vscode.HoverProvider {
-      provideHover(
-        document: vscode.TextDocument,
-        _position: vscode.Position,
-        _token: vscode.CancellationToken
-      ): vscode.ProviderResult<vscode.Hover> {
-        const args = [{ resourceUri: document.uri }];
-        const stageCommandUri = vscode.Uri.parse(
-          `command:git.stage?${encodeURIComponent(JSON.stringify(args))}`
-        );
-        const contents = new vscode.MarkdownString(`[Stage file](${stageCommandUri})`);
-        contents.isTrusted = true;
-        return new vscode.Hover(contents);
-      }
-    })()
-  );
+  // vscode.languages.registerHoverProvider(
+  //   'javascript',
+  //   new (class implements vscode.HoverProvider {
+  //     provideHover(
+  //       document: vscode.TextDocument,
+  //       _position: vscode.Position,
+  //       _token: vscode.CancellationToken
+  //     ): vscode.ProviderResult<vscode.Hover> {
+  //       const args = [{ resourceUri: document.uri }];
+  //       const stageCommandUri = vscode.Uri.parse(
+  //         `command:git.stage?${encodeURIComponent(JSON.stringify(args))}`
+  //       );
+  //       const contents = new vscode.MarkdownString(`[Stage file](${stageCommandUri})`);
+  //       contents.isTrusted = true;
+  //       return new vscode.Hover(contents);
+  //     }
+  //   })()
+  // );
 
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
@@ -59,13 +53,13 @@ export function activate(context: vscode.ExtensionContext) {
   }
 }
 
-function getWebviewOptions(_contentPath?:string): vscode.WebviewOptions {
+function getWebviewOptions(): vscode.WebviewOptions {
   return {
     // Enable javascript in the webview
     enableScripts: true,
-    enableCommandUris: true,
-    // And restrict the webview to only loading content from our extension's `media` directory.
-    // localResourceRoots: [contentPath ? vscode.Uri.file(contentPath) : vscode.Uri.file(path.join(__dirname, '..', 'media'))]
+    // enableCommandUris: true,
+    // And restrict the webview to only loading content from our extension's `html` directory.
+    // localResourceRoots: []
   };
 }
 
@@ -79,11 +73,11 @@ export class JudocPanel {
   public static readonly viewType = 'juvix-mode';
   public readonly assetsPath = 'assets';
 
-  private readonly _panel: vscode.WebviewPanel;
+  private _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
-  public  readonly htmlFolder : string;
+  // public  readonly htmlFolder : string;
 
-  public static createOrShow(config: JuvixConfig) {
+  public static createOrShow() {
     const editor = vscode.window.activeTextEditor;
     if (!editor || !isJuvixFile(editor.document)) return;
     this.juvixDocument = editor.document;
@@ -104,42 +98,56 @@ export class JudocPanel {
       getWebviewOptions()
     );
 
-    JudocPanel.currentPanel = new JudocPanel(panel, config.getJudocdDir());
+    JudocPanel.currentPanel = new JudocPanel(panel);
   }
 
   public static revive(panel: vscode.WebviewPanel) {
     const config = new JuvixConfig();
-    JudocPanel.currentPanel = new JudocPanel(panel,  config.getJudocdDir());
+    JudocPanel.currentPanel = new JudocPanel(panel, config.getJudocdDir());
   }
 
-  private constructor(panel: vscode.WebviewPanel, htmlFolder: string) {
+  private constructor(panel: vscode.WebviewPanel, _htmlFolder?: string) {
     this._panel = panel;
-    this.htmlFolder = htmlFolder;
+    // this.htmlFolder = htmlFolder;
+
     this._disposables.push(
-      vscode.workspace.onDidSaveTextDocument((document) => {
-        if (document ===JudocPanel.juvixDocument) {
+      vscode.workspace.onDidSaveTextDocument(document => {
+        if (!isJuvixFile(document)) return;
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor && document === activeEditor.document) {
+          JudocPanel.juvixDocument = document;
+          this._update();
+        }
+      })
+    );
+
+    // this._disposables.push(
+    //   vscode.workspace.onDidCloseTextDocument((document) => {
+    //     if (document === JudocPanel.juvixDocument) {
+    //       this._panel.dispose();
+    //       // this.dispose();
+    //     }
+    //   })
+    // );
+
+    this._disposables.push(
+      vscode.workspace.onDidOpenTextDocument(document => {
+        if (!isJuvixFile(document)) return;
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor && document === activeEditor.document) {
+          JudocPanel.juvixDocument = document;
           this._update();
         }
       })
     );
 
     this._disposables.push(
-      vscode.workspace.onDidCloseTextDocument((document) => {
-        if (document ===JudocPanel.juvixDocument) {
-          this._panel.dispose();
-          this.dispose();
-        }
-      })
-    );
-
-    this._disposables.push(
-      vscode.window.onDidChangeActiveTextEditor((e) => {
+      vscode.window.onDidChangeActiveTextEditor(e => {
         if (!e || !isJuvixFile(e.document)) return;
         JudocPanel.juvixDocument = e.document;
         this._update();
       })
     );
-
 
     // Set the webview's initial html content
     this._update();
@@ -208,27 +216,32 @@ export class JudocPanel {
     const docFolder = vscode.workspace.getWorkspaceFolder(doc.uri);
     if (!docFolder) return;
     const config = new JuvixConfig();
-    
-    debugChannel.info("htmlFolder> " + this.htmlFolder);
+
+    // debugChannel.info("htmlFolder> " + this.htmlFolder);
 
     // const judocDocFolderUri = vscode.Uri.file(this.htmlFolder);
     // const judocDocFolderUri = vscode.Uri.file(config.getInternalBuildDir());
     const judocDocFolderUri = vscode.Uri.joinPath(docFolder.uri, 'html');
+    // const buildDir = config.getInternalBuildDir();
 
     const { spawnSync } = require('child_process');
 
-    const vscodePrefix = webview.asWebviewUri(judocDocFolderUri).toString()+"/";
+    const vscodePrefix =
+      webview.asWebviewUri(judocDocFolderUri).toString() + '/';
+
     const judocCall = [
       config.getJuvixExec(),
-      config.getGlobalFlags(),
+      '--internal-build-dir',
+      judocDocFolderUri.fsPath,
       'html',
       '--output-dir',
       // this.htmlFolder,
       judocDocFolderUri.fsPath,
+      '--non-recursive',
       '--prefix-assets',
       vscodePrefix,
       '--prefix-url',
-     vscodePrefix,
+      vscodePrefix,
       doc.uri.fsPath,
     ].join(' ');
     debugChannel.info('Judoc call', judocCall);
@@ -243,53 +256,49 @@ export class JudocPanel {
       debugChannel.error('Judoc failed', errMsg);
       throw new Error(errMsg);
     }
-  
-    const juvixRootCall = [
-        config.getJuvixExec(),
-        config.getGlobalFlags(),
-        'dev',
-        'root',
-        doc.uri.fsPath
-      ].join(' ');
 
-    const rootRun = spawnSync(juvixRootCall, { shell:true, encoding: 'utf8'});
+    const juvixRootCall = [
+      config.getJuvixExec(),
+      config.getGlobalFlags(),
+      'dev',
+      'root',
+      doc.uri.fsPath,
+    ].join(' ');
+
+    const rootRun = spawnSync(juvixRootCall, { shell: true, encoding: 'utf8' });
     if (rootRun.status !== 0) {
       const errMsg: string = "Juvix's Error: " + rootRun.stderr.toString();
       debugChannel.error('Juvix root failed for Judoc gen:', errMsg);
       throw new Error(errMsg);
     }
     const juvixRoot = rootRun.stdout.toString().trim();
-    const htmlFilename =  doc.uri.fsPath
+    const htmlFilename = doc.uri.fsPath
       .replace(juvixRoot, '')
       .replace('/', '.')
       .replace('.juvix', '.html');
 
     const htmlByJudocForDoc = vscode.Uri.joinPath(
-        judocDocFolderUri,
-        htmlFilename
-      ).fsPath;
-    debugChannel.info('Rendering...', htmlByJudocForDoc);
+      judocDocFolderUri,
+      htmlFilename
+    ).fsPath;
+
+    debugChannel.info('Rendering html file: ', htmlByJudocForDoc);
 
     const contentDisk: string = fs.readFileSync(htmlByJudocForDoc, 'utf8');
-
-    const assetsUri = vscode.Uri.joinPath(judocDocFolderUri, 'assets');
-    debugChannel.info('Assets Path', assetsUri);
-    debugChannel.info('Assets URI', webview.asWebviewUri(assetsUri));
 
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
 
-    return contentDisk
-      .replace(
-        '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
-        '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src ' +
+    return contentDisk.replace(
+      '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
+      '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src ' +
         webview.cspSource +
         '; img-src ' +
         webview.cspSource +
         " https:; script-src 'nonce-" +
         nonce +
         '\';">'
-      );
+    );
   }
 }
 

@@ -16,3 +16,4 @@ node_modules
 out
 **/.juvix-build
 .history
+html/

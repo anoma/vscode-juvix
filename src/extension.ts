@@ -13,6 +13,7 @@ import * as inputMethod from './input';
 import * as repl from './repl';
 import * as judoc from './judoc';
 import * as dev from './dev';
+import * as check from './check';
 
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
@@ -24,5 +25,6 @@ export async function activate(context: vscode.ExtensionContext) {
   goToDefinition.activate(context);
   dev.activate(context);
   judoc.activate(context);
+  check.activate(context);
   debugChannel.info('Juvix extension is ready!');
 }

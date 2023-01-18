@@ -352,7 +352,7 @@
       {
         "key": "shift+alt+t",
         "command": "juvix-mode.typecheck",
-        "args": "Juvix: typecheck",
+        "args": "Juvix: typecheck task",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(debug-start)"
       },
@@ -453,7 +453,7 @@
         },
         "juvix-mode.revealPanel": {
           "type": "string",
-          "default": "always",
+          "default": "silent",
           "enum": [
             "always",
             "silent",
@@ -461,10 +461,14 @@
           ],
           "description": "Reveal panel for typechecking/compilation output"
         },
-        "juvix-mode.typecheckOnChange": {
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Run typechecker on any change to the file."
+        "juvix-mode.typecheckOn": {
+          "type": "string",
+          "default": "save",
+          "enum": [
+            "change",
+            "save",
+            "none"
+          ]
         },
         "juvix-mode.reloadReplOnSave": {
           "type": "boolean",

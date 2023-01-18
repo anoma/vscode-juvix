@@ -24,6 +24,8 @@ export class JuvixConfig {
   }
 
   readonly revealPanel = new VsCodeSetting('juvix-mode.revealPanel');
+  readonly typecheckOn = new VsCodeSetting('juvix-mode.typecheckOn');
+
   readonly noColors = new VsCodeSetting('juvix-mode.opts.noColors');
 
   readonly showNameIds = new VsCodeSetting('juvix-mode.opts.showNameIds');
@@ -35,9 +37,7 @@ export class JuvixConfig {
     'juvix-mode.opts.internalBuildDir'
   );
 
-  readonly judocDir = new VsCodeSetting(
-    'juvix-mode.opts.judocDir'
-  );
+  readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir');
 
   public getInternalBuildDir(): string {
     const buildDir = this.internalBuildDir.get();

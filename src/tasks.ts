@@ -47,42 +47,19 @@ export async function activate(context: vscode.ExtensionContext) {
             ex.then((v: vscode.TaskExecution) => {
               debugChannel.info('Task "' + cmdName + '" executed');
               v.terminate();
+              return true;
             });
+            debugChannel.info('Task "' + cmdName + '" executed');
+            return false;
           }
         );
         context.subscriptions.push(cmd);
         debugChannel.info('[!] "' + cmdName + '" command registered');
       }
-
-      // Typecheck on save
-      let action = onDidChangeTypecheck(config);
-      if (action) context.subscriptions.push(action);
-      context.subscriptions.push(
-        vscode.workspace.onDidChangeConfiguration(e => {
-          if (e.affectsConfiguration('juvix-mode.typecheckOnChange')) {
-            if (!config.typecheckOnChange.get() && action) action.dispose();
-            else {
-              action = onDidChangeTypecheck(config);
-              if (action) context.subscriptions.push(action);
-            }
-          }
-        })
-      );
     })
     .catch(err => {
       debugChannel.error('Task provider error: ' + err);
     });
-}
-
-function onDidChangeTypecheck(config: user.JuvixConfig) {
-  if (!config.typecheckOnChange.get()) return;
-  const action = vscode.workspace.onDidChangeTextDocument(e => {
-    const doc = e.document;
-    const activeEditor = vscode.window.activeTextEditor;
-    if (activeEditor && activeEditor.document === doc && isJuvixFile(doc))
-      vscode.commands.executeCommand('juvix-mode.typecheck');
-  });
-  return action;
 }
 
 export interface JuvixTaskDefinition extends vscode.TaskDefinition {
@@ -95,15 +72,15 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
     const config = new user.JuvixConfig();
     const setupPanel = () => {
       let panelOpt: vscode.TaskRevealKind;
-      switch (config.revealPanel.toString()) {
-        case 'silent':
-          panelOpt = vscode.TaskRevealKind.Silent;
+      switch (config.revealPanel.get()) {
+        case 'always':
+          panelOpt = vscode.TaskRevealKind.Always;
           break;
         case 'never':
           panelOpt = vscode.TaskRevealKind.Never;
           break;
         default:
-          panelOpt = vscode.TaskRevealKind.Always;
+          panelOpt = vscode.TaskRevealKind.Silent;
       }
       return panelOpt;
     };
@@ -119,7 +96,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         command: 'typecheck',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
-        reveal: setupPanel(),
+        reveal: vscode.TaskRevealKind.Silent,
       },
       {
         command: 'compile',
@@ -137,7 +114,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         command: 'html',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
+        reveal: vscode.TaskRevealKind.Silent,
       },
       {
         command: 'dev parse',
@@ -168,9 +145,13 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       vscodeTask.presentationOptions = {
         reveal: def.reveal,
         showReuseMessage: false,
+        panel: vscode.TaskPanelKind.Shared,
         focus: false,
         echo: false,
         clear: true,
+      };
+      vscodeTask.runOptions = {
+        reevaluateOnRerun: true,
       };
       tasks.push(vscodeTask);
     }
