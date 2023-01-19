@@ -1,10 +1,10 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
-  "publisher": "heliax",
+  "publisher": "Heliax",
   "icon": "assets/tara.png",
   "repository": {
     "type": "git",
@@ -28,9 +28,6 @@
     "language",
     "programming"
   ],
-  "galleryBanner": {
-    "theme": "dark"
-  },
   "main": "./out/extension.js",
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -97,7 +94,7 @@
         "[*Light*]": {
           "rules": {
             "axiom": {
-              "foreground": "#e70000"
+              "foreground": "#ad1313"
             },
             "comment": {
               "foreground": "#a8a8a8",
@@ -463,7 +460,7 @@
         },
         "juvix-mode.typecheckOn": {
           "type": "string",
-          "default": "save",
+          "default": "none",
           "enum": [
             "change",
             "save",
@@ -478,8 +475,16 @@
         "juvix-mode.opts": {
           "type": "object",
           "order": 1,
-          "description": "Global flags for the Juvix CLI.",
+          "description": "Common options for the Juvix CLI.",
           "properties": {
+            "internalBuildDir": {
+              "type": "string",
+              "description": "Directory for compiler internal output. Empty string will make the compiler use a temporary directory."
+            },
+            "judocDir": {
+              "type": "string",
+              "description": "Directory for html output. Empty string will make the compiler use a temporary directory."
+            },
             "noColors": {
               "type": "boolean",
               "description": "Disable ANSI formatting"
@@ -503,20 +508,12 @@
             "noStdlib": {
               "type": "boolean",
               "description": "Do not use the standard library"
-            },
-            "internalBuildDir": {
-              "type": "string",
-              "default": ".juvix-build",
-              "description": "Directory for compiler internal output. Empty string will make the compiler use a temporary directory."
-            },
-            "judocDir": {
-              "type": "string",
-              "default": "html",
-              "description": "Directory for html output. Empty string will make the compiler use a temporary directory."
             }
           },
           "additionalProperties": false,
           "default": {
+            "internalBuildDir": ".juvix-build",
+            "judocDir": "html",
             "noColors": false,
             "showNameIds": false,
             "onlyErrors": false,

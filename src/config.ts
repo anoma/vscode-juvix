@@ -10,6 +10,8 @@ import * as path from 'path';
 import { tmpdir } from 'os';
 import { debugChannel } from './utils/debug';
 
+let juvixBuildDir: string | undefined;
+
 export class JuvixConfig {
   readonly binaryName = new VsCodeSetting('juvix-mode.bin.name', {
     serializer: serializerWithDefault('Juvix'),
@@ -39,17 +41,22 @@ export class JuvixConfig {
 
   readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir');
 
-  public getInternalBuildDir(): string {
+  public getInternalBuildDir(): string | undefined {
+    if (juvixBuildDir) return juvixBuildDir;
     const buildDir = this.internalBuildDir.get();
-    if (buildDir) return buildDir.toString();
-    const tmp = path.join(tmpdir(), fs.mkdtempSync('juvix'));
+    if (buildDir) {
+      juvixBuildDir = buildDir.toString();
+      return juvixBuildDir;
+    }
+    const tmp = path.join(tmpdir(), fs.mkdtempSync('.juvix-build'));
     try {
       fs.mkdirSync(tmp);
-      return tmp.toString();
+      juvixBuildDir = tmp.toString();
+      return juvixBuildDir;
     } catch (e) {
       debugChannel.error('Error creating temporary directory: ' + e);
     }
-    return '.juvix-build';
+    return juvixBuildDir;
   }
 
   public getJudocdDir(): string {
@@ -89,8 +96,11 @@ export class JuvixConfig {
     if (this.noTermination.get()) flags.push('--no-termination');
     if (this.noPositivity.get()) flags.push('--no-positivity');
     if (this.noStdlib.get()) flags.push('--no-stdlib');
-    flags.push('--internal-build-dir');
-    flags.push(this.getInternalBuildDir());
+    const buildDir = this.getInternalBuildDir();
+    if (buildDir) {
+      flags.push('--internal-build-dir');
+      flags.push(buildDir);
+    }
     return flags.join(' ').trim();
   }
 

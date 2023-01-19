@@ -1,98 +1,98 @@
 {
   "All": {
     "prefix": ["debug-all"],
-    "body": "$BLOCK_COMMENT_START DEBUG: All $BLOCK_COMMENT_END"
+    "body": "DEBUG: All"
   },
   "None": {
     "prefix": ["debug-none"],
-    "body": "$BLOCK_COMMENT_START NO-DEBUG! $BLOCK_COMMENT_END"
+    "body": "NO-DEBUG!"
   },
   "Parsed": {
     "prefix": ["debug-parse"],
-    "body": "$BLOCK_COMMENT_START DEBUG: sed $BLOCK_COMMENT_END"
+    "body": "DEBUG: sed"
   },
   "Scoped": {
     "prefix": ["debug-scope"],
-    "body": "$BLOCK_COMMENT_START DEBUG: Scoped"
+    "body": "DEBUG: Scoped"
   },
   "HighlightJSON": {
     "prefix": ["debug-highlight-json"],
-    "body": "$BLOCK_COMMENT_START DEBUG: HighlightJSON $BLOCK_COMMENT_END"
+    "body": "DEBUG: HighlightJSON"
   },
   "Highlight": {
     "prefix": ["debug-highlight"],
-    "body": "$BLOCK_COMMENT_START DEBUG: Highlight $BLOCK_COMMENT_END"
+    "body": "DEBUG: Highlight"
   },
   "InternalPretty": {
     "prefix": ["debug-internal-pretty"],
-    "body": "$BLOCK_COMMENT_START DEBUG: ernalPretty $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalPretty"
   },
   "InternalArity": {
     "prefix": ["debug-internal-arity"],
-    "body": "$BLOCK_COMMENT_START DEBUG: InternalArity $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalArity"
   },
   "InternalTypecheck": {
     "prefix": ["debug-internal-typecheck"],
-    "body": "$BLOCK_COMMENT_START DEBUG: InternalTypecheck $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalTypecheck"
   },
   "InternalCoreEval": {
     "prefix": ["debug-internal-core-eval"],
-    "body": "$BLOCK_COMMENT_START DEBUG: InternalCoreEval $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalCoreEval"
   },
   "InternalCoreEvalShowDeBruijn": {
     "prefix": ["debug-internal-core-eval-show-de-bruijn"],
-    "body": "$BLOCK_COMMENT_START DEBUG: InternalCoreEvalShowDeBruijn $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalCoreEvalShowDeBruijn"
   },
   "InternalCoreEvalTransformsLifting": {
     "prefix": ["debug-lifting"],
-    "body": "$BLOCK_COMMENT_START DEBUG: InternalCoreEvalTransformsLifting $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalCoreEvalTransformsLifting"
   },
   "InternalCoreEvalTransformsMoveApps": {
     "prefix": ["debug-move-apps"],
-    "body": "$BLOCK_COMMENT_START DEBUG: InternalCoreEvalTransformsMoveApps $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalCoreEvalTransformsMoveApps"
   },
   "InternalCoreEvalTransformsRemoveTypeArgs": {
     "prefix": ["debug-remove-type-args"],
-    "body": "$BLOCK_COMMENT_START DEBUG: InternalCoreEvalTransformsRemoveTypeArgs $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalCoreEvalTransformsRemoveTypeArgs"
   },
   "InternalCoreEvalTransformsRemoveTopEtaExpand": {
     "prefix": ["debug-remove-top-eta-expand"],
-    "body": "$BLOCK_COMMENT_START DEBUG: ernalCoreEvalTransformsRemoveTopEtaExpand $BLOCK_COMMENT_END"
+    "body": "DEBUG: InternalCoreEvalTransformsRemoveTopEtaExpand"
   },
   "CoreEval": {
     "prefix": ["debug-core-eval"],
-    "body": "$BLOCK_COMMENT_START DEBUG: CoreEval $BLOCK_COMMENT_END"
+    "body": "DEBUG: CoreEval"
   },
   "CoreRead": {
     "prefix": ["debug-core-read"],
-    "body": "$BLOCK_COMMENT_START DEBUG: CoreRead $BLOCK_COMMENT_END"
+    "body": "DEBUG: CoreRead"
   },
   "AsmRun": {
     "prefix": ["debug-asm-run"],
-    "body": "$BLOCK_COMMENT_START DEBUG: AsmRun $BLOCK_COMMENT_END"
+    "body": "DEBUG: AsmRun"
   },
   "AsmValidate": {
     "prefix": ["debug-asm-validate"],
-    "body": "$BLOCK_COMMENT_START DEBUG: AsmValidate $BLOCK_COMMENT_END"
+    "body": "DEBUG: AsmValidate"
   },
   "AsmCompile": {
     "prefix": ["debug-asm-compile"],
-    "body": "$BLOCK_COMMENT_START DEBUG: AsmCompile $BLOCK_COMMENT_END"
+    "body": "DEBUG: AsmCompile"
   },
   "RuntimeCompile": {
     "prefix": ["debug-runtime-compile"],
-    "body": "$BLOCK_COMMENT_START DEBUG: RuntimeCompile $BLOCK_COMMENT_END"
+    "body": "DEBUG: RuntimeCompile"
   },
   "Root": {
     "prefix": ["debug-root"],
-    "body": "$BLOCK_COMMENT_START DEBUG: Root $BLOCK_COMMENT_END"
+    "body": "DEBUG: Root"
   },
   "TerminationCalls": {
     "prefix": ["debug-termination-calls"],
-    "body": "$BLOCK_COMMENT_START DEBUG: TerminationCalls $BLOCK_COMMENT_END"
+    "body": "DEBUG: TerminationCalls"
   },
   "TerminationGraph": {
     "prefix": ["debug-termination-graph"],
-    "body": "$BLOCK_COMMENT_START DEBUG: TerminationGraph"
+    "body": "DEBUG: TerminationGraph"
   }
 }

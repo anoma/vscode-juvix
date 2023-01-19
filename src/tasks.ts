@@ -4,7 +4,6 @@
 
 import * as vscode from 'vscode';
 import * as user from './config';
-import { isJuvixFile } from './utils/base';
 import { debugChannel } from './utils/debug';
 
 export const TASK_TYPE = 'Juvix';
@@ -27,14 +26,11 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   const provider = new JuvixTaskProvider();
-  const juvixTasks = provider.provideTasks();
-  const taskProvider: vscode.Disposable = vscode.tasks.registerTaskProvider(
-    TASK_TYPE,
-    provider
+  const juvixTasks: Promise<vscode.Task[]> = provider.provideTasks();
+  context.subscriptions.push(
+    vscode.tasks.registerTaskProvider(TASK_TYPE, provider)
   );
-  context.subscriptions.push(taskProvider);
 
-  const config = new user.JuvixConfig();
   juvixTasks
     .then(tasks => {
       for (const task of tasks) {
@@ -96,7 +92,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         command: 'typecheck',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Silent,
+        reveal: vscode.TaskRevealKind.Always,
       },
       {
         command: 'compile',
