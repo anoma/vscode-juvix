@@ -2,7 +2,7 @@ module HelloWorld;
 
 open import Stdlib.Prelude;
 
-  asdf : IO;
-  asasdfdf := putStrLn "hello world!";
+  main : IO;
+  main := printStringLn "hello world!";
 
 end;
