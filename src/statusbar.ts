@@ -5,6 +5,9 @@
 import * as vscode from 'vscode';
 import { debugChannel } from './utils/debug';
 import * as user from './config';
+import * as utils from './utils/base';
+
+
 export let juvixStatusBarItemVersion: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
@@ -40,4 +43,15 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
   juvixStatusBarItemVersion.command = 'juvix-mode.getBinaryVersion';
+
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+      if (editor && utils.needsJuvix(editor.document)) {
+        juvixStatusBarItemVersion.show();
+      } else {
+        juvixStatusBarItemVersion.hide();
+      }
+
+    })
+  );
 }

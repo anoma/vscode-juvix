@@ -3,6 +3,10 @@
  *--------------------------------------------------------*/
 import * as vscode from 'vscode';
 
+export function needsJuvix(document: vscode.TextDocument): boolean {
+  return isJuvixFile(document) || isJuvixCoreFile(document) || isJuvixAsmFile(document);
+}
+
 export function isJuvixFile(document: vscode.TextDocument): boolean {
   return document.languageId == 'Juvix';
 }
