@@ -69,7 +69,7 @@ properly.
 | doctor    | <kbd>Shift+Alt+D</kbd> |
 
 However, we recommend using the Command Palette (<kbd>Ctrl</kbd><kbd>P</kbd>) to
-see which other commands are available by typing `Juvix` and select the command you want to run.
+see which other commands are available by typing `Juvix` and selecting the command you want to run.
 
 ## Configuration
 
@@ -87,9 +87,9 @@ this feature even if it's not a Juvix file.
 The extension will look for lines in the active file that contain the pattern
 `DEBUG: nameTASK` where `nameTask` is an entry in the `juvix-mode.devTasks`
 configuration option. Check the extension configuration to see some examples you
-can use or add your own setup. Some strings are expanded in runtime. For
+can use or add to your setup. Some strings are expanded in runtime. For
 example, `$filename` will be replaced by the name of the active file. The
-extension provides autocompletion for the default tasks. To triger this feature,
+extension provides auto-completion for the default tasks. To trigger this feature,
 start typing `debug` somewhere in the file.
 
 For example, if you have the following line in your configuration file:
@@ -142,7 +142,7 @@ The aforementioned features are experimental and might change in the future.
 
 ## Features
 
-- Command palette with typechecking, compilation, and running Juvix files.
+- Command palette with type checking, compilation, and running Juvix files.
 - Semantic syntax highlighting.
 - Support for light and dark themes.
 - Support for Unicode input (e.g. λ, Π, Σ, etc.) pressing e.g. `\` + "alpha" + `space`.
