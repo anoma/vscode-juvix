@@ -3,7 +3,6 @@
  *--------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import * as proc from 'child_process';
 import { JuvixConfig } from './config';
 import { debugChannel } from './utils/debug';
 
@@ -14,13 +13,6 @@ export function activate(_context: vscode.ExtensionContext) {
     provideDocumentFormattingEdits(
       document: vscode.TextDocument
     ): vscode.TextEdit[] {
-      const showErrorMessage = (friendlyText: string, error: any) => {
-        vscode.window.showErrorMessage(
-          `${friendlyText}\n${error.stderr.toString()}`
-        );
-        return [];
-      };
-
       const range = new vscode.Range(
         document.positionAt(0),
         document.positionAt(document.getText().length)
@@ -31,20 +23,31 @@ export function activate(_context: vscode.ExtensionContext) {
       const formatterCall = [
         config.getJuvixExec(),
         config.getGlobalFlags(),
+        '--stdin',
         'dev',
         'scope',
         filePath,
         '--with-comments',
       ].join(' ');
-      try {
-        document.save();
-        debugChannel.appendLine('Saved file before formatting');
-        const styledText = proc.execSync(formatterCall).toString();
-        return [vscode.TextEdit.replace(range, styledText)];
-      } catch (error) {
-        debugChannel.info('Error formatting file', error);
+
+      debugChannel.appendLine(formatterCall);
+
+      const { spawnSync } = require('child_process');
+      const ls = spawnSync(formatterCall, {
+        shell: true,
+        input: document.getText(),
+        encoding: 'utf8',
+      });
+
+      debugChannel.appendLine(ls.stdout);
+
+      if (ls.status == 0) {
+        const stdout = ls.stdout;
+        return [vscode.TextEdit.replace(range, stdout)];
+      } else {
+        const errMsg: string = ls.stderr.toString();
+        throw new Error(errMsg);
       }
-      return [];
     },
   });
 }
