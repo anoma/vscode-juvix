@@ -36,9 +36,15 @@ export function activate(_context: vscode.ExtensionContext) {
         filePath,
         '--with-comments',
       ].join(' ');
-
-      const styledText = proc.execSync(formatterCall).toString();
-      return [vscode.TextEdit.replace(range, styledText)];
+      try {
+        document.save();
+        debugChannel.appendLine('Saved file before formatting');
+        const styledText = proc.execSync(formatterCall).toString();
+        return [vscode.TextEdit.replace(range, styledText)];
+      } catch (error) {
+        debugChannel.info('Error formatting file', error);
+      }
+      return [];
     },
   });
 }
