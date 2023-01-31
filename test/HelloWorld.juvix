@@ -1,6 +1,6 @@
 module HelloWorld;
   open import Stdlib.Prelude;
 
-  mainss : IO;
+  main : IO;
   main := printStringLn "hello world!";
 end;

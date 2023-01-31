@@ -188,24 +188,21 @@ export async function JuvixTask(
   const config = new user.JuvixConfig();
   const JuvixExec = [config.getJuvixExec(), config.getGlobalFlags()].join(' ');
   let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined;
-  input = args.slice(1).join(' ').trim();
   const buildDir = config.getInternalBuildDir();
-
+  let fl = args.slice(1).join(' ').trim();
   switch (name) {
     case 'run':
       exec = new vscode.ShellExecution(
         JuvixExec +
-          ` compile --output ${buildDir}\${pathSeparator}out ${input} && ${buildDir}\${pathSeparator}out`,
+          ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
         { cwd: buildDir }
       );
       break;
     case 'core-compile':
-      exec = new vscode.ShellExecution(
-        JuvixExec + ` dev core compile ${input}`
-      );
+      exec = new vscode.ShellExecution(JuvixExec + ` dev core compile ${fl}`);
       break;
     case 'core-eval':
-      exec = new vscode.ShellExecution(JuvixExec + ` dev core eval ${input}`);
+      exec = new vscode.ShellExecution(JuvixExec + ` dev core eval ${fl}`);
       break;
     default:
       exec = new vscode.ShellExecution(JuvixExec + `  ${input}`);
