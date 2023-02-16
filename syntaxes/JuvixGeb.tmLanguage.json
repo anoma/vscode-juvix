@@ -42,7 +42,7 @@
         },
         {
           "name": "keyword.JuvixGeb",
-          "match": "(?<=\\(|\\s|^)(?i:left|right|unit|int|coprod|prod|so1|so0|lamb|case-on|typed)(?=\\s|\\(|\\))"
+          "match": "(?<=\\(|\\s|^)(?i:left|right|unit|int|coprod|prod|so1|so0|lamb|case-on|typed|app|index)(?=\\s|\\(|\\))"
         },
         {
           "name": "keyword.JuvixGeb",
