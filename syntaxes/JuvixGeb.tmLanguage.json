@@ -1,0 +1,109 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "JuvixGeb",
+  "patterns": [
+    {
+      "include": "#Keywords"
+    },
+    {
+      "include": "#Symbols"
+    },
+    {
+      "include": "#Constants"
+    },
+    {
+      "include": "#CommentBlocks"
+    },
+    {
+      "include": "#Comments"
+    },
+    {
+      "include": "#Variables"
+    }
+  ],
+  "repository": {
+    "Keywords": {
+      "patterns": [
+        {
+          "name": "operator.JuvixGeb",
+          "match": "(\\(|\\))"
+        },
+        {
+          "name": "keyword.JuvixGeb",
+          "match": "(?<=\\(|\\s|^)(\\+|-|/|/\\=|1\\+|1-)\\s"
+        },
+        {
+          "name": "keyword.JuvixGeb",
+          "match": "(?<=\\(|\\s|^)=\\s"
+        },
+        {
+          "name": "keyword.JuvixGeb",
+          "match": "(?<=\\(|\\s|^)(>|>\\=|<|<\\=|\\*)\\s"
+        },
+        {
+          "name": "keyword.JuvixGeb",
+          "match": "(?<=\\(|\\s|^)(?i:left|right|unit|int|coprod|prod|so1|so0|lamb|case-on|typed)(?=\\s|\\(|\\))"
+        },
+        {
+          "name": "keyword.JuvixGeb",
+          "match": "(?<=\\(|\\s|^)~\\s"
+        }
+      ]
+    },
+    "Comments": {
+      "patterns": [
+        {
+          "name": "comment.JuvixGeb",
+          "match": ";.*$"
+        }
+      ]
+    },
+    "CommentBlocks": {
+      "name": "comment.block.JuvixGeb",
+      "begin": ";\\|",
+      "end": "\\|;",
+      "patterns": []
+    },
+    "Constants": {
+      "patterns": [
+        {
+          "name": "constant.numeric.JuvixGeb",
+          "match": "\\b(([0-9]+\\.?[0-9]*)|([0-9]+\\.?[0-9]*)((e|E)(\\+|-)?[0-9]+)?)\\b"
+        },
+        {
+          "match": "(?<=^|\\s|[()])(?i:nil|t)(?=$|\\s|[()])",
+          "name": "constant.language.JuvixGeb"
+        }
+      ]
+    },
+    "Symbols": {
+      "patterns": [
+        {
+          "name": "symbol.JuvixGeb",
+          "match": "(?<=\\')[:\\w\\+<>=\\-\\*]+(?=\\s|\\(|\\))"
+        },
+        {
+          "name": "quote.JuvixGeb",
+          "match": "\\'"
+        }
+      ]
+    },
+    "Variables": {
+      "patterns": [
+        {
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.variable.JuvixGeb"
+            },
+            "3": {
+              "name": "punctuation.definition.variable.JuvixGeb"
+            }
+          },
+          "match": "(?<=^|\\s|[()])(\\*)(\\S*)(\\*)(?=$|\\s|[()])",
+          "name": "variable.other.global.JuvixGeb"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.JuvixGeb"
+}

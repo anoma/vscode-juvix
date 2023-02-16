@@ -113,6 +113,12 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
+        command: 'geb-eval',
+        args: ['${file}'],
+        group: vscode.TaskGroup.Build,
+        reveal: vscode.TaskRevealKind.Always,
+      },
+      {
         command: 'run',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
@@ -203,6 +209,9 @@ export async function JuvixTask(
       break;
     case 'core-eval':
       exec = new vscode.ShellExecution(JuvixExec + ` dev core eval ${fl}`);
+      break;
+    case 'geb-eval':
+      exec = new vscode.ShellExecution(JuvixExec + ` dev geb eval ${fl}`);
       break;
     default:
       exec = new vscode.ShellExecution(JuvixExec + `  ${input}`);
