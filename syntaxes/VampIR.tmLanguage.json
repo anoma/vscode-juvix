@@ -1,0 +1,95 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"scopeName": "source.vampir",
+	"patterns": [
+		{
+			"include": "#expression"
+		}
+	],
+	"repository": {
+		"expression": {
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#body-expression"
+				},
+				{
+					"include": "#definition"
+				},
+				{
+					"include": "#keyword"
+				},
+				{
+					"include": "#variable"
+				},
+				{
+					"include": "#constant"
+				}
+			]
+		},
+		"comment": {
+			"patterns": [
+				{
+					"name": "comment.line",
+					"match": "//.*"
+				},
+				{
+					"name": "comment.block",
+					"begin": "/\\*",
+					"end": "\\*/"
+				}
+			]
+		},
+		"constant": {
+            "name": "constant.numeric",
+			"match": "[1-9][0-9]*"
+		},
+		"variable": {
+            "name": "variable",
+			"match": "[A-Za-z]\\w*"
+		},
+		"keyword": {
+			"patterns": [
+				{
+					"name": "keyword.def",
+					"match": "def"
+				},
+				{
+					"name": "keyword.pub",
+					"match": "pub"
+				},
+				{
+					"name": "keyword.fresh",
+					"match": "fresh"
+				}
+			]
+		},
+		"definition": {
+			"begin": "(def)\\s+(([A-Za-z]\\w*)|\\(([A-Za-z]\\w*)(,\\s*([A-Za-z]\\w*))*\\)?)",
+			"end": ";",
+			"beginCaptures": {
+				"1": {"name": "keyword.def"},
+				"2": {"name": "entity.name.function"},
+				"3": {"name": "entity.name.function"}
+			},
+			"name": "definition",
+			"patterns": [
+				{"include": "#expression"}
+			]
+		},
+		"body-expression": {
+			"begin": "\\{",
+			"end": "\\}",
+			"beginCaptures": {
+				"0": { "name": "punctuation.brace.open" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.brace.close" }
+			},
+			"name": "expression.body",
+			"patterns": [{"include": "#expression"}]					
+		}
+	}
+}
