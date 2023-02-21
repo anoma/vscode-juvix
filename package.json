@@ -215,6 +215,24 @@
           ".geb"
         ],
         "configuration": "./language-configuration-geb.json"
+      },
+      {
+        "id": "vampir",
+        "aliases": [
+          "VampIR",
+          "vampIR",
+          "vampir",
+          "Vampir",
+          "vamp-ir",
+          "Vamp-ir",
+          "Vamp-IR",
+          "VAMP-IR"
+        ],
+        "extensions": [
+          ".vampir",
+          ".pir"
+        ],
+        "configuration": "./language-configuration-vampir.json"
       }
     ],
     "grammars": [
@@ -232,6 +250,11 @@
         "language": "JuvixAsm",
         "scopeName": "source.JuvixAsm",
         "path": "./syntaxes/JuvixAsm.tmLanguage.json"
+      },
+      {
+        "language": "VampIR",
+        "scopeName": "source.VampIR",
+        "path": "./syntaxes/VampIR.tmLanguage.json"
       }
     ],
     "semanticTokenScopes": [],
