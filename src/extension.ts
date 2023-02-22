@@ -15,7 +15,7 @@ import * as judoc from './judoc';
 import * as dev from './dev';
 import * as check from './check';
 import * as formatter from './formatter';
-import * as vampir from './vampir/commands';
+import * as vampir from './vampir/tasks';
 
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();

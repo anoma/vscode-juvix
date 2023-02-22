@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.29",
+  "version": "0.1.30",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
@@ -590,9 +590,9 @@
         },
         "juvix-mode.vampirBinName": {
           "type": "string",
-          "default": "vampir",
+          "default": "vamp-ir",
           "scope": "machine-overridable",
-          "description": "Name of the executable of VampIR. (e.g. vampir)"
+          "description": "Name of the executable of VampIR. (e.g. vamp-ir)"
         },
         "juvix-mode.vampirBinPath": {
           "type": "string",

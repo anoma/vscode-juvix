@@ -26,8 +26,8 @@ export class JuvixConfig {
   }
 
   // geb settings
-  readonly vampirBinaryName = new VsCodeSetting('juvix-mode.vampirName', {
-    serializer: serializerWithDefault('vampir'),
+  readonly vampirBinaryName = new VsCodeSetting('juvix-mode.vampirBinName', {
+    serializer: serializerWithDefault('vamp-ir'),
   });
   readonly vampirBinaryPath = new VsCodeSetting('juvix-mode.vampirBinPath', {
     serializer: serializerWithDefault(''),
