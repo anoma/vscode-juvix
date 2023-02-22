@@ -17,12 +17,10 @@ export class JuvixConfig {
     serializer: serializerWithDefault('Juvix'),
   });
 
-  
-  
   readonly binaryPath = new VsCodeSetting('juvix-mode.bin.path', {
     serializer: serializerWithDefault(''),
   });
-  
+
   public getJuvixExec(): string {
     return path.join(this.binaryPath.get(), this.binaryName.get());
   }
@@ -36,8 +34,7 @@ export class JuvixConfig {
   });
 
   public getVampirExec(): string {
-    return path.join(this.vampirBinaryPath.get(), 
-                      this.vampirBinaryName.get());
+    return path.join(this.vampirBinaryPath.get(), this.vampirBinaryName.get());
   }
 
   // Geb settings
@@ -49,10 +46,8 @@ export class JuvixConfig {
   });
 
   public getGebExec(): string {
-    return path.join(this.gebBinaryPath.get(), 
-                      this.gebBinaryName.get());
+    return path.join(this.gebBinaryPath.get(), this.gebBinaryName.get());
   }
-
 
   readonly revealPanel = new VsCodeSetting('juvix-mode.revealPanel');
   readonly typecheckOn = new VsCodeSetting('juvix-mode.typecheckOn');

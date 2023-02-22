@@ -398,7 +398,7 @@
         "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(debug-start)"
       },
-   {
+      {
         "command": "juvix-mode.vampir-setup",
         "title": "[dev] vampir-setup",
         "category": "Juvix",
@@ -587,7 +587,8 @@
           "default": "",
           "scope": "machine-overridable",
           "description": "Absolute path to the executable of Juvix. (e.g. /usr/local/bin/)"
-        }, "juvix-mode.vampirBinName": {
+        },
+        "juvix-mode.vampirBinName": {
           "type": "string",
           "default": "vampir",
           "scope": "machine-overridable",
@@ -598,7 +599,8 @@
           "default": "",
           "scope": "machine-overridable",
           "description": "Absolute path to the VampIR executable. (e.g. /usr/local/bin/)"
-        }, "juvix-mode.gebBinName": {
+        },
+        "juvix-mode.gebBinName": {
           "type": "string",
           "default": "geb",
           "scope": "machine-overridable",
