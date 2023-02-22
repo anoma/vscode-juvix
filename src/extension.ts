@@ -15,6 +15,7 @@ import * as judoc from './judoc';
 import * as dev from './dev';
 import * as check from './check';
 import * as formatter from './formatter';
+import * as vampir from './vampir/commands';
 
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
@@ -27,6 +28,7 @@ export async function activate(context: vscode.ExtensionContext) {
   judoc.activate(context);
   check.activate(context);
   formatter.activate(context);
+  vampir.activate(context);
   dev.activate(context);
   debugChannel.info('Juvix extension is ready!');
 }

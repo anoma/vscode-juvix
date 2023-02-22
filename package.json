@@ -78,6 +78,7 @@
     "onLanguage:JuvixAsm",
     "onLanguage:JuvixCore",
     "onLanguage:JuvixGeb",
+    "onLanguage:VampIR",
     "workspaceContains:**/juvix-mode.yaml"
   ],
   "editor.semanticHighlighting.enabled": true,
@@ -396,6 +397,34 @@
         "category": "Juvix",
         "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(debug-start)"
+      },
+   {
+        "command": "juvix-mode.vampir-setup",
+        "title": "[dev] vampir-setup",
+        "category": "Juvix",
+        "when": "editorLangId == VampIR && editorTextFocus",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "juvix-mode.vampir-compile",
+        "title": "[dev] vampir-compile",
+        "category": "Juvix",
+        "when": "editorLangId == VampIR && editorTextFocus",
+        "icon": "$(output)"
+      },
+      {
+        "command": "juvix-mode.vampir-prove",
+        "title": "[dev] vampir-prove",
+        "category": "Juvix",
+        "when": "editorLangId == VampIR && editorTextFocus",
+        "icon": "$(check)"
+      },
+      {
+        "command": "juvix-mode.vampir-verify",
+        "title": "[dev] vampir-verify",
+        "category": "Juvix",
+        "when": "editorLangId == VampIR && editorTextFocus",
+        "icon": "$(check-all)"
       }
     ],
     "keybindings": [
@@ -493,6 +522,26 @@
           "group": "navigation@3"
         },
         {
+          "when": "editorLangId == VampIR",
+          "command": "juvix-mode.vampir-setup",
+          "group": "navigation@0"
+        },
+        {
+          "when": "editorLangId == VampIR",
+          "command": "juvix-mode.vampir-compile",
+          "group": "navigation@1"
+        },
+        {
+          "when": "editorLangId == VampIR",
+          "command": "juvix-mode.vampir-prove",
+          "group": "navigation@2"
+        },
+        {
+          "when": "editorLangId == VampIR",
+          "command": "juvix-mode.vampir-verify",
+          "group": "navigation@3"
+        },
+        {
           "when": "editorLangId == Juvix",
           "command": "juvix-mode.createOrShowJudoc",
           "group": "navigation@4"
@@ -538,6 +587,28 @@
           "default": "",
           "scope": "machine-overridable",
           "description": "Absolute path to the executable of Juvix. (e.g. /usr/local/bin/)"
+        }, "juvix-mode.vampirBinName": {
+          "type": "string",
+          "default": "vampir",
+          "scope": "machine-overridable",
+          "description": "Name of the executable of VampIR. (e.g. vampir)"
+        },
+        "juvix-mode.vampirBinPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "Absolute path to the VampIR executable. (e.g. /usr/local/bin/)"
+        }, "juvix-mode.gebBinName": {
+          "type": "string",
+          "default": "geb",
+          "scope": "machine-overridable",
+          "description": "Name of the executable of geb. (e.g. geb)"
+        },
+        "juvix-mode.gebBinPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "Absolute path to the Geb executable. (e.g. /usr/local/bin/)"
         },
         "juvix-mode.revealPanel": {
           "type": "string",

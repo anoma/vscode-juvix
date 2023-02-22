@@ -24,6 +24,10 @@ export function isJuvixGebFile(document: vscode.TextDocument): boolean {
   return document.languageId == 'JuvixGeb';
 }
 
+export function isVampIRFile(document: vscode.TextDocument): boolean {
+  return document.languageId == 'VampIR';
+}
+
 export function canRunRepl(document: vscode.TextDocument): boolean {
   return (
     isJuvixFile(document) ||

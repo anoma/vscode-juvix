@@ -17,13 +17,42 @@ export class JuvixConfig {
     serializer: serializerWithDefault('Juvix'),
   });
 
+  
+  
   readonly binaryPath = new VsCodeSetting('juvix-mode.bin.path', {
     serializer: serializerWithDefault(''),
   });
-
+  
   public getJuvixExec(): string {
     return path.join(this.binaryPath.get(), this.binaryName.get());
   }
+
+  // geb settings
+  readonly vampirBinaryName = new VsCodeSetting('juvix-mode.vampirName', {
+    serializer: serializerWithDefault('vampir'),
+  });
+  readonly vampirBinaryPath = new VsCodeSetting('juvix-mode.vampirBinPath', {
+    serializer: serializerWithDefault(''),
+  });
+
+  public getVampirExec(): string {
+    return path.join(this.vampirBinaryPath.get(), 
+                      this.vampirBinaryName.get());
+  }
+
+  // Geb settings
+  readonly gebBinaryName = new VsCodeSetting('juvix-mode.gebName', {
+    serializer: serializerWithDefault('geb'),
+  });
+  readonly gebBinaryPath = new VsCodeSetting('juvix-mode.gebBinPath', {
+    serializer: serializerWithDefault(''),
+  });
+
+  public getGebExec(): string {
+    return path.join(this.gebBinaryPath.get(), 
+                      this.gebBinaryName.get());
+  }
+
 
   readonly revealPanel = new VsCodeSetting('juvix-mode.revealPanel');
   readonly typecheckOn = new VsCodeSetting('juvix-mode.typecheckOn');
