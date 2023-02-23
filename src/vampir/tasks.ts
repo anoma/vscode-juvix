@@ -75,7 +75,7 @@ export class VampIRProvider implements vscode.TaskProvider {
           '-s',
           '${file}',
           '-o',
-          '${file}.plonk',
+          '${fileBasenameNoExtension}.plonk',
         ],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
@@ -88,9 +88,9 @@ export class VampIRProvider implements vscode.TaskProvider {
           'params.pp',
           '--unchecked',
           '-c',
-          '${file}.plonk',
+          '${fileBasenameNoExtension}.plonk',
           '-o',
-          '${file}.proof',
+          '${fileBasenameNoExtension}.proof',
         ],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
@@ -103,9 +103,9 @@ export class VampIRProvider implements vscode.TaskProvider {
           'params.pp',
           '--unchecked',
           '-c',
-          '${file}.plonk',
+          '${fileBasenameNoExtension}.plonk',
           '-p',
-          '${file}.proof',
+          '${fileBasenameNoExtension}.proof',
         ],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
@@ -157,7 +157,7 @@ export async function VampIR(
   let input = args.join(' ').trim();
   const config = new JuvixConfig();
   const VampirExec = config.getVampirExec();
-  let exec = new vscode.ShellExecution(VampirExec + `  ${input}`);
+  let exec = new vscode.ShellExecution(VampirExec + ` ${input}`);
   return new vscode.Task(
     definition,
     vscode.TaskScope.Global,
