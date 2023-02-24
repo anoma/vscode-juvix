@@ -205,7 +205,8 @@ export async function JuvixTask(
       );
       break;
     case 'core-compile':
-      exec = new vscode.ShellExecution(JuvixExec + ` dev core compile ${fl}`);
+      exec = new vscode.ShellExecution(JuvixExec 
+          + ` dev core compile -t geb ${fl}`);
       break;
     case 'core-eval':
       exec = new vscode.ShellExecution(JuvixExec + ` dev core eval ${fl}`);
