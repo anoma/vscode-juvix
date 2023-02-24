@@ -92,4 +92,3 @@ settings.
 - Support for Unicode input (e.g. λ, Π, Σ, etc.) pressing e.g. `\` + "alpha" + `space`.
 - Support for user configuration options (requires reloading the window in some cases).
 - Support for Juvix's debugging through "--DEBUG: tasks" comments, see EXTRA.md for more information.
-  

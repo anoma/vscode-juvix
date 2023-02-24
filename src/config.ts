@@ -39,7 +39,7 @@ export class JuvixConfig {
 
   // Geb settings
   readonly gebBinaryName = new VsCodeSetting('juvix-mode.gebName', {
-    serializer: serializerWithDefault('geb'),
+    serializer: serializerWithDefault('geb.image'),
   });
   readonly gebBinaryPath = new VsCodeSetting('juvix-mode.gebBinPath', {
     serializer: serializerWithDefault(''),

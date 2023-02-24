@@ -399,6 +399,13 @@
         "icon": "$(debug-start)"
       },
       {
+        "command": "juvix-mode.geb-compile",
+        "title": "[dev] geb-compile",
+        "category": "Juvix",
+        "when": "editorLangId == JuvixGeb && editorTextFocus",
+        "icon": "$(output)"
+      },
+      {
         "command": "juvix-mode.vampir-setup",
         "title": "[dev] vampir-setup",
         "category": "Juvix",
@@ -507,6 +514,11 @@
           "group": "navigation@2"
         },
         {
+          "when": "editorLangId == JuvixGeb",
+          "command": "juvix-mode.geb-compile",
+          "group": "navigation@2"
+        },
+        {
           "when": "editorLangId == Juvix",
           "command": "juvix-mode.run",
           "group": "navigation@3"
@@ -602,7 +614,7 @@
         },
         "juvix-mode.gebBinName": {
           "type": "string",
-          "default": "geb",
+          "default": "geb.image",
           "scope": "machine-overridable",
           "description": "Name of the executable of geb. (e.g. geb)"
         },
