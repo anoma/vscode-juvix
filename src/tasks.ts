@@ -125,6 +125,12 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
+        command: 'geb-typecheck',
+        args: ['${file}'],
+        group: vscode.TaskGroup.Build,
+        reveal: vscode.TaskRevealKind.Always,
+      },
+      {
         command: 'run',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
@@ -228,6 +234,9 @@ export async function JuvixTask(
     case 'geb-eval':
       exec = new vscode.ShellExecution(JuvixExec + ` dev geb eval ${fl}`);
       break;
+    case 'geb-typecheck':
+        exec = new vscode.ShellExecution(JuvixExec + ` dev geb check ${fl}`);
+        break;
     default:
       exec = new vscode.ShellExecution(JuvixExec + `  ${input}`);
       break;

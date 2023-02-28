@@ -406,6 +406,13 @@
         "icon": "$(output)"
       },
       {
+        "command": "juvix-mode.geb-typecheck",
+        "title": "typecheck",
+        "category": "Juvix",
+        "when": "editorLangId == JuvixGeb && editorTextFocus",
+        "icon": "$(check)"
+      },
+      {
         "command": "juvix-mode.vampir-setup",
         "title": "[dev] vampir-setup",
         "category": "Juvix",
@@ -446,6 +453,13 @@
         "command": "juvix-mode.typecheck",
         "args": "Juvix: typecheck task",
         "when": "editorLangId == Juvix && editorTextFocus",
+        "icon": "$(debug-start)"
+      },
+      {
+        "key": "shift+alt+t",
+        "command": "juvix-mode.geb-typecheck",
+        "args": "Juvix: geb-typecheck task",
+        "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
@@ -509,24 +523,29 @@
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == JuvixCore",
-          "command": "juvix-mode.core-compile",
-          "group": "navigation@2"
-        },
-        {
-          "when": "editorLangId == JuvixGeb",
-          "command": "juvix-mode.geb-compile",
-          "group": "navigation@2"
-        },
-        {
           "when": "editorLangId == Juvix",
           "command": "juvix-mode.run",
           "group": "navigation@3"
         },
         {
           "when": "editorLangId == JuvixCore",
+          "command": "juvix-mode.core-compile",
+          "group": "navigation@2"
+        },
+        {
+          "when": "editorLangId == JuvixCore",
           "command": "juvix-mode.core-eval",
           "group": "navigation@3"
+        },
+        {
+          "when": "editorLangId == JuvixGeb",
+          "command": "juvix-mode.geb-typecheck",
+          "group": "navigation@1"
+        },
+        {
+          "when": "editorLangId == JuvixGeb",
+          "command": "juvix-mode.geb-compile",
+          "group": "navigation@2"
         },
         {
           "when": "editorLangId == JuvixGeb",
