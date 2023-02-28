@@ -35,7 +35,7 @@ export async function activate(context: vscode.ExtensionContext) {
     .then(tasks => {
       for (const task of tasks) {
         const cmdName = task.name.replace(' ', '-');
-        const qualifiedCmdName = 'juvix-mode.' + task.name.replace(' ', '-');
+        const qualifiedCmdName = 'juvix-mode.' + cmdName;
         const cmd = vscode.commands.registerTextEditorCommand(
           qualifiedCmdName,
           () => {
@@ -125,7 +125,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
-        command: 'geb-typecheck',
+        command: 'geb-check',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
@@ -155,8 +155,6 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
     ];
-    // debug.log('info', 'Commands to be added:');
-    // debug.log('info', defs);
 
     const tasks: vscode.Task[] = [];
 
@@ -234,7 +232,7 @@ export async function JuvixTask(
     case 'geb-eval':
       exec = new vscode.ShellExecution(JuvixExec + ` dev geb eval ${fl}`);
       break;
-    case 'geb-typecheck':
+    case 'geb-check':
         exec = new vscode.ShellExecution(JuvixExec + ` dev geb check ${fl}`);
         break;
     default:

@@ -406,8 +406,8 @@
         "icon": "$(output)"
       },
       {
-        "command": "juvix-mode.geb-typecheck",
-        "title": "typecheck",
+        "command": "juvix-mode.geb-check",
+        "title": "[dev] geb-check",
         "category": "Juvix",
         "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(check)"
@@ -445,34 +445,21 @@
       {
         "key": "shift+alt+d",
         "command": "juvix-mode.doctor",
-        "args": "Juvix: doctor",
+        "args": "Juvix: Doctor",
         "when": "editorLangId == Juvix"
       },
       {
         "key": "shift+alt+t",
         "command": "juvix-mode.typecheck",
-        "args": "Juvix: typecheck task",
+        "args": "Juvix: Typecheck",
         "when": "editorLangId == Juvix && editorTextFocus",
-        "icon": "$(debug-start)"
-      },
-      {
-        "key": "shift+alt+t",
-        "command": "juvix-mode.geb-typecheck",
-        "args": "Juvix: geb-typecheck task",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "key": "shift+alt+c",
         "command": "juvix-mode.compile",
-        "args": "Juvix: compile",
+        "args": "Juvix: Compile",
         "when": "editorLangId == Juvix && editorTextFocus"
-      },
-      {
-        "key": "shift+alt+c",
-        "command": "juvix-mode.core-compile",
-        "args": "Juvix: Core compile",
-        "when": "editorLangId == JuvixCore && editorTextFocus"
       },
       {
         "key": "shift+alt+x",
@@ -481,21 +468,41 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
+        "command": "juvix-mode.loadFileRepl",
+        "args": "Juvix: repl",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb)  && editorTextFocus"
+      },
+      {
+        "key": "shift+alt+c",
+        "command": "juvix-mode.core-compile",
+        "args": "Juvix: [dev] core-compile",
+        "when": "editorLangId == JuvixCore && editorTextFocus"
+      },
+      {
         "key": "shift+alt+x",
         "command": "juvix-mode.core-eval",
-        "args": "Juvix: Core eval",
+        "args": "Juvix: [dev] core-eval",
         "when": "editorLangId == JuvixCore && editorTextFocus"
       },
       {
         "key": "shift+alt+x",
         "command": "juvix-mode.geb-eval",
-        "args": "Juvix: Geb eval",
+        "args": "Juvix: [dev] geb-eval",
         "when": "editorLangId == JuvixGeb && editorTextFocus"
       },
       {
-        "command": "juvix-mode.loadFileRepl",
-        "args": "Juvix: repl",
-        "when": "(editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb)  && editorTextFocus"
+        "key": "shift+alt+t",
+        "command": "juvix-mode.geb-check",
+        "args": "Juvix: [dev] geb-check",
+        "when": "editorLangId == JuvixGeb && editorTextFocus",
+        "icon": "$(debug-start)"
+      },
+      {
+        "key": "shift+alt+c",
+        "command": "juvix-mode.geb-compile",
+        "args": "Juvix: [dev] geb-compile",
+        "when": "editorLangId == JuvixGeb && editorTextFocus",
+        "icon": "$(debug-start)"
       }
     ],
     "submenus": [
@@ -539,7 +546,7 @@
         },
         {
           "when": "editorLangId == JuvixGeb",
-          "command": "juvix-mode.geb-typecheck",
+          "command": "juvix-mode.geb-check",
           "group": "navigation@1"
         },
         {
