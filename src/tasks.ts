@@ -233,8 +233,8 @@ export async function JuvixTask(
       exec = new vscode.ShellExecution(JuvixExec + ` dev geb eval ${fl}`);
       break;
     case 'geb-check':
-        exec = new vscode.ShellExecution(JuvixExec + ` dev geb check ${fl}`);
-        break;
+      exec = new vscode.ShellExecution(JuvixExec + ` dev geb check ${fl}`);
+      break;
     default:
       exec = new vscode.ShellExecution(JuvixExec + `  ${input}`);
       break;
