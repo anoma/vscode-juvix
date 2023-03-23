@@ -44,25 +44,25 @@
     "fix": "prettier --write . && eslint -c .eslintrc.js --ext ts ./src  --fix"
   },
   "devDependencies": {
-    "@types/glob": "^8.0.1",
+    "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "18.x",
     "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^5.53.0",
-    "@typescript-eslint/parser": "^5.53.0",
-    "@vscode/test-electron": "^2.2.3",
-    "@vscode/vsce": "^2.17.0",
-    "eslint": "^8.34.0",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "@vscode/test-electron": "^2.3.0",
+    "@vscode/vsce": "^2.18.0",
+    "eslint": "^8.36.0",
     "eslint-plugin-header": "^3.1.1",
-    "glob": "^8.1.0",
+    "glob": "^9.3.1",
     "mocha": "^10.2.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "2.8.4",
+    "prettier": "2.8.6",
     "pretty-quick": "^3.1.3",
-    "rimraf": "^4.1.2",
+    "rimraf": "^4.4.0",
     "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5",
-    "webpack": "^5.75.0",
+    "typescript": "^5.0.2",
+    "webpack": "^5.76.2",
     "webpack-cli": "^5.0.1"
   },
   "prettier": {
@@ -73,14 +73,6 @@
     "singleQuote": true,
     "bracketSpacing": true
   },
-  "activationEvents": [
-    "onLanguage:Juvix",
-    "onLanguage:JuvixAsm",
-    "onLanguage:JuvixCore",
-    "onLanguage:JuvixGeb",
-    "onLanguage:VampIR",
-    "workspaceContains:**/juvix-mode.yaml"
-  ],
   "editor.semanticHighlighting.enabled": true,
   "editor.autoDetect": true,
   "contributes": {
@@ -2622,7 +2614,7 @@
     }
   },
   "dependencies": {
-    "@vscode/vsce": "^2.17.0",
+    "@vscode/vsce": "^2.18.0",
     "mobx": "6.8.0",
     "npx": "^10.2.2",
     "run": "^1.4.0",
