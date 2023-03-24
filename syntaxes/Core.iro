@@ -1,0 +1,48 @@
+# https://eeyo.io/iro/
+name                   = JuvixCore
+file_extensions []     = jvc;
+textmate_compatible    = true
+
+styles [] {
+    .comment : style {
+    color                 = light_green
+    italic                = true
+    textmate_scope        = comment
+    }
+}
+
+contexts [] {
+main : context {
+   : include "comment" ;
+}
+
+comment : context {
+   : include "block_comment" ;
+   : include "line_comment" ;
+}
+
+line_comment : context {
+   :inline_push {
+      regex \= (--)
+      styles [] = .comment;
+      default_style = .comment
+      : pop {
+         regex \= ($)
+         styles [] = .comment;
+      }
+   }
+}
+
+block_comment : context {
+   description        = multiline
+   : inline_push {
+      regex          \= (\\{-)
+      styles []       = .comment;
+      default_style   = .comment
+      : pop {
+         regex       \= (-\\})
+         styles []    = .comment;
+      }
+   }
+}
+}

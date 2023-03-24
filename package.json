@@ -194,8 +194,7 @@
         ],
         "extensions": [
           ".jva"
-        ],
-        "configuration": "./language-configuration.json"
+        ]
       },
       {
         "id": "JuvixCore",
@@ -204,8 +203,7 @@
         ],
         "extensions": [
           ".jvc"
-        ],
-        "configuration": "./language-configuration.json"
+        ]
       },
       {
         "id": "JuvixGeb",
