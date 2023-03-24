@@ -28,6 +28,14 @@
     "language",
     "programming"
   ],
+  "activationEvents": [
+    "onLanguage:Juvix",
+    "onLanguage:JuvixAsm",
+    "onLanguage:JuvixCore",
+    "onLanguage:JuvixGeb",
+    "onLanguage:VampIR",
+    "workspaceContains:**/juvix-mode.yaml"
+  ],
   "main": "./out/extension.js",
   "scripts": {
     "vscode:prepublish": "npm run package",
