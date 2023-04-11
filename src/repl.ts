@@ -39,7 +39,6 @@ export class JuvixRepl {
       name: terminalName,
       cwd: path.dirname(document.fileName),
       isTransient: false,
-      shellPath: '/usr/bin/bash',
       location: {
         viewColumn: vscode.ViewColumn.Beside,
         preserveFocus: true,
@@ -181,7 +180,6 @@ export async function activate(context: vscode.ExtensionContext) {
         const tempTerminal = vscode.window.createTerminal({
           name: terminalName,
           isTransient: false,
-          shellPath: '/usr/bin/bash',
           location: {
             viewColumn: vscode.ViewColumn.Beside,
             preserveFocus: true,

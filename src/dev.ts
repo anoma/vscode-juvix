@@ -103,7 +103,6 @@ class View {
       name: title,
       cwd: path.dirname(this.doc.fileName),
       isTransient: false,
-      shellPath: '/usr/bin/bash',
       location: {
         viewColumn: vscode.ViewColumn.Beside,
         preserveFocus: true,
