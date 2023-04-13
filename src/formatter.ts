@@ -9,8 +9,6 @@ import { debugChannel } from './utils/debug';
 export function activate(_context: vscode.ExtensionContext) {
   const config = new JuvixConfig();
 
-  // TODO: factorize all the following provides, the share
-  // the body except by the body.
   vscode.languages.registerDocumentFormattingEditProvider('Juvix', {
     provideDocumentFormattingEdits(
       document: vscode.TextDocument
@@ -21,14 +19,17 @@ export function activate(_context: vscode.ExtensionContext) {
       );
 
       const filePath = document.uri.fsPath;
-      debugChannel.appendLine(`Formatting ${filePath}`);
       const formatterCall = [
         config.getJuvixExec(),
         config.getGlobalFlags(),
-        'format',
+        '--stdin',
+        'dev',
+        'scope',
         filePath,
+        '--with-comments',
       ].join(' ');
 
+      debugChannel.info(`Formatting ${filePath}`);
       debugChannel.appendLine(formatterCall);
 
       const { spawnSync } = require('child_process');
@@ -37,8 +38,6 @@ export function activate(_context: vscode.ExtensionContext) {
         input: document.getText(),
         encoding: 'utf8',
       });
-
-      debugChannel.appendLine(ls.stdout);
 
       if (ls.status == 0) {
         const stdout = ls.stdout;

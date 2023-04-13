@@ -26,7 +26,8 @@ export async function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration(e => {
         if (e.affectsConfiguration('juvix-mode.enableSemanticSyntax')) {
-          if (!config.enableSemanticSyntax.get()) highlighterProvider.dispose();
+          if (!config.enableSemanticSyntax.get())
+            highlighterProvider.dispose();
           else activate(context);
         }
       })
@@ -40,7 +41,7 @@ export async function activate(context: vscode.ExtensionContext) {
 export const tokenTypes = new Map<string, number>();
 export const tokenModifiers = new Map<string, number>();
 
-export const legend = (function () {
+export const legend : vscode.SemanticTokensLegend = (function () {
   const tokenTypesLegend = [
     'axiom',
     'comment',
@@ -125,9 +126,9 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
     // too verbose but useful for debugging location mapping
-    debugChannel.debug(
-      'Highlighting output: ' + JSON.stringify(output, null, 2)
-    );
+    // debugChannel.debug(
+    //   'Highlighting output: ' + JSON.stringify(output, null, 2)
+    // );
 
     def.locationMap.set(filePath, new Map());
     output.goto.forEach(entry => {
@@ -150,10 +151,10 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     });
 
     // // too verbose but useful for debugging location mapping
-    debugChannel.debug(
-      'Highlighting output: ' +
-        JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
-    );
+    // debugChannel.debug(
+    //   'Highlighting output: ' +
+    //     JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
+    // );
 
     debugChannel.debug('Active file: ' + filePath);
 

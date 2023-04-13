@@ -19,7 +19,7 @@ export async function activate(context: vscode.ExtensionContext) {
   if (vscode.workspace.workspaceFolders === undefined) {
     const msg =
       'Juvix extension requires at least one workspace open.\n' +
-      'Open a folder containing a Juvix project and try again    debugChannel.error(msg)';
+      'Open a folder containing a Juvix project and try again.';
     vscode.window.showErrorMessage(msg);
     debugChannel.error(msg);
     return;

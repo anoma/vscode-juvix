@@ -1,9 +1,0 @@
-module identity;
-
-id : (A : Type) -> A -> A;
-id A a := a;
-
-axiom A : Type;
-axiom B : Type;
-
-end;
