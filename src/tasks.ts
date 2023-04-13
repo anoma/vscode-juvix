@@ -149,7 +149,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
-        command: 'dev scope',
+        command: 'format',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
@@ -210,7 +210,7 @@ export async function JuvixTask(
     case 'run':
       exec = new vscode.ShellExecution(
         JuvixExec +
-          ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
+        ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
         { cwd: buildDir }
       );
       break;
