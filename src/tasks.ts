@@ -66,20 +66,6 @@ export interface JuvixTaskDefinition extends vscode.TaskDefinition {
 export class JuvixTaskProvider implements vscode.TaskProvider {
   async provideTasks(): Promise<vscode.Task[]> {
     const config = new user.JuvixConfig();
-    const setupPanel = () => {
-      let panelOpt: vscode.TaskRevealKind;
-      switch (config.revealPanel.get()) {
-        case 'always':
-          panelOpt = vscode.TaskRevealKind.Always;
-          break;
-        case 'never':
-          panelOpt = vscode.TaskRevealKind.Never;
-          break;
-        default:
-          panelOpt = vscode.TaskRevealKind.Silent;
-      }
-      return panelOpt;
-    };
 
     const defs = [
       {
@@ -148,12 +134,6 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
-      {
-        command: 'format',
-        args: ['${file}'],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
-      },
     ];
 
     const tasks: vscode.Task[] = [];
@@ -210,7 +190,7 @@ export async function JuvixTask(
     case 'run':
       exec = new vscode.ShellExecution(
         JuvixExec +
-        ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
+          ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
         { cwd: buildDir }
       );
       break;

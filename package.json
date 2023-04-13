@@ -413,12 +413,6 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "command": "juvix-mode.format",
-        "title": "format",
-        "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
-      },
-      {
         "command": "juvix-mode.core-eval",
         "title": "[dev] core-eval",
         "category": "Juvix",
@@ -2636,8 +2630,6 @@
             "CatFile": "cat $filename",
             "Parsed": "$juvix dev parse $filename",
             "Scoped": "$juvix dev scope $filename",
-            "HighlightJSON": "$juvix dev highlight --format json $filename",
-            "Highlight": "$juvix dev highlight $filename",
             "InternalPretty": "$juvix dev internal pretty $filename",
             "InternalArity": "$juvix dev internal arity $filename",
             "InternalTypecheck": "$juvix dev internal typecheck $filename",
