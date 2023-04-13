@@ -1,4 +1,3 @@
-irosyntaxes = $(shell find syntaxes/ -name "*.iro")
 MAKEFLAGS?= -j 4
 MAKE?=make $(MAKEFLAGS)
 
@@ -7,12 +6,6 @@ all:
 	@npm install \
 		&& npm run compile \
 		&& vsce package
-
-.PHONY: syntaxes
-syntaxes: $(irosyntaxes:.iro=.tmLanguage)
-
-%.tmLanguage: %.iro
-	@iro -t $< -o syntaxes
 
 PRECOMMIT := $(shell command -v pre-commit 2> /dev/null)
 
