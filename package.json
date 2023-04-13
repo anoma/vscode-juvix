@@ -364,8 +364,8 @@
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
-        "command": "juvix-mode.dev-scope",
-        "title": "[dev] scope",
+        "command": "juvix-mode.format",
+        "title": "format",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
