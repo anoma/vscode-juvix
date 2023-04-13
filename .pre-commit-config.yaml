@@ -1,4 +1,38 @@
-- repo: https://github.com/pre-commit/mirrors-prettier
-  rev: '' # Use the sha or tag you want to point at
-  hooks:
-    - id: prettier
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: detect-private-key
+      - id: mixed-line-ending
+        exclude: tests/
+      - id: trailing-whitespace
+        exclude: tests/
+      - id: end-of-file-fixer
+        exclude: tests/|assets/
+
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: forbid-binary
+        name: forbid binary files
+        exclude: assets/
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: 'v3.0.0-alpha.6' # Use the sha or tag you want to point at
+    hooks:
+      - id: prettier
+        types_or: [css, javascript, markdown, yaml, toml]
+
+  - repo: local
+    hooks:
+      - id: make-all
+        name: make all
+        entry: make -s
+        language: system
+        verbose: true
+        pass_filenames: false

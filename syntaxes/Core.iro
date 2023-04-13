@@ -1,0 +1,190 @@
+# https://eeyo.io/iro/
+name                   = JuvixCore
+file_extensions []     = jvc;
+textmate_compatible    = true
+
+styles [] {
+    .comment : style {
+    color = light_green
+    italic = true
+    textmate_scope = comment
+    }
+
+   .illegal : style {
+    color = red
+    textmate_scope = invalid.illegal
+   }
+
+   .punctuation : style {
+      color                 = light_blue
+      textmate_scope        = punctuation.definition.group
+   }
+
+   .type : style {
+      color                 = blue
+      textmate_scope        = storage.type
+   }
+
+   .keyword_other : style {
+      color = green
+      textmate_scope = keyword.other
+   }
+
+   .keyword : style {
+      color = green
+      textmate_scope = keyword.other
+   }
+
+   .nothing : style {
+      textmate_scope = none
+   }
+
+   .numeric : style {
+      textmate_scope = constant.numeric
+   }
+}
+
+contexts [] {
+main : context {
+   : include "comment" ;
+   : include "expression" ;
+}
+
+# ----------------------------------------------------------
+
+comment : context {
+   : include "block_comment" ;
+   : include "line_comment" ;
+}
+
+line_comment : context {
+   :inline_push {
+      regex \= (--)
+      styles [] = .comment;
+      default_style = .comment
+      : pop {
+         regex \= ($)
+         styles [] = .comment;
+      }
+   }
+}
+
+block_comment : context {
+   description        = multiline
+   : inline_push {
+      regex          \= (\{-)
+      styles []       = .comment;
+      default_style   = .comment
+      : pop {
+         regex       \= (-\})
+         styles []    = .comment;
+      }
+   }
+}
+
+# ----------------------------------------------------------
+
+expression : context {
+
+   : include "punctuation";
+   : include "builtin_type";
+   : include "control_flow";
+   : include "other_keywords";
+}
+
+constants : context {
+   : pattern {
+      regex \= (\b([0-9]+|0([xX][0-9a-fA-F]+))\b)
+      styles[] = .numeric,.numeric,.numeric;
+   }
+}
+
+punctuation : context {
+   : include "parentheses" ;
+   : include "brackets" ;
+   : include "braces" ;
+   : include "assignment";
+}
+
+parentheses : context {
+    : inline_push {
+         regex         \= (\()
+         styles []    = .punctuation;
+         : pop {
+            regex      \= (\))
+            styles [] = .punctuation;
+         }
+         : include "main" ;
+      }
+      : pattern {
+          regex   \= (\))
+          styles[] = .illegal;
+      }
+
+}
+
+brackets : context {
+    : inline_push {
+         regex         \= (\[)
+         styles []    = .punctuation;
+         : pop {
+            regex      \= (\])
+            styles [] = .punctuation;
+         }
+         : include "main" ;
+      }
+      : pattern {
+          regex   \= (\])
+          styles[] = .illegal;
+      }
+}
+
+braces : context {
+    : inline_push {
+         regex         \= (\{)
+         styles []    = .punctuation;
+         : pop {
+            regex      \= (\})
+            styles [] = .punctuation;
+         }
+         : include "main" ;
+      }
+      : pattern {
+          regex   \= (\})
+          styles[] = .illegal;
+      }
+}
+
+assignment : context {
+   : pattern {
+      regex \= (:=)
+      styles[] = .punctuation;
+   }
+}
+
+builtin_type : context {
+   : pattern {
+      regex \= (\b(Type|Any|Int|Bool)\b)
+      styles[] = .nothing,.type;
+   }
+}
+
+control_flow : context {
+   : pattern {
+      regex \= (\b(?<!\.)(if|then|else)\b)
+      styles [] = .nothing,.keyword;
+   }
+}
+
+other_keywords : context {
+   : pattern {
+      regex \= (\b(?<!\.)(match|with|let|letrec|in)(?!\.)\b)
+      styles[] = .nothing,.keyword_other;
+   }
+   : pattern {
+      regex \= (\bλ)
+      styles[] =.keyword_other;
+   }
+}
+
+}
