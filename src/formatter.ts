@@ -22,8 +22,11 @@ export function activate(_context: vscode.ExtensionContext) {
       const formatterCall = [
         config.getJuvixExec(),
         config.getGlobalFlags(),
-        'format',
+        '--stdin',
+        'dev',
+        'scope',
         filePath,
+        '--with-comments',
       ].join(' ');
 
       debugChannel.info(`Formatting ${filePath}`);
