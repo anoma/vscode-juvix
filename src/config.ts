@@ -10,7 +10,7 @@ import * as path from 'path';
 import { tmpdir } from 'os';
 import { debugChannel } from './utils/debug';
 
-let juvixBuildDir: string | undefined;
+// let juvixBuildDir: string | undefined;
 
 export class JuvixConfig {
   readonly binaryName = new VsCodeSetting('juvix-mode.bin.name', {
@@ -66,21 +66,41 @@ export class JuvixConfig {
   readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir');
 
   public getInternalBuildDir(): string | undefined {
-    if (juvixBuildDir) return juvixBuildDir;
+
+    const useTmpDir = () => {
+      const tmp = fs.mkdtempSync(path.join(tmpdir(), '.juvix-build'));
+      try {
+        const tmp = fs.mkdtempSync(path.join(tmpdir(), '.juvix-build'));
+        const juvixBuildDir = tmp.toString();
+        console.log("TMP dir", juvixBuildDir);
+        return juvixBuildDir;
+      } catch (e) {
+        debugChannel.error('Error creating temporary directory: ' + e);
+      }
+    }
+
     const buildDir = this.internalBuildDir.get();
+
     if (buildDir) {
-      juvixBuildDir = buildDir.toString();
-      return juvixBuildDir;
+      const juvixBuildDir = buildDir.toString();
+      try {
+        if (fs.existsSync(juvixBuildDir)) {
+          console.log("Directory exists.", juvixBuildDir)
+          return juvixBuildDir;
+        } else {
+          console.log("Directory does not exist.", juvixBuildDir)
+          const tmpJuvixDir = useTmpDir();
+          return tmpJuvixDir
+        }
+      } catch (e) {
+        console.log("An error occurred.", e)
+        const tmpJuvixBuildDir = useTmpDir();
+        return tmpJuvixBuildDir;
+      }
+
     }
-    const tmp = path.join(tmpdir(), fs.mkdtempSync('.juvix-build'));
-    try {
-      fs.mkdirSync(tmp);
-      juvixBuildDir = tmp.toString();
-      return juvixBuildDir;
-    } catch (e) {
-      debugChannel.error('Error creating temporary directory: ' + e);
-    }
-    return juvixBuildDir;
+    const tmpJuvixBuildDir = useTmpDir();
+    return tmpJuvixBuildDir;
   }
 
   public getJudocdDir(): string {

@@ -190,7 +190,7 @@ export async function JuvixTask(
     case 'run':
       exec = new vscode.ShellExecution(
         JuvixExec +
-          ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
+        ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
         { cwd: buildDir }
       );
       break;
