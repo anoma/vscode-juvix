@@ -83,15 +83,15 @@ export class JuvixConfig {
       const juvixBuildDir = buildDir.toString();
       try {
         if (fs.existsSync(juvixBuildDir)) {
-          console.log("Directory exists.", juvixBuildDir)
+          debugChannel.info(`Directory exists: ${juvixBuildDir}`);
           return juvixBuildDir;
         } else {
-          console.log("Directory does not exist.", juvixBuildDir)
+          debugChannel.info(`Directory does not exist: ${juvixBuildDir}`);
           const tmpJuvixDir = useTmpDir();
           return tmpJuvixDir
         }
       } catch (e) {
-        console.log("An error occurred.", e)
+        debugChannel.error(`An error occurred: ${e}`);
         const tmpJuvixBuildDir = useTmpDir();
         return tmpJuvixBuildDir;
       }
