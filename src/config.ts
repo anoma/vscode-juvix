@@ -10,8 +10,6 @@ import * as path from 'path';
 import { tmpdir } from 'os';
 import { debugChannel } from './utils/debug';
 
-// let juvixBuildDir: string | undefined;
-
 export class JuvixConfig {
   readonly binaryName = new VsCodeSetting('juvix-mode.bin.name', {
     serializer: serializerWithDefault('Juvix'),
@@ -68,14 +66,14 @@ export class JuvixConfig {
   public getInternalBuildDir(): string | undefined {
 
     const useTmpDir = () => {
-      const tmp = fs.mkdtempSync(path.join(tmpdir(), '.juvix-build'));
+      const tmpPath = path.join(tmpdir(), '.juvix-build');
       try {
-        const tmp = fs.mkdtempSync(path.join(tmpdir(), '.juvix-build'));
+        const tmp = fs.mkdtempSync(tmpPath);
         const juvixBuildDir = tmp.toString();
         console.log("TMP dir", juvixBuildDir);
         return juvixBuildDir;
       } catch (e) {
-        debugChannel.error('Error creating temporary directory: ' + e);
+        debugChannel.error(`Error creating temporary directory ${tmpPath}: ${e}`);
       }
     }
 
