@@ -329,12 +329,13 @@
         "pattern": [
           {
             "kind": "location",
-            "regexp": "^(.+):(\\d+):(\\d+)-(\\d+): (\\w+).*",
+            "regexp": "^(.+):(\\d+)(?:-(\\d+))?:(\\d+)-(\\d+): (\\w+).*",
             "file": 1,
             "line": 2,
-            "column": 3,
-            "endColumn": 4,
-            "severity": 5
+            "endLine": 3,
+            "column": 4,
+            "endColumn": 5,
+            "severity": 6
           },
           {
             "regexp": "(.*)",
