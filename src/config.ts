@@ -10,8 +10,6 @@ import * as path from 'path';
 import { tmpdir } from 'os';
 import { debugChannel } from './utils/debug';
 
-let juvixBuildDir: string | undefined;
-
 export class JuvixConfig {
   readonly binaryName = new VsCodeSetting('juvix-mode.bin.name', {
     serializer: serializerWithDefault('Juvix'),
@@ -66,21 +64,41 @@ export class JuvixConfig {
   readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir');
 
   public getInternalBuildDir(): string | undefined {
-    if (juvixBuildDir) return juvixBuildDir;
+
+    const useTmpDir = () => {
+      const tmpPath = path.join(tmpdir(), '.juvix-build');
+      try {
+        const tmp = fs.mkdtempSync(tmpPath);
+        const juvixBuildDir = tmp.toString();
+        console.log("TMP dir", juvixBuildDir);
+        return juvixBuildDir;
+      } catch (e) {
+        debugChannel.error(`Error creating temporary directory ${tmpPath}: ${e}`);
+      }
+    }
+
     const buildDir = this.internalBuildDir.get();
+
     if (buildDir) {
-      juvixBuildDir = buildDir.toString();
-      return juvixBuildDir;
+      const juvixBuildDir = buildDir.toString();
+      try {
+        if (fs.existsSync(juvixBuildDir)) {
+          debugChannel.info(`Directory exists: ${juvixBuildDir}`);
+          return juvixBuildDir;
+        } else {
+          debugChannel.info(`Directory does not exist: ${juvixBuildDir}`);
+          const tmpJuvixDir = useTmpDir();
+          return tmpJuvixDir
+        }
+      } catch (e) {
+        debugChannel.error(`An error occurred: ${e}`);
+        const tmpJuvixBuildDir = useTmpDir();
+        return tmpJuvixBuildDir;
+      }
+
     }
-    const tmp = path.join(tmpdir(), fs.mkdtempSync('.juvix-build'));
-    try {
-      fs.mkdirSync(tmp);
-      juvixBuildDir = tmp.toString();
-      return juvixBuildDir;
-    } catch (e) {
-      debugChannel.error('Error creating temporary directory: ' + e);
-    }
-    return juvixBuildDir;
+    const tmpJuvixBuildDir = useTmpDir();
+    return tmpJuvixBuildDir;
   }
 
   public getJudocdDir(): string {
