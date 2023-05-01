@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
 import { debugChannel } from './utils/debug';
 import * as def from './definitions';
+import { spawnSync } from 'child_process';
 
 /*
 Semantic syntax highlighting
@@ -26,8 +27,7 @@ export async function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration(e => {
         if (e.affectsConfiguration('juvix-mode.enableSemanticSyntax')) {
-          if (!config.enableSemanticSyntax.get())
-            highlighterProvider.dispose();
+          if (!config.enableSemanticSyntax.get()) highlighterProvider.dispose();
           else activate(context);
         }
       })
@@ -41,7 +41,7 @@ export async function activate(context: vscode.ExtensionContext) {
 export const tokenTypes = new Map<string, number>();
 export const tokenModifiers = new Map<string, number>();
 
-export const legend : vscode.SemanticTokensLegend = (function () {
+export const legend: vscode.SemanticTokensLegend = (function () {
   const tokenTypesLegend = [
     'axiom',
     'comment',
@@ -76,6 +76,8 @@ interface RawInterval {
   line: number;
   startCharacter: number;
   length: number;
+  endLine: number;
+  endCol: number;
 }
 
 interface FaceProperty {
@@ -95,9 +97,9 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   ): Promise<vscode.SemanticTokens> {
     const filePath: string = document.fileName;
     const content: string = document.getText();
+    const contentLines: string[] = content.split('\n');
 
     const config = new JuvixConfig();
-    const { spawnSync } = require('child_process');
 
     const highlighterCall = [
       config.getJuvixExec(),
@@ -107,7 +109,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       '--format',
       'json',
       filePath,
-      '--stdin',
+      // '--stdin',
     ].join(' ');
 
     debugChannel.info('Highlighter call: ' + highlighterCall);
@@ -164,13 +166,18 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {
       const tk: FaceProperty = this.getFaceProperty(entry);
-      builder.push(
-        tk.interval.line,
-        tk.interval.startCharacter,
-        tk.interval.length,
-        this.encodeTokenType(tk.tokenType),
-        0
-      );
+      const token = this.encodeTokenType(tk.tokenType);
+      for (let l = tk.interval.line; l <= tk.interval.endLine; l++) {
+        const startCol = l == tk.interval.line ? tk.interval.startCharacter : 0;
+        const lineLength =
+          l == tk.interval.endLine
+            ? l == tk.interval.line
+              ? tk.interval.length
+              : tk.interval.endCol
+            : contentLines[l].length;
+
+        builder.push(l, startCol, lineLength, token, 0);
+      }
     });
     return builder.build();
   }
@@ -184,6 +191,8 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       line: Number(intervalInfo[1]) - 1,
       startCharacter: Number(intervalInfo[2]) - 1,
       length: Number(intervalInfo[3]) - 1,
+      endLine: Number(intervalInfo[4]) - 1,
+      endCol: Number(intervalInfo[5]) - 1,
     };
     const token: FaceProperty = {
       interval: rawInterval,
