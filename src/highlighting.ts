@@ -109,7 +109,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       '--format',
       'json',
       filePath,
-      // '--stdin',
+      '--stdin',
     ].join(' ');
 
     debugChannel.info('Highlighter call: ' + highlighterCall);
