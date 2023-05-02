@@ -412,7 +412,7 @@
         "title": "Html preview [only source]",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
-        "icon": "$(book)"
+        "icon": "$(file-code)"
       },
       {
         "command": "juvix-mode.dev-parse",
