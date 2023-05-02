@@ -408,6 +408,13 @@
         "icon": "$(book)"
       },
       {
+        "command": "juvix-mode.createOrShowJudocOnlySource",
+        "title": "Html preview [only source]",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus",
+        "icon": "$(file-code)"
+      },
+      {
         "command": "juvix-mode.dev-parse",
         "title": "[dev] parse",
         "category": "Juvix",
@@ -619,6 +626,11 @@
           "when": "editorLangId == Juvix",
           "command": "juvix-mode.createOrShowJudoc",
           "group": "navigation@4"
+        },
+        {
+          "when": "editorLangId == Juvix",
+          "command": "juvix-mode.createOrShowJudocOnlySource",
+          "group": "navigation@5"
         }
       ],
       "editor/context": [
