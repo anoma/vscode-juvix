@@ -17,7 +17,14 @@ export function activate(context: vscode.ExtensionContext) {
       }
     )
   );
-
+  context.subscriptions.push(
+    vscode.commands.registerTextEditorCommand(
+      'juvix-mode.createOrShowJudocOnlySource',
+      () => {
+        JudocPanel.createOrShow(true);
+      }
+    )
+  );
   // vscode.languages.registerHoverProvider(
   //   'javascript',
   //   new (class implements vscode.HoverProvider {
@@ -69,6 +76,7 @@ function getWebviewOptions(): vscode.WebviewOptions {
 export class JudocPanel {
   public static currentPanel: JudocPanel | undefined;
   public static juvixDocument: vscode.TextDocument;
+  public static onlySource: boolean;
 
   public static readonly viewType = 'juvix-mode';
   public readonly assetsPath = 'assets';
@@ -77,7 +85,8 @@ export class JudocPanel {
   private _disposables: vscode.Disposable[] = [];
   // public  readonly htmlFolder : string;
 
-  public static createOrShow() {
+  public static createOrShow(onlySource = false) {
+    this.onlySource = onlySource;
     const editor = vscode.window.activeTextEditor;
     if (!editor || !isJuvixFile(editor.document)) return;
     this.juvixDocument = editor.document;
@@ -234,6 +243,7 @@ export class JudocPanel {
       '--internal-build-dir',
       judocDocFolderUri.fsPath,
       'html',
+      JudocPanel.onlySource ? '--only-source' : '',
       '--output-dir',
       // this.htmlFolder,
       judocDocFolderUri.fsPath,
