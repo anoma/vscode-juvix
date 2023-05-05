@@ -142,9 +142,9 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
           start: startLoc,
           end: startLoc + Number(entry[0][3]) - 1,
         },
-        targetFile: entry[1].toString(),
-        targetLine: Number(entry[2]) - 1,
-        targetStartCharacter: Number(entry[3]) - 1,
+        targetFile: entry[1][0].toString(),
+        targetLine: Number(entry[1][1]) - 1,
+        targetStartCharacter: Number(entry[1][2]) - 1,
       };
       if (!def.locationMap.get(filePath)?.get(line)) {
         def.locationMap.get(filePath)?.set(line, []);
