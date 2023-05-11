@@ -175,8 +175,21 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
               ? tk.interval.length
               : tk.interval.endCol
             : contentLines[l].length;
+        // lineLength represent the number of symbols we can see on the screen.
+        // However, in js, length for unicode symbols works not as expected, but
+        // rather shows the code units number.
+        // So we need to actually calculate all the code units.
+        // In case of the unicode symbol, we need to take 2 positions instead of one.
+        let realLength = 0;
+        for (let i = startCol; i < startCol + lineLength; i++) {
+          if (contentLines[l].charCodeAt(i) > 255) {
+            realLength += 2;
+          } else {
+            realLength += 1;
+          }
+        }
 
-        builder.push(l, startCol, lineLength, token, 0);
+        builder.push(l, startCol, realLength, token, 0);
       }
     });
     return builder.build();
