@@ -7,6 +7,7 @@ import { JuvixConfig } from './config';
 import { debugChannel } from './utils/debug';
 import * as def from './definitions';
 import { spawnSync } from 'child_process';
+import { startBatch } from 'mobx/dist/internal';
 
 /*
 Semantic syntax highlighting
@@ -180,16 +181,20 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
         // rather shows the code units number.
         // So we need to actually calculate all the code units.
         // In case of the unicode symbol, we need to take 2 positions instead of one.
-        let realLength = 0;
-        for (let i = startCol; i < startCol + lineLength; i++) {
-          if (contentLines[l].charCodeAt(i) > 255) {
-            realLength += 2;
-          } else {
-            realLength += 1;
-          }
-        }
+        // With this in mind, we recalculate length and start position for the token.
 
-        builder.push(l, startCol, realLength, token, 0);
+        const newStartCol =
+          startCol + this.numberOfAstralSymbols(contentLines[l], 0, startCol);
+
+        const realLength =
+          lineLength +
+          this.numberOfAstralSymbols(
+            contentLines[l],
+            newStartCol,
+            newStartCol + lineLength
+          );
+
+        builder.push(l, newStartCol, realLength, token, 0);
       }
     });
     return builder.build();
@@ -212,6 +217,34 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       tokenType: entry[1].toString(),
     };
     return token;
+  }
+  private numberOfAstralSymbols(
+    str: string,
+    start: number,
+    end: number
+  ): number {
+    // Regular expression to match astral symbols
+    const regexAstralSymbols = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+
+    // Initialize current and previous end positions
+    let previousEnd = end;
+    let currentEnd = end;
+
+    // Find the new end position by counting the number of astral symbols
+    do {
+      previousEnd = currentEnd;
+      const count = str.substring(start, previousEnd).match(regexAstralSymbols);
+      const numAstralSymbols = count ? count.length : 0;
+      currentEnd = end + numAstralSymbols;
+    } while (previousEnd !== currentEnd);
+
+    // If the new end position is within an astral symbol, move it one position to the right
+    if (str.substring(currentEnd, currentEnd + 1).match(regexAstralSymbols)) {
+      currentEnd += 1;
+    }
+
+    // Return the number of astral symbols
+    return currentEnd - end;
   }
 
   private encodeTokenType(tokenType: string): number {
