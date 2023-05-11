@@ -48,7 +48,7 @@ export const legend: vscode.SemanticTokensLegend = (function () {
     'constructor',
     'error',
     'function',
-    'inductive',
+    'type',
     'keyword',
     'module',
     'number',
