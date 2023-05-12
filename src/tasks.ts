@@ -201,7 +201,7 @@ export async function JuvixTask(
       );
       break;
     case 'typecheck-silent':
-      exec = new vscode.ShellExecution(JuvixExec + ` typecheck  ${fl}`);
+      exec = new vscode.ShellExecution(JuvixExec + ` --only-errors typecheck  ${fl}`);
       break;
     case 'core-compile':
       exec = new vscode.ShellExecution(
