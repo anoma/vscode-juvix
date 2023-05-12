@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.36",
+  "version": "0.1.37",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
@@ -56,13 +56,13 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "20.x",
     "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^5.59.2",
-    "@typescript-eslint/parser": "^5.59.2",
-    "@vscode/test-electron": "^2.3.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.5",
+    "@typescript-eslint/parser": "^5.59.5",
+    "@vscode/test-electron": "^2.3.2",
     "@vscode/vsce": "^2.19.0",
-    "eslint": "^8.39.0",
+    "eslint": "^8.40.0",
     "eslint-plugin-header": "^3.1.1",
-    "glob": "^10.2.2",
+    "glob": "^10.2.3",
     "mocha": "^10.2.0",
     "npm-run-all": "^4.1.5",
     "prettier": "2.8.8",
@@ -70,8 +70,8 @@
     "rimraf": "^5.0.0",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
-    "webpack": "^5.82.0",
-    "webpack-cli": "^5.0.2"
+    "webpack": "^5.82.1",
+    "webpack-cli": "^5.1.1"
   },
   "prettier": {
     "printWidth": 80,
