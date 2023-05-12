@@ -7,7 +7,7 @@ import { JuvixConfig } from './config';
 import { debugChannel } from './utils/debug';
 import * as def from './definitions';
 import { spawnSync } from 'child_process';
-import { startBatch } from 'mobx/dist/internal';
+import { isJuvixFile } from './utils/base';
 
 /*
 Semantic syntax highlighting
@@ -34,6 +34,15 @@ export async function activate(context: vscode.ExtensionContext) {
       })
     );
     debugChannel.debug('Semantic syntax highlighter registered');
+
+    context.subscriptions.push(
+      vscode.workspace.onDidChangeTextDocument(e => {
+        const doc = e.document;
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor && activeEditor.document === doc && isJuvixFile(doc))
+          vscode.commands.executeCommand('juvix-mode.typecheck-silent');
+      })
+    );
   } catch (error) {
     debugChannel.error('No semantic provider', error);
   }
