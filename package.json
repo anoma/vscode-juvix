@@ -149,7 +149,7 @@
             "function": {
               "foreground": "#d98200"
             },
-            "inductive": {
+            "type": {
               "foreground": "#769c03"
             },
             "keyword": {
@@ -185,7 +185,7 @@
             "function": {
               "foreground": "#feb64a"
             },
-            "inductive": {
+            "type": {
               "foreground": "#86b300"
             },
             "keyword": {
