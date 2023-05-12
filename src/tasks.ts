@@ -81,10 +81,16 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
+        command: 'typecheck-silent',
+        args: ['${file}'],
+        group: vscode.TaskGroup.Build,
+        reveal: vscode.TaskRevealKind.Never,
+      },
+      {
         command: 'compile',
         args: [config.getCompilationFlags(), '${file}'],
         group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Silent,
+        reveal: vscode.TaskRevealKind.Always,
       },
       {
         command: 'core-compile',
@@ -180,19 +186,22 @@ export async function JuvixTask(
   name: string,
   args: string[]
 ): Promise<vscode.Task> {
-  let input = args.join(' ').trim();
+  const input = args.join(' ').trim();
   const config = new user.JuvixConfig();
   const JuvixExec = [config.getJuvixExec(), config.getGlobalFlags()].join(' ');
   let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined;
   const buildDir = config.getInternalBuildDir();
-  let fl = args.slice(1).join(' ').trim();
+  const fl = args.slice(1).join(' ').trim();
   switch (name) {
     case 'run':
       exec = new vscode.ShellExecution(
         JuvixExec +
-        ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
+          ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
         { cwd: buildDir }
       );
+      break;
+    case 'typecheck-silent':
+      exec = new vscode.ShellExecution(JuvixExec + ` --only-errors typecheck  ${fl}`);
       break;
     case 'core-compile':
       exec = new vscode.ShellExecution(

@@ -2,5 +2,6 @@ module HelloWorld;
 
 open import Stdlib.Prelude;
 
+--- asdf
 main : IO;
-main := printStringLn "hello world!";
+main := printStringLn "helworsld!";

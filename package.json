@@ -376,6 +376,13 @@
         "icon": "$(check)"
       },
       {
+        "command": "juvix-mode.typecheck-silent",
+        "title": "typecheck-silent",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus",
+        "icon": "$(check)"
+      },
+      {
         "command": "juvix-mode.compile",
         "title": "compile",
         "category": "Juvix",
@@ -566,6 +573,11 @@
           "when": "editorLangId == Juvix",
           "command": "juvix-mode.typecheck",
           "group": "navigation@1"
+        },
+        {
+          "when": "editorLangId == Juvix",
+          "command": "juvix-mode.typecheck-silent",
+          "group": "navigation@6"
         },
         {
           "when": "editorLangId == Juvix",
