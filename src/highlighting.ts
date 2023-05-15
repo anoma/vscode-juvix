@@ -34,7 +34,6 @@ export async function activate(context: vscode.ExtensionContext) {
       })
     );
     debugChannel.debug('Semantic syntax highlighter registered');
-
   } catch (error) {
     debugChannel.error('No semantic provider', error);
   }
@@ -251,6 +250,8 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   private encodeTokenType(tokenType: string): number {
     if (tokenTypes.has(tokenType)) {
       return tokenTypes.get(tokenType)!;
+    } else if (tokenType === 'judoc') {
+      return tokenTypes.get('comment')!;
     } else if (tokenType === 'notInLegend') {
       return tokenTypes.size + 2;
     }
