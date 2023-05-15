@@ -576,11 +576,6 @@
         },
         {
           "when": "editorLangId == Juvix",
-          "command": "juvix-mode.typecheck-silent",
-          "group": "navigation@6"
-        },
-        {
-          "when": "editorLangId == Juvix",
           "command": "juvix-mode.compile",
           "group": "navigation@2"
         },

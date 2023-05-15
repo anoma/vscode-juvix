@@ -81,12 +81,6 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
-        command: 'typecheck-silent',
-        args: ['${file}'],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Never,
-      },
-      {
         command: 'compile',
         args: [config.getCompilationFlags(), '${file}'],
         group: vscode.TaskGroup.Build,
@@ -199,9 +193,6 @@ export async function JuvixTask(
           ` compile --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
         { cwd: buildDir }
       );
-      break;
-    case 'typecheck-silent':
-      exec = new vscode.ShellExecution(JuvixExec + ` --only-errors typecheck  ${fl}`);
       break;
     case 'core-compile':
       exec = new vscode.ShellExecution(

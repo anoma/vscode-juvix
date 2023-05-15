@@ -35,14 +35,6 @@ export async function activate(context: vscode.ExtensionContext) {
     );
     debugChannel.debug('Semantic syntax highlighter registered');
 
-    context.subscriptions.push(
-      vscode.workspace.onDidChangeTextDocument(e => {
-        const doc = e.document;
-        const activeEditor = vscode.window.activeTextEditor;
-        if (activeEditor && activeEditor.document === doc && isJuvixFile(doc))
-          vscode.commands.executeCommand('juvix-mode.typecheck-silent');
-      })
-    );
   } catch (error) {
     debugChannel.error('No semantic provider', error);
   }
