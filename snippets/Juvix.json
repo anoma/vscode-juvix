@@ -6,7 +6,7 @@
   },
   "data types": {
     "prefix": ["type", "inductive", "data"],
-    "body": "type ${1:typeName} {\n  ${3:constructorName} : ${4:constructorArgs} -> ${5:returnType} |\n  ${6:constructorName} : ${7:constructorArgs} -> ${8:returnType} \n};\n",
+    "body": "type ${1:typeName} := \n  | ${3:constructorName} : ${4:constructorArgs} -> ${5:returnType}\n  | ${6:constructorName} : ${7:constructorArgs} -> ${8:returnType};\n",
     "description": "inductive data type declaration"
   },
   "axiom": {
@@ -24,14 +24,14 @@
     "body": "{-\n  ${1:commentBody}\n-}",
     "description": "comment"
   },
-  "compile block": {
-    "prefix": ["compile"],
-    "body": "compile ${1:compileName} {\n  ${2|c,ghc|} ↦ \"${3:replacementRule}\"\n};",
-    "description": "compile block"
+  "judoc inline": {
+    "prefix": "judoc",
+    "body": "--- ${1:judoc inline}",
+    "description": "judoc inline"
   },
-  "documentation": {
-    "prefix": "doc",
-    "body": "--- ${1:documentation}",
-    "description": "documentation"
+  "judoc block": {
+    "prefix": "judoc",
+    "body": "{--\n  ${1:Judoc documenation}\n--}",
+    "description": "Judoc documenation"
   }
 }

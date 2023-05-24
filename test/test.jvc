@@ -4,6 +4,4 @@ sum 10000
 
 let x := 5 in
 let y := 10 in
-x + y;
-
-{- DEBUG: CoreRead -}
+x + y

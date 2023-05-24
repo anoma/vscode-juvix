@@ -1,7 +1,11 @@
 module HelloWorld;
 
+------------------------------
+--- Standard library imports
+------------------------------
+
 open import Stdlib.Prelude;
 
---- asdf
+--- Hello world program
 main : IO;
-main := printStringLn "helworsld!";
+main := print-string-ln "Hello world!";
