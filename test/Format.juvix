@@ -10,7 +10,7 @@ go n s :=
     (go (sub n 1) s)
     (go n (sub s n) + go (sub n 1) s);
 
-module M; infixr 4 ,; axiom , : String → String → String; end;
+modul; axiom , : String → String → String; end;
 
 -- qualified commas
 t4 : String;
