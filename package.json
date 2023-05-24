@@ -214,9 +214,6 @@
       {
         "language": "Juvix",
         "path": "./snippets/Juvix.json"
-      },
-      {
-        "path": "./snippets/Debug.code-snippets"
       }
     ],
     "languages": [
