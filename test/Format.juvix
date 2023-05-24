@@ -1,16 +1,20 @@
 module Format;
 
-open import Stdlib.Prelude hiding {,};
-open import Stdlib.Data.Nat.Ord;
+import Stdlib.Prelude open hiding {,};
+import Stdlib.Data.Nat.Ord open;
 
-terminating go : Nat → Nat → Nat;
+terminating
+go : Nat → Nat → Nat;
 go n s :=
   if
     (s < n)
     (go (sub n 1) s)
     (go n (sub s n) + go (sub n 1) s);
 
-modul; axiom , : String → String → String; end;
+module M;
+  syntax infixr 4 ,;
+  axiom , : String → String → String;
+end;
 
 -- qualified commas
 t4 : String;
@@ -42,19 +46,23 @@ t3 :=
     , "k"
     , "1234";
 
-infixl 7 +l7;
+-- escaping in String literals
+e1 : String;
+e1 := "\"\n";
+
+syntax infixl 7 +l7;
 axiom +l7 : String → String → String;
 
-infixr 3 +r3;
+syntax infixr 3 +r3;
 axiom +r3 : String → String → String;
 
-infixl 1 +l1;
+syntax infixl 1 +l1;
 axiom +l1 : String → String → String;
 
-infixl 6 +l6;
+syntax infixl 6 +l6;
 axiom +l6 : String → String → String;
 
-infixr 6 +r6;
+syntax infixr 6 +r6;
 axiom +r6 : String → String → String;
 
 -- nesting of chains
@@ -92,6 +100,8 @@ exampleFunction1 :
     -> Nat;
 exampleFunction1 _ _ _ _ _ _ _ := 1;
 
+axiom undefined : {A : Type} -> A;
+
 -- 200 in the body is idented with respect to the start of the chain
 -- (at {A : Type})
 exampleFunction2 :
@@ -104,29 +114,74 @@ exampleFunction2 :
     -> List A
     -> List A
     -> Nat :=
-    200
-      + 100
-      + 100
-      + 100
-      + 100
-      + 100
-      + 100
-      + 100
-      + 100
-      + 100
-      + 100;
+    λ {_ _ _ _ _ _ _ :=
+      undefined
+        + undefined
+        + undefined
+        + undefined
+        + undefined
+        + undefined
+        + undefined
+        + undefined
+        + undefined
+        + undefined
+        + undefined};
 
 positive
 type T0 (A : Type) :=
   | c0 : (A -> T0 A) -> T0 A;
 
-module Patterns;
-  infixr 4 ,;
-  type Pair :=
-    | , : String → String → String;
+-- Single Lambda clause
+idLambda : {A : Type} -> A -> A;
+idLambda := λ {x := x};
 
-  -- Commas in patterns
-  f : _;
+-- Lambda clauses
+f : Nat -> Nat;
+f :=
+  \ {
+    | zero :=
+      let
+        foo : Nat := 1;
+      in foo
+    | _ := 1
+  };
+
+module Patterns;
+  syntax infixr 2 ×;
+  syntax infixr 4 ,;
+  type × (A : Type) (B : Type) :=
+    | , : A → B → A × B;
+
+  f : Nat × Nat × Nat × Nat -> Nat;
   f (a, b, c, d) := a;
 end;
+
+import Stdlib.Prelude open using {Nat as Natural};
+
+module UnicodeStrings;
+  a : String;
+  a := "λ";
+end;
+
+module Comments;
+  axiom a1 : Type;
+  -- attached to a1
+
+  -- attached to a2
+  axiom a2 : Type;
+
+  -- attached to nothing
+
+  axiom a3 : Type;
+
+  -- attached to nothing
+  -- attached to nothing 2
+
+  -- attached to nothing 3
+
+  axiom a4 : Type;
+
+  axiom a5 : Type;
+end;
+
 -- Comment at the end of a module
