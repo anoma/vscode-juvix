@@ -65,7 +65,6 @@ properly.
 | typecheck | <kbd>Shift+Alt+T</kbd> |
 | compile   | <kbd>Shift+Alt+C</kbd> |
 | run       | <kbd>Shift+Alt+X</kbd> |
-| repl      | <kbd>Shift+Alt+E</kbd> |
 | doctor    | <kbd>Shift+Alt+D</kbd> |
 
 However, we recommend using the Command Palette (<kbd>Ctrl</kbd><kbd>P</kbd>) to
