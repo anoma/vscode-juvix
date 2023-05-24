@@ -17,19 +17,18 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const command = 'juvix-mode.typecheck-silent';
 
-  const commandHandler = (doc: vscode.TextDocument, content: string
-    ) => {
+  const commandHandler = (doc: vscode.TextDocument, content: string) => {
     const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor && activeEditor.document == doc) {
       if (doc && isJuvixFile(doc)) {
-        let filePath = doc.fileName;
+        const filePath = doc.fileName;
         debugChannel.info(`Checking... ${filePath}!`);
         const typecheckerCall = [
           config.getJuvixExec(),
           config.getGlobalFlags(),
           '--only-errors',
           'typecheck',
-          filePath
+          filePath,
           // '--stdin',
           // content,
         ].join(' ');
@@ -48,21 +47,43 @@ export async function activate(context: vscode.ExtensionContext) {
           throw new Error(errMsg);
         }
         const stdout = ls.stdout;
-
       }
     }
   };
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(command, commandHandler));
+    vscode.commands.registerCommand(command, commandHandler)
+  );
 
-
-  context.subscriptions.push(
-      vscode.workspace.onDidChangeTextDocument(e => {
-        const doc = e.document;
-        const activeEditor = vscode.window.activeTextEditor;
-        if (activeEditor && activeEditor.document === doc && isJuvixFile(doc))
-          vscode.commands.executeCommand('juvix-mode.typecheck-silent', doc , doc.getText());
-      })
-    );
+  switch (config.typecheckOn.get()) {
+    case 'change':
+      context.subscriptions.push(
+        vscode.workspace.onDidChangeTextDocument(e => {
+          const doc = e.document;
+          const activeEditor = vscode.window.activeTextEditor;
+          if (activeEditor && activeEditor.document === doc && isJuvixFile(doc))
+            vscode.commands.executeCommand(
+              'juvix-mode.typecheck-silent',
+              doc,
+              doc.getText()
+            );
+        })
+      );
+      break;
+    case 'save':
+      context.subscriptions.push(
+        vscode.workspace.onDidSaveTextDocument(doc => {
+          const activeEditor = vscode.window.activeTextEditor;
+          if (activeEditor && activeEditor.document === doc && isJuvixFile(doc))
+            vscode.commands.executeCommand(
+              'juvix-mode.typecheck-silent',
+              doc,
+              doc.getText()
+            );
+        })
+      );
+      break;
+    default:
+      return;
+  }
 }
