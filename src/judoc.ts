@@ -25,24 +25,6 @@ export function activate(context: vscode.ExtensionContext) {
       }
     )
   );
-  // vscode.languages.registerHoverProvider(
-  //   'javascript',
-  //   new (class implements vscode.HoverProvider {
-  //     provideHover(
-  //       document: vscode.TextDocument,
-  //       _position: vscode.Position,
-  //       _token: vscode.CancellationToken
-  //     ): vscode.ProviderResult<vscode.Hover> {
-  //       const args = [{ resourceUri: document.uri }];
-  //       const stageCommandUri = vscode.Uri.parse(
-  //         `command:git.stage?${encodeURIComponent(JSON.stringify(args))}`
-  //       );
-  //       const contents = new vscode.MarkdownString(`[Stage file](${stageCommandUri})`);
-  //       contents.isTrusted = true;
-  //       return new vscode.Hover(contents);
-  //     }
-  //   })()
-  // );
 
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
