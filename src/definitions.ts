@@ -20,7 +20,6 @@ export async function activate(context: vscode.ExtensionContext) {
         definitionProvider
       )
     );
-
     debugChannel.info('Go to definition registered');
   } catch (error) {
     debugChannel.error('No definition provider', error);

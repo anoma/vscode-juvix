@@ -9,6 +9,7 @@ import * as tasks from './tasks';
 import * as statusBar from './statusbar';
 import * as syntaxHighlighter from './highlighting';
 import * as goToDefinition from './definitions';
+import * as hoverInfo from './hover';
 import * as inputMethod from './input';
 import * as repl from './repl';
 import * as judoc from './judoc';
@@ -22,6 +23,7 @@ export async function activate(context: vscode.ExtensionContext) {
   statusBar.activate(context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
+  hoverInfo.activate(context);
   tasks.activate(context);
   inputMethod.activate(context);
   repl.activate(context);
