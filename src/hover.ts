@@ -8,7 +8,7 @@ import { debugChannel } from './utils/debug';
 import { RawInterval, HoverProperty } from './interfaces';
 
 export let hoverProvider: vscode.HoverProvider;
-export let hoverMap = new Map<string, Map<vscode.Position, HoverProperty[]>>();
+export let hoverMap = new Map<string, Map<number, HoverProperty[]>>();
 
 export async function activate(context: vscode.ExtensionContext) {
   try {
@@ -28,56 +28,71 @@ export async function activate(context: vscode.ExtensionContext) {
     debugChannel.error('No hover provider', error);
   }
 }
+
+
 export class JuvixHoverProvider implements vscode.HoverProvider {
   provideHover(document: vscode.TextDocument
     , position: vscode.Position
     , _token: vscode.CancellationToken
   ) {
     const filePath: string = document.fileName;
+    const line: number = position.line;
+    const col: number = position.character;
     debugChannel.info('Hover requested ------------------------');
     debugChannel.info(
       'info',
-      'Looking for hover info of the symbol at: ' + (position.line + 1) + ':' + (position.character + 1)
+      'In file: ' + filePath + ' at: ' + (line + 1) + ':' + (col + 1)
     );
-    debugChannel.info('Active file: ' + filePath);
-    const hoverInfo = hoverMap.get(filePath);
-    if (!hoverInfo) {
+    const hoversByFile = hoverMap.get(filePath);
+    if (!hoversByFile) {
       debugChannel.info(
         'There is no hover info registered in file: ' + filePath
       );
       return undefined;
     }
-    // const hoverProperty = hoverInfo.get(position);
-    // if (!hoverProperty) {
-    //   debugChannel.info(
-    //     'There is no hover info registered in file: ' + filePath
-    //   );
-    //   return undefined;
-    // }
-    // const hoverText = hoverProperty.text;
-    // debugChannel.info('Hover info found: ' + hoverText);
-    // return new vscode.Hover({
-    //   language: "Markdown",
-    //   value: hoverText
-    // });
+    const hoversByLine = hoversByFile.get(line);
+    if (!hoversByLine) {
+      debugChannel.info(
+        'There is no definitions registered in line: ' + (line + 1)
+      );
+      return undefined;
+    }
+
+    debugChannel.info(
+      '> Found ' + hoversByLine.length + ' hovers at line: ' + (line + 1)
+    );
+    for (let i = 0; i < hoversByLine.length; i++) {
+      const hover: HoverProperty = hoversByLine[i];
+      if (hover.interval.startCol <= col && col <= hover.interval.endCol) {
+        debugChannel.info('info', '[!] Found definition at: ' +
+          hover.interval.file + ':' + (hover.interval.line + 1)
+          + ':' + (hover.interval.startCol + 1));
+
+        return new vscode.Hover({
+          language: "Markdown",
+          value: hover.text
+        });
+      }
+    }
+    return undefined;
   }
 }
 
 export function getHoverProperty(
-    entry: ((string | number)[] | string)[]
-  ): HoverProperty {
-    const intervalInfo = entry[0];
-    const rawInterval: RawInterval = {
-      file: intervalInfo[0].toString(),
-      line: Number(intervalInfo[1]) - 1,
-      startCharacter: Number(intervalInfo[2]) - 1,
-      length: Number(intervalInfo[3]) - 1,
-      endLine: Number(intervalInfo[4]) - 1,
-      endCol: Number(intervalInfo[5]) - 1,
-    };
-    const hover: HoverProperty = {
-      interval: rawInterval,
-      text: entry[1].toString(),
-    };
-    return hover;
-  }
+  entry: ((string | number)[] | string)[]
+): HoverProperty {
+  const intervalInfo = entry[0];
+  const rawInterval: RawInterval = {
+    file: intervalInfo[0].toString(),
+    line: Number(intervalInfo[1]) - 1,
+    startCol: Number(intervalInfo[2]) - 1,
+    length: Number(intervalInfo[3]) - 1,
+    endLine: Number(intervalInfo[4]) - 1,
+    endCol: Number(intervalInfo[5]) - 1,
+  };
+  const hover: HoverProperty = {
+    interval: rawInterval,
+    text: entry[1].toString(),
+  };
+  return hover;
+}

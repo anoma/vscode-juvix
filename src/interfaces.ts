@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 export interface RawInterval {
     file: string;
     line: number;
-    startCharacter: number;
+    startCol: number;
     length: number;
     endLine: number;
     endCol: number;

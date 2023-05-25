@@ -70,15 +70,9 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
       );
 
       if (info.interval.start <= col && info.interval.end >= col) {
-        debugChannel.info(
-          'info',
-          '[!] Found definition at: ' +
-          info.targetFile +
-          ':' +
-          (info.targetLine + 1) +
-          ':' +
-          (info.targetStartCharacter + 1)
-        );
+        debugChannel.info('info', '[!] Found definition at: ' +
+          info.targetFile + ':' + (info.targetLine + 1) + ':'
+          + (info.targetStartCharacter + 1));
         const rangeBegin = new vscode.Position(
           info.targetLine,
           info.targetStartCharacter

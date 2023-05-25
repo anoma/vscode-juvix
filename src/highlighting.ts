@@ -115,9 +115,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
 
-    debugChannel.info(
-      'Highlighting output: ' + JSON.stringify(output, null, 2)
-    );
+    debugChannel.info('Highlighting output: ' + JSON.stringify(output, null, 2));
 
     /*
       Populate the location map for the Goto feature
@@ -141,35 +139,19 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       }
       def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
     });
-    debugChannel.info(
-      'Location output: ' +
-      JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
-    );
-    debugChannel.info('Active file: ' + filePath);
-    /* populate the hover map */
+
+    /*
+      Populate the hover map for the Hover feature
+    */
+
     hover.hoverMap.set(filePath, new Map());
     output.doc.forEach(entry => {
-      // The juvix's output is 1-indexed and vscode's is 0-indexed
-      const line: number = Number(entry[0][1]) - 1;
-      const startLoc: number = Number(entry[0][2]) - 1;
-      const targetLocation: GotoProperty = {
-        interval: {
-          start: startLoc,
-          end: startLoc + Number(entry[0][3]) - 1,
-        },
-        targetFile: entry[1][0].toString(),
-        targetLine: Number(entry[1][1]) - 1,
-        targetStartCharacter: Number(entry[1][2]) - 1,
-      };
-      if (!def.locationMap.get(filePath)?.get(line)) {
-        def.locationMap.get(filePath)?.set(line, []);
-      }
-      def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
+      const hoverInfo = hover.getHoverProperty(entry);
+      const line = hoverInfo.interval.line;
+      const fileHoverMap = hover.hoverMap.get(filePath);
+      if (!fileHoverMap?.get(line))  fileHoverMap?.set(line, []);
+      fileHoverMap?.get(line)?.push(hoverInfo);
     });
-    debugChannel.info(
-      'Highlighting output: ' +
-      JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
-    );
 
     /*
       The actual tokenization and syntax highlighting
@@ -182,7 +164,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       const tk: FaceProperty = this.getFaceProperty(entry);
       const token = this.encodeTokenType(tk.tokenType);
       for (let l = tk.interval.line; l <= tk.interval.endLine; l++) {
-        const startCol = l == tk.interval.line ? tk.interval.startCharacter : 0;
+        const startCol = l == tk.interval.line ? tk.interval.startCol : 0;
         const lineLength =
           l == tk.interval.endLine
             ? l == tk.interval.line
@@ -262,7 +244,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const rawInterval: RawInterval = {
       file: intervalInfo[0].toString(),
       line: Number(intervalInfo[1]) - 1,
-      startCharacter: Number(intervalInfo[2]) - 1,
+      startCol: Number(intervalInfo[2]) - 1,
       length: Number(intervalInfo[3]) - 1,
       endLine: Number(intervalInfo[4]) - 1,
       endCol: Number(intervalInfo[5]) - 1,
