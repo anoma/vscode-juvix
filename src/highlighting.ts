@@ -6,8 +6,9 @@ import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
 import { debugChannel } from './utils/debug';
 import * as def from './definitions';
+import * as hover from './hover';
 import { spawnSync } from 'child_process';
-import { isJuvixFile } from './utils/base';
+import { FaceProperty, RawInterval, DevHighlightOutput } from './interfaces';
 
 /*
 Semantic syntax highlighting
@@ -72,24 +73,6 @@ export const legend: vscode.SemanticTokensLegend = (function () {
   );
 })();
 
-interface RawInterval {
-  file: string;
-  line: number;
-  startCharacter: number;
-  length: number;
-  endLine: number;
-  endCol: number;
-}
-
-interface FaceProperty {
-  interval: RawInterval;
-  tokenType: string;
-}
-
-interface DevHighlightOutput {
-  face: [Array<Array<string | number> | string>];
-  goto: [[string, number, number, number], string, number, number][];
-}
 
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   async provideDocumentSemanticTokens(
@@ -102,6 +85,9 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     const config = new JuvixConfig();
 
+    /*
+      Call the highlighter
+    */
     const highlighterCall = [
       config.getJuvixExec(),
       config.getGlobalFlags(),
@@ -128,17 +114,20 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     }
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
-    // too verbose but useful for debugging location mapping
-    // debugChannel.debug(
-    //   'Highlighting output: ' + JSON.stringify(output, null, 2)
-    // );
 
+    debugChannel.info(
+      'Highlighting output: ' + JSON.stringify(output, null, 2)
+    );
+
+    /*
+      Populate the location map for the Goto feature
+    */
     def.locationMap.set(filePath, new Map());
     output.goto.forEach(entry => {
       // The juvix's output is 1-indexed and vscode's is 0-indexed
       const line: number = Number(entry[0][1]) - 1;
       const startLoc: number = Number(entry[0][2]) - 1;
-      const targetLocation: def.TargetLocation = {
+      const targetLocation: def.GotoProperty = {
         interval: {
           start: startLoc,
           end: startLoc + Number(entry[0][3]) - 1,
@@ -152,15 +141,21 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       }
       def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
     });
+    debugChannel.info(
+      'Highlighting output: ' +
+      JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
+    );
+    debugChannel.info('Active file: ' + filePath);
+    /* populate the hover map */
+    hover.hoverMap.set(filePath, new Map());
+    // output.doc.forEach(entry => {
 
-    // // too verbose but useful for debugging location mapping
-    // debugChannel.debug(
-    //   'Highlighting output: ' +
-    //     JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
-    // );
 
-    debugChannel.debug('Active file: ' + filePath);
 
+
+    /*
+      The actual tokenization and syntax highlighting
+    */
     const allTokens = output.face;
     debugChannel.debug('> Tokens length: ' + allTokens.length);
 
@@ -218,6 +213,27 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     };
     return token;
   }
+
+
+  private getHoverProperty(
+    entry: ((string | number)[] | string)[]
+  ): FaceProperty {
+    const intervalInfo = entry[0];
+    const rawInterval: RawInterval = {
+      file: intervalInfo[0].toString(),
+      line: Number(intervalInfo[1]) - 1,
+      startCharacter: Number(intervalInfo[2]) - 1,
+      length: Number(intervalInfo[3]) - 1,
+      endLine: Number(intervalInfo[4]) - 1,
+      endCol: Number(intervalInfo[5]) - 1,
+    };
+    const token: FaceProperty = {
+      interval: rawInterval,
+      tokenType: entry[1].toString(),
+    };
+    return token;
+  }
+
   private numberOfAstralSymbols(
     str: string,
     start: number,

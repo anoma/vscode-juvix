@@ -7,14 +7,14 @@ import * as vscode from 'vscode';
 import { debugChannel } from './utils/debug';
 
 export let definitionProvider: vscode.DefinitionProvider;
-export const locationMap = new Map<string, Map<number, TargetLocation[]>>();
+export let locationMap = new Map<string, Map<number, GotoProperty[]>>();
 
 export interface ColInterval {
   start: number;
   end: number;
 }
 
-export interface TargetLocation {
+export interface GotoProperty {
   interval: ColInterval;
   targetFile: string;
   targetLine: number;
@@ -31,6 +31,7 @@ export async function activate(context: vscode.ExtensionContext) {
         definitionProvider
       )
     );
+
     debugChannel.info('Go to definition registered');
   } catch (error) {
     debugChannel.error('No definition provider', error);
@@ -64,30 +65,30 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
         );
         return undefined;
       } else {
-        const locsByLine: TargetLocation[] = locationMap
+        const locsByLine: GotoProperty[] = locationMap
           .get(filePath)!
           .get(line)!;
         debugChannel.info(
           '> Found ' + locsByLine.length + ' definitions at line: ' + (line + 1)
         );
         for (let i = 0; i < locsByLine.length; i++) {
-          const info: TargetLocation = locsByLine[i];
+          const info: GotoProperty = locsByLine[i];
           debugChannel.info(
             '>> Checking if symbol is between colummns: ' +
-              (info.interval.start + 1) +
-              ' and ' +
-              (info.interval.end + 1)
+            (info.interval.start + 1) +
+            ' and ' +
+            (info.interval.end + 1)
           );
 
           if (info.interval.start <= col && info.interval.end >= col) {
             debugChannel.info(
               'info',
               '[!] Found definition at: ' +
-                info.targetFile +
-                ':' +
-                (info.targetLine + 1) +
-                ':' +
-                (info.targetStartCharacter + 1)
+              info.targetFile +
+              ':' +
+              (info.targetLine + 1) +
+              ':' +
+              (info.targetStartCharacter + 1)
             );
             const rangeBegin = new vscode.Position(
               info.targetLine,

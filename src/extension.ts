@@ -31,4 +31,5 @@ export async function activate(context: vscode.ExtensionContext) {
   vampir.activate(context);
   dev.activate(context);
   debugChannel.info('Juvix extension is ready!');
+
 }
