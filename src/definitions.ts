@@ -93,7 +93,11 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
               info.targetLine,
               info.targetStartCharacter
             );
-            const rangeEnd = new vscode.Position(info.targetLine + 1, 0);
+            const lengthIdentifier = info.interval.end - info.interval.start + 1;
+            const rangeEnd = new vscode.Position(
+              info.targetLine,
+              info.targetStartCharacter + lengthIdentifier
+            );
             const positionRange = new vscode.Range(rangeBegin, rangeEnd);
             const definitionFound = new vscode.Location(
               vscode.Uri.file(info.targetFile),
