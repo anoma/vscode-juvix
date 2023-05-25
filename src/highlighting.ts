@@ -2,16 +2,25 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import * as vscode from 'vscode';
-import { JuvixConfig } from './config';
-import { debugChannel } from './utils/debug';
 import * as def from './definitions';
 import * as hover from './hover';
-import { spawnSync } from 'child_process';
+import * as vscode from 'vscode';
+import { debugChannel } from './utils/debug';
 import { FaceProperty, GotoProperty, RawInterval, DevHighlightOutput, HoverProperty } from './interfaces';
+import { JuvixConfig } from './config';
+import { spawnSync } from 'child_process';
 
 /*
-Semantic syntax highlighting
+The Juvix compiler outputs a JSON file with the following structure:
+{
+  "face": .. // for syntax highlighting
+  "goto": .. // for go to definition
+  "doc": ..  // for hover info
+}.
+
+We therefore call only once the compiler and then we parse the output
+to get the information we need. For "goto" and "doc" feature, we have a
+map that associates a file path to the corresponding information for that file.
 */
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -146,10 +155,10 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     hover.hoverMap.set(filePath, new Map());
     output.doc.forEach(entry => {
-      const hoverInfo = hover.getHoverProperty(entry);
+      const hoverInfo: HoverProperty = hover.getHoverProperty(entry);
       const line = hoverInfo.interval.line;
       const fileHoverMap = hover.hoverMap.get(filePath);
-      if (!fileHoverMap?.get(line))  fileHoverMap?.set(line, []);
+      if (!fileHoverMap?.get(line)) fileHoverMap?.set(line, []);
       fileHoverMap?.get(line)?.push(hoverInfo);
     });
 
