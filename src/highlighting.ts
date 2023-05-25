@@ -8,7 +8,7 @@ import { debugChannel } from './utils/debug';
 import * as def from './definitions';
 import * as hover from './hover';
 import { spawnSync } from 'child_process';
-import { FaceProperty, RawInterval, DevHighlightOutput } from './interfaces';
+import { FaceProperty, GotoProperty, RawInterval, DevHighlightOutput, HoverProperty } from './interfaces';
 
 /*
 Semantic syntax highlighting
@@ -127,7 +127,32 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       // The juvix's output is 1-indexed and vscode's is 0-indexed
       const line: number = Number(entry[0][1]) - 1;
       const startLoc: number = Number(entry[0][2]) - 1;
-      const targetLocation: def.GotoProperty = {
+      const targetLocation: GotoProperty = {
+        interval: {
+          start: startLoc,
+          end: startLoc + Number(entry[0][3]) - 1,
+        },
+        targetFile: entry[1][0].toString(),
+        targetLine: Number(entry[1][1]) - 1,
+        targetStartCharacter: Number(entry[1][2]) - 1,
+      };
+      if (!def.locationMap.get(filePath)?.get(line)) {
+        def.locationMap.get(filePath)?.set(line, []);
+      }
+      def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
+    });
+    debugChannel.info(
+      'Location output: ' +
+      JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
+    );
+    debugChannel.info('Active file: ' + filePath);
+    /* populate the hover map */
+    hover.hoverMap.set(filePath, new Map());
+    output.doc.forEach(entry => {
+      // The juvix's output is 1-indexed and vscode's is 0-indexed
+      const line: number = Number(entry[0][1]) - 1;
+      const startLoc: number = Number(entry[0][2]) - 1;
+      const targetLocation: GotoProperty = {
         interval: {
           start: startLoc,
           end: startLoc + Number(entry[0][3]) - 1,
@@ -145,13 +170,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       'Highlighting output: ' +
       JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
     );
-    debugChannel.info('Active file: ' + filePath);
-    /* populate the hover map */
-    hover.hoverMap.set(filePath, new Map());
-    // output.doc.forEach(entry => {
-
-
-
 
     /*
       The actual tokenization and syntax highlighting
@@ -195,44 +213,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     return builder.build();
   }
 
-  private getFaceProperty(
-    entry: ((string | number)[] | string)[]
-  ): FaceProperty {
-    const intervalInfo = entry[0];
-    const rawInterval: RawInterval = {
-      file: intervalInfo[0].toString(),
-      line: Number(intervalInfo[1]) - 1,
-      startCharacter: Number(intervalInfo[2]) - 1,
-      length: Number(intervalInfo[3]) - 1,
-      endLine: Number(intervalInfo[4]) - 1,
-      endCol: Number(intervalInfo[5]) - 1,
-    };
-    const token: FaceProperty = {
-      interval: rawInterval,
-      tokenType: entry[1].toString(),
-    };
-    return token;
-  }
-
-
-  private getHoverProperty(
-    entry: ((string | number)[] | string)[]
-  ): FaceProperty {
-    const intervalInfo = entry[0];
-    const rawInterval: RawInterval = {
-      file: intervalInfo[0].toString(),
-      line: Number(intervalInfo[1]) - 1,
-      startCharacter: Number(intervalInfo[2]) - 1,
-      length: Number(intervalInfo[3]) - 1,
-      endLine: Number(intervalInfo[4]) - 1,
-      endCol: Number(intervalInfo[5]) - 1,
-    };
-    const token: FaceProperty = {
-      interval: rawInterval,
-      tokenType: entry[1].toString(),
-    };
-    return token;
-  }
 
   private numberOfAstralSymbols(
     str: string,
@@ -272,5 +252,25 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       return tokenTypes.size + 2;
     }
     return 0;
+  }
+
+
+  private getFaceProperty(
+    entry: ((string | number)[] | string)[]
+  ): FaceProperty {
+    const intervalInfo = entry[0];
+    const rawInterval: RawInterval = {
+      file: intervalInfo[0].toString(),
+      line: Number(intervalInfo[1]) - 1,
+      startCharacter: Number(intervalInfo[2]) - 1,
+      length: Number(intervalInfo[3]) - 1,
+      endLine: Number(intervalInfo[4]) - 1,
+      endCol: Number(intervalInfo[5]) - 1,
+    };
+    const token: FaceProperty = {
+      interval: rawInterval,
+      tokenType: entry[1].toString(),
+    };
+    return token;
   }
 }

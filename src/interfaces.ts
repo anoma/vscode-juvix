@@ -12,7 +12,7 @@ export interface RawInterval {
     endLine: number;
     endCol: number;
   }
-  
+
   export interface FaceProperty {
     interval: RawInterval;
     tokenType: string;
@@ -22,9 +22,22 @@ export interface RawInterval {
     interval: RawInterval;
     text: string;
   }
-  
+
   export interface DevHighlightOutput {
     face: [Array<Array<string | number> | string>];
     goto: [[string, number, number, number], string, number, number][];
     doc: [[string, number, number, number,number, number], string][];
   }
+
+
+export interface ColInterval {
+  start: number;
+  end: number;
+}
+
+export interface GotoProperty {
+  interval: ColInterval;
+  targetFile: string;
+  targetLine: number;
+  targetStartCharacter: number;
+}
