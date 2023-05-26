@@ -92,7 +92,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
             }
 
             /*
-                Add a code lenses to show the Juvix version 
+                Add a code lenses to show the Juvix version
                 in the first line of the document.
             */
             let juvixVersionCodeLenses = new vscode.CodeLens(firstLineRange, {
