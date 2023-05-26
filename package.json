@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
@@ -2675,6 +2675,7 @@
     "@vscode/vsce": "^2.19.0",
     "compare-versions": "^6.0.0-rc.1",
     "mobx": "6.9.0",
+    "ncu": "^0.2.1",
     "npx": "^10.2.2",
     "run": "^1.4.0",
     "temp": "^0.9.4"
