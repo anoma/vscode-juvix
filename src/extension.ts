@@ -24,7 +24,6 @@ export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
   statusBar.activate(context);
   root.activate(context);
-  codelens.activate(context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
   hoverInfo.activate(context);
@@ -36,6 +35,7 @@ export async function activate(context: vscode.ExtensionContext) {
   formatter.activate(context);
   vampir.activate(context);
   dev.activate(context);
+  codelens.activate(context);
   debugChannel.info('Juvix extension is ready!');
 
 }
