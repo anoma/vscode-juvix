@@ -76,7 +76,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                 and the slashes are replaced by dots.
             */
             let firstLineRange = document.lineAt(0).range;
-            
+
             const regex = /module\s+([\w.]+);/;
             const match = text.match(regex);
             const noModule = text.length === 0 || match === null;
