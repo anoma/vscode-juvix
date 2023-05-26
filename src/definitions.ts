@@ -5,21 +5,10 @@
 
 import * as vscode from 'vscode';
 import { debugChannel } from './utils/debug';
+import { GotoProperty } from './interfaces';
 
 export let definitionProvider: vscode.DefinitionProvider;
-export const locationMap = new Map<string, Map<number, TargetLocation[]>>();
-
-export interface ColInterval {
-  start: number;
-  end: number;
-}
-
-export interface TargetLocation {
-  interval: ColInterval;
-  targetFile: string;
-  targetLine: number;
-  targetStartCharacter: number;
-}
+export let locationMap = new Map<string, Map<number, GotoProperty[]>>();
 
 export async function activate(context: vscode.ExtensionContext) {
   /* Go to definition  */
@@ -45,66 +34,60 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
     const filePath: string = document.fileName;
     const line: number = position.line;
     const col: number = position.character;
-    debugChannel.info('Find def. requested ------------------------');
+    debugChannel.info('Go to definition requested ------------------------');
     debugChannel.info(
       'info',
       'Looking for definition of the symbol at: ' + (line + 1) + ':' + (col + 1)
     );
     debugChannel.info('Active file: ' + filePath);
-
-    if (!locationMap.has(filePath)) {
+    const definitionInfo = locationMap.get(filePath);
+    if (!definitionInfo) {
       debugChannel.info(
         'There is no definitions registered in file: ' + filePath
       );
       return undefined;
-    } else {
-      if (!locationMap.get(filePath)!.has(line)) {
-        debugChannel.info(
-          'There is no defnition registered at line: ' + (line + 1)
-        );
-        return undefined;
-      } else {
-        const locsByLine: TargetLocation[] = locationMap
-          .get(filePath)!
-          .get(line)!;
-        debugChannel.info(
-          '> Found ' + locsByLine.length + ' definitions at line: ' + (line + 1)
-        );
-        for (let i = 0; i < locsByLine.length; i++) {
-          const info: TargetLocation = locsByLine[i];
-          debugChannel.info(
-            '>> Checking if symbol is between colummns: ' +
-              (info.interval.start + 1) +
-              ' and ' +
-              (info.interval.end + 1)
-          );
+    }
+    const definitionsByLine = definitionInfo.get(line);
+    if (!definitionsByLine) {
+      debugChannel.info(
+        'There is no definitions registered in line: ' + (line + 1)
+      );
+      return undefined;
+    }
 
-          if (info.interval.start <= col && info.interval.end >= col) {
-            debugChannel.info(
-              'info',
-              '[!] Found definition at: ' +
-                info.targetFile +
-                ':' +
-                (info.targetLine + 1) +
-                ':' +
-                (info.targetStartCharacter + 1)
-            );
-            const rangeBegin = new vscode.Position(
-              info.targetLine,
-              info.targetStartCharacter
-            );
-            const rangeEnd = new vscode.Position(info.targetLine + 1, 0);
-            const positionRange = new vscode.Range(rangeBegin, rangeEnd);
-            const definitionFound = new vscode.Location(
-              vscode.Uri.file(info.targetFile),
-              positionRange
-            );
-            return definitionFound;
-          }
-        }
+    const locsByLine: GotoProperty[] = definitionsByLine;
+    debugChannel.info(
+      '> Found ' + locsByLine.length + ' definitions at line: ' + (line + 1)
+    );
+    for (let i = 0; i < locsByLine.length; i++) {
+      const info: GotoProperty = locsByLine[i];
+      debugChannel.info(
+        '>> Checking if symbol is between colummns: ' +
+        (info.interval.start + 1) +
+        ' and ' +
+        (info.interval.end + 1)
+      );
+
+      if (info.interval.start <= col && info.interval.end >= col) {
+        debugChannel.info('info', '[!] Found definition at: ' +
+          info.targetFile + ':' + (info.targetLine + 1) + ':'
+          + (info.targetStartCharacter + 1));
+        const rangeBegin = new vscode.Position(
+          info.targetLine,
+          info.targetStartCharacter
+        );
+        const lengthIdentifier = info.interval.end - info.interval.start + 1;
+        const rangeEnd = new vscode.Position(
+          info.targetLine,
+          info.targetStartCharacter + lengthIdentifier
+        );
+        const positionRange = new vscode.Range(rangeBegin, rangeEnd);
+        const definitionFound = new vscode.Location(
+          vscode.Uri.file(info.targetFile),
+          positionRange
+        );
+        return definitionFound;
       }
     }
-    debugChannel.info('No definition found');
-    return undefined;
   }
 }

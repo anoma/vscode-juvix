@@ -310,4 +310,7 @@
     ],
   ],
   "wordPattern": "[^(\\s|;|\\{|\\}|\\(|\\)|@)]+",
+  "folding": {
+    "offSide": true
+  }
 }

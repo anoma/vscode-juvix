@@ -2,15 +2,25 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import * as vscode from 'vscode';
-import { JuvixConfig } from './config';
-import { debugChannel } from './utils/debug';
 import * as def from './definitions';
+import * as hover from './hover';
+import * as vscode from 'vscode';
+import { debugChannel } from './utils/debug';
+import { FaceProperty, GotoProperty, RawInterval, DevHighlightOutput, HoverProperty } from './interfaces';
+import { JuvixConfig } from './config';
 import { spawnSync } from 'child_process';
-import { isJuvixFile } from './utils/base';
 
 /*
-Semantic syntax highlighting
+The Juvix compiler outputs a JSON file with the following structure:
+{
+  "face": .. // for syntax highlighting
+  "goto": .. // for go to definition
+  "doc": ..  // for hover info
+}.
+
+We therefore call only once the compiler and then we parse the output
+to get the information we need. For "goto" and "doc" feature, we have a
+map that associates a file path to the corresponding information for that file.
 */
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -72,24 +82,6 @@ export const legend: vscode.SemanticTokensLegend = (function () {
   );
 })();
 
-interface RawInterval {
-  file: string;
-  line: number;
-  startCharacter: number;
-  length: number;
-  endLine: number;
-  endCol: number;
-}
-
-interface FaceProperty {
-  interval: RawInterval;
-  tokenType: string;
-}
-
-interface DevHighlightOutput {
-  face: [Array<Array<string | number> | string>];
-  goto: [[string, number, number, number], string, number, number][];
-}
 
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   async provideDocumentSemanticTokens(
@@ -102,6 +94,9 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     const config = new JuvixConfig();
 
+    /*
+      Call the highlighter
+    */
     const highlighterCall = [
       config.getJuvixExec(),
       config.getGlobalFlags(),
@@ -128,17 +123,18 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     }
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
-    // too verbose but useful for debugging location mapping
-    // debugChannel.debug(
-    //   'Highlighting output: ' + JSON.stringify(output, null, 2)
-    // );
 
+    debugChannel.info('Highlighting output: ' + JSON.stringify(output, null, 2));
+
+    /*
+      Populate the location map for the Goto feature
+    */
     def.locationMap.set(filePath, new Map());
     output.goto.forEach(entry => {
       // The juvix's output is 1-indexed and vscode's is 0-indexed
       const line: number = Number(entry[0][1]) - 1;
       const startLoc: number = Number(entry[0][2]) - 1;
-      const targetLocation: def.TargetLocation = {
+      const targetLocation: GotoProperty = {
         interval: {
           start: startLoc,
           end: startLoc + Number(entry[0][3]) - 1,
@@ -153,14 +149,22 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       def.locationMap.get(filePath)?.get(line)?.push(targetLocation);
     });
 
-    // // too verbose but useful for debugging location mapping
-    // debugChannel.debug(
-    //   'Highlighting output: ' +
-    //     JSON.stringify(def.locationMap.get(filePath)?.get(36), null, 2)
-    // );
+    /*
+      Populate the hover map for the Hover feature
+    */
 
-    debugChannel.debug('Active file: ' + filePath);
+    hover.hoverMap.set(filePath, new Map());
+    output.doc.forEach(entry => {
+      const hoverInfo: HoverProperty = hover.getHoverProperty(entry);
+      const line = hoverInfo.interval.line;
+      const fileHoverMap = hover.hoverMap.get(filePath);
+      if (!fileHoverMap?.get(line)) fileHoverMap?.set(line, []);
+      fileHoverMap?.get(line)?.push(hoverInfo);
+    });
 
+    /*
+      The actual tokenization and syntax highlighting
+    */
     const allTokens = output.face;
     debugChannel.debug('> Tokens length: ' + allTokens.length);
 
@@ -169,7 +173,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       const tk: FaceProperty = this.getFaceProperty(entry);
       const token = this.encodeTokenType(tk.tokenType);
       for (let l = tk.interval.line; l <= tk.interval.endLine; l++) {
-        const startCol = l == tk.interval.line ? tk.interval.startCharacter : 0;
+        const startCol = l == tk.interval.line ? tk.interval.startCol : 0;
         const lineLength =
           l == tk.interval.endLine
             ? l == tk.interval.line
@@ -200,24 +204,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     return builder.build();
   }
 
-  private getFaceProperty(
-    entry: ((string | number)[] | string)[]
-  ): FaceProperty {
-    const intervalInfo = entry[0];
-    const rawInterval: RawInterval = {
-      file: intervalInfo[0].toString(),
-      line: Number(intervalInfo[1]) - 1,
-      startCharacter: Number(intervalInfo[2]) - 1,
-      length: Number(intervalInfo[3]) - 1,
-      endLine: Number(intervalInfo[4]) - 1,
-      endCol: Number(intervalInfo[5]) - 1,
-    };
-    const token: FaceProperty = {
-      interval: rawInterval,
-      tokenType: entry[1].toString(),
-    };
-    return token;
-  }
+
   private numberOfAstralSymbols(
     str: string,
     start: number,
@@ -256,5 +243,25 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       return tokenTypes.size + 2;
     }
     return 0;
+  }
+
+
+  private getFaceProperty(
+    entry: ((string | number)[] | string)[]
+  ): FaceProperty {
+    const intervalInfo = entry[0];
+    const rawInterval: RawInterval = {
+      file: intervalInfo[0].toString(),
+      line: Number(intervalInfo[1]) - 1,
+      startCol: Number(intervalInfo[2]) - 1,
+      length: Number(intervalInfo[3]) - 1,
+      endLine: Number(intervalInfo[4]) - 1,
+      endCol: Number(intervalInfo[5]) - 1,
+    };
+    const token: FaceProperty = {
+      interval: rawInterval,
+      tokenType: entry[1].toString(),
+    };
+    return token;
   }
 }
