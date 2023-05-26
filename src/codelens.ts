@@ -7,7 +7,6 @@ import { isJuvixFile } from './utils/base';
  */
 
 export function activate(context: vscode.ExtensionContext) {
-    statusbar.activate(context);
     context.subscriptions.push(
         vscode.languages.registerCodeLensProvider(
             { scheme: 'file', language: 'Juvix' },
@@ -27,6 +26,18 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand("juvix-mode.codelensAction", (args: any) => {
             vscode.window.showInformationMessage(`CodeLens action clicked with args=${args}`);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("juvix-mode.aux.prependText", (args: any) => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) {
+                const position = new vscode.Position(0, 0);
+                editor.edit((editBuilder) => {
+                    editBuilder.insert(position, args.text);
+                });
+            }
         })
     );
 }
@@ -65,7 +76,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                 and the slashes are replaced by dots.
             */
             let firstLineRange = document.lineAt(0).range;
-            // check if the file doesnn't define a module. This check is not perfe
+            
             const regex = /module\s+([\w.]+);/;
             const match = text.match(regex);
             const noModule = text.length === 0 || match === null;
@@ -79,13 +90,18 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                     .replace(".juvix", "")
                     .replace(/\\/g, ".")
                     .replace(/\//g, ".");
-                // insert the snippet in the first line of the document
+                const moduleTopHeader = "module " + moduleName + ";";
 
                 let insertModuleCodeLenses = new vscode.CodeLens(
                     new vscode.Range(new vscode.Position(0, 0), new vscode.Position(0, 0))
                     , {
-                        title: "Insert \"module " + moduleName + ";\"",
-                        command: ""
+                        title: "Insert \"" + moduleTopHeader + "\"",
+                        command: "juvix-mode.aux.prependText",
+                        arguments: [
+                            {
+                                text: moduleTopHeader + "\n"
+                            }
+                        ]
                     });
 
                 this.codeLenses.push(insertModuleCodeLenses);
