@@ -5,13 +5,10 @@ import * as vscode from 'vscode';
 import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
 
-export let juvixRoot: string;
-
-export function activate(_context: vscode.ExtensionContext) {
+export function juvixRoot() {
     const config = new JuvixConfig();
     const { spawnSync } = require('child_process');
     const doc = vscode.window.activeTextEditor?.document;
-    juvixRoot = '';
     if (doc) {
         const juvixRootCall = [
             config.getJuvixExec(),
@@ -27,6 +24,7 @@ export function activate(_context: vscode.ExtensionContext) {
             debugChannel.error('Juvix root failed for Judoc gen:', errMsg);
             throw new Error(errMsg);
         }
-        juvixRoot = rootRun.stdout.toString().trim();
+        return rootRun.stdout.toString().trim();
     }
+    return undefined;
 }
