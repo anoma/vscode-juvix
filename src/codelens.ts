@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
 import { juvixRoot } from './root';
 import { isJuvixFile } from './utils/base';
+import { debugChannel } from './utils/debug';
 /**
  * CodelensProvider
  */
@@ -76,25 +77,24 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                 and the slashes are replaced by dots.
             */
             let firstLineRange = document.lineAt(0).range;
-
             const regex = /module\s+([\w.]+);/;
             const match = text.match(regex);
-            const noModule = text.length === 0 || match === null;
-            if (noModule &&
-                !document.isUntitled &&
+            const projRoot = juvixRoot();
+            if (text.length === 0 &&
                 isJuvixFile(document) &&
-                juvixRoot !== undefined) {
+                projRoot !== undefined
+                && match === null) {
                 let moduleName = document.fileName;
                 moduleName = moduleName
-                    .replace(juvixRoot, "")
+                    .replace(projRoot, "")
                     .replace(".juvix", "")
                     .replace(/\\/g, ".")
                     .replace(/\//g, ".");
                 const moduleTopHeader = "module " + moduleName + ";";
 
                 let insertModuleCodeLenses = new vscode.CodeLens(
-                    new vscode.Range(new vscode.Position(0, 0), new vscode.Position(0, 0))
-                    , {
+                    new vscode.Range(new vscode.Position(0, 0), new vscode.Position(0, 0)),
+                    {
                         title: "Insert \"" + moduleTopHeader + "\"",
                         command: "juvix-mode.aux.prependText",
                         arguments: [
@@ -103,7 +103,6 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                             }
                         ]
                     });
-
                 this.codeLenses.push(insertModuleCodeLenses);
             }
 
@@ -116,7 +115,6 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                 command: ""
             });
             this.codeLenses.push(juvixVersionCodeLenses);
-
             return this.codeLenses;
         }
         return [];

@@ -248,9 +248,9 @@ export class JudocPanel {
       debugChannel.error('Judoc failed', errMsg);
       throw new Error(errMsg);
     }
-
+    const projRoot = juvixRoot();
     const htmlFilename = doc.uri.fsPath
-      .replace(juvixRoot, '')
+      .replace(projRoot, '')
       .replace('/', '.')
       .replace('.juvix', '.html');
 

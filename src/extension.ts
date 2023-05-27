@@ -18,12 +18,10 @@ import * as check from './check';
 import * as formatter from './formatter';
 import * as vampir from './vampir/tasks';
 import * as codelens from './codelens';
-import * as root from './root';
 
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
   statusBar.activate(context);
-  root.activate(context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
   hoverInfo.activate(context);
