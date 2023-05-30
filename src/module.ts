@@ -14,7 +14,6 @@ export function getModuleName(document: vscode.TextDocument): string | undefined
     if (!isJuvixFile(document)) {
         return undefined;
     }
-
     let moduleName: string | undefined = undefined;
     if (isUsingGlobalRoot(document)) {
         moduleName = parsedFilepath.name;
@@ -25,4 +24,5 @@ export function getModuleName(document: vscode.TextDocument): string | undefined
             `${relativeModulePath}${relativeModulePath.length > 0 ? '.' : ''}${parsedFilepath.name}`;
     }
     return moduleName;
+
 }

@@ -6,7 +6,6 @@ import * as fs from 'fs';
 import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
-import { juvixRoot } from './root';
 import * as path from 'path';
 import { getModuleName } from './module';
 
