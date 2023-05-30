@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
-import { juvixRoot } from './root';
+import { juvixRoot, globalJuvixRoot } from './root';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -229,7 +229,6 @@ export class JudocPanel {
       debugChannel.error('Judoc failed', errMsg);
       throw new Error(errMsg);
     }
-    const projRoot = juvixRoot();
     const htmlFilename = doc.uri.fsPath
       .replace(projRoot, '')
       .replace('/', '.')
