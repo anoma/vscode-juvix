@@ -3,8 +3,6 @@
  *--------------------------------------------------------*/
 'use strict';
 import * as vscode from 'vscode';
-import { debugChannel } from './utils/debug';
-import * as user from './config';
 import * as version from './juvixVersion';
 import * as utils from './utils/base';
 

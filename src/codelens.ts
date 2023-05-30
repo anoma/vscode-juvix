@@ -1,8 +1,10 @@
 import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
-import { juvixRoot } from './root';
+import { juvixRoot, globalJuvixRoot } from './root';
 import { isJuvixFile } from './utils/base';
+import * as path from 'path';
 import { debugChannel } from './utils/debug';
+
 /**
  * CodelensProvider
  */
@@ -22,11 +24,6 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand("juvix-mode.disableCodeLens", () => {
             vscode.workspace.getConfiguration("juvix-mode").update("enableCodeLens", false, true);
-        })
-    );
-    context.subscriptions.push(
-        vscode.commands.registerCommand("juvix-mode.codelensAction", (args: any) => {
-            vscode.window.showInformationMessage(`CodeLens action clicked with args=${args}`);
         })
     );
 
@@ -60,61 +57,66 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         , _token: vscode.CancellationToken)
         : vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 
-        if (vscode.workspace
-            .getConfiguration("JuvixCodeLens")
-            .get("enableCodeLens", true)) {
-
+        if (vscode.workspace.getConfiguration("juvix-mode").get("codeLens", true)) {
             this.codeLenses = [];
             const text = document.getText();
+            const parsedFilepath = path.parse(document.fileName);
 
-            /*
-                Add a code lenses that checks if the document is empty.
-                If it is, it suggests to insert the module header
-                relative to juvixRoot.
-                The content inserted by the code lenses should be:
-                   "module <module name>;"
-                where <module name> document filepath relative to juvixRoot
-                and the slashes are replaced by dots.
-            */
             let firstLineRange = document.lineAt(0).range;
-            const regex = /module\s+([\w.]+);/;
-            const match = text.match(regex);
-            const projRoot = juvixRoot();
-            if (text.length === 0 &&
-                isJuvixFile(document) &&
-                projRoot !== undefined
-                && match === null) {
-                let moduleName = document.fileName;
-                moduleName = moduleName
-                    .replace(projRoot, "")
-                    .replace(".juvix", "")
-                    .replace(/\\/g, ".")
-                    .replace(/\//g, ".");
-                const moduleTopHeader = "module " + moduleName + ";";
-
-                let insertModuleCodeLenses = new vscode.CodeLens(
-                    new vscode.Range(new vscode.Position(0, 0), new vscode.Position(0, 0)),
-                    {
-                        title: "Insert \"" + moduleTopHeader + "\"",
-                        command: "juvix-mode.aux.prependText",
-                        arguments: [
-                            {
-                                text: moduleTopHeader + "\n"
-                            }
-                        ]
-                    });
-                this.codeLenses.push(insertModuleCodeLenses);
-            }
-
             /*
-                Add a code lenses to show the Juvix version
-                in the first line of the document.
+            Add a code lenses to show the Juvix version
+            in the first line of the document.
             */
             let juvixVersionCodeLenses = new vscode.CodeLens(firstLineRange, {
                 title: "Powered by " + statusbar.juvixStatusBarItemVersion.text,
                 command: ""
             });
             this.codeLenses.push(juvixVersionCodeLenses);
+
+            /*
+            Add a code lenses that checks if the document is empty.
+            If it is, it suggests to insert the module header
+            relative to juvixRoot.
+            The content inserted by the code lenses should be:
+            "module <module name>;"
+            where <module name> document filepath relative to juvixRoot
+            and the slashes are replaced by dots.
+            */
+
+            let regex = /module\s+([\w.]+);/;
+            let match = text.match(regex);
+            let projRoot = juvixRoot();
+            let globalProjRoot = globalJuvixRoot();
+            let moduleName: string;
+            if (isJuvixFile(document) && (text.length === 0 || match === null)) {
+                if (projRoot == globalProjRoot) {
+                    moduleName = parsedFilepath.name;
+                } else {
+                    let relativeModulePath: string = path.relative(projRoot, parsedFilepath.dir).replace(path.sep, ".");
+                    moduleName =
+                        (projRoot === globalProjRoot) ?
+                            parsedFilepath.name :
+                            `${relativeModulePath}${relativeModulePath.length > 0 ? '.' : ''}${parsedFilepath.name}`;
+                }
+                debugChannel.info(`Expected module name: ${moduleName}`);
+                let moduleTopHeader: string = `module ${moduleName};`;
+                let insertModuleCodeLenses = new vscode.CodeLens(
+                    new vscode.Range(new vscode.Position(0, 0), new vscode.Position(0, 0)),
+                    {
+                        title: `Insert "${moduleTopHeader}"`,
+                        command: "juvix-mode.aux.prependText",
+                        arguments: [
+                            {
+                                text: `${moduleTopHeader}\n\n`
+                            }
+                        ]
+                    }
+                );
+
+                this.codeLenses = [insertModuleCodeLenses].concat(this.codeLenses);
+            }
+
+
             return this.codeLenses;
         }
         return [];
