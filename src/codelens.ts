@@ -1,9 +1,6 @@
 import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
-import { juvixRoot, globalJuvixRoot } from './root';
-import { isJuvixFile } from './utils/base';
-import * as path from 'path';
-import { debugChannel } from './utils/debug';
+import { getModuleName } from './module';
 
 /**
  * CodelensProvider
@@ -60,8 +57,6 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         if (vscode.workspace.getConfiguration("juvix-mode").get("codeLens", true)) {
             this.codeLenses = [];
             const text = document.getText();
-            const parsedFilepath = path.parse(document.fileName);
-
             let firstLineRange = document.lineAt(0).range;
             /*
             Add a code lenses to show the Juvix version
@@ -85,20 +80,8 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 
             let regex = /module\s+([\w.]+);/;
             let match = text.match(regex);
-            let projRoot = juvixRoot();
-            let globalProjRoot = globalJuvixRoot();
-            let moduleName: string;
-            if (isJuvixFile(document) && (text.length === 0 || match === null)) {
-                if (projRoot == globalProjRoot) {
-                    moduleName = parsedFilepath.name;
-                } else {
-                    let relativeModulePath: string = path.relative(projRoot, parsedFilepath.dir).replace(path.sep, ".");
-                    moduleName =
-                        (projRoot === globalProjRoot) ?
-                            parsedFilepath.name :
-                            `${relativeModulePath}${relativeModulePath.length > 0 ? '.' : ''}${parsedFilepath.name}`;
-                }
-                debugChannel.info(`Expected module name: ${moduleName}`);
+            let moduleName: string | undefined = getModuleName(document);
+            if (moduleName && (text.length === 0 || match === null)) {
                 let moduleTopHeader: string = `module ${moduleName};`;
                 let insertModuleCodeLenses = new vscode.CodeLens(
                     new vscode.Range(new vscode.Position(0, 0), new vscode.Position(0, 0)),
@@ -116,10 +99,8 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                 this.codeLenses = [insertModuleCodeLenses].concat(this.codeLenses);
             }
 
-
             return this.codeLenses;
         }
         return [];
     }
-
 }
