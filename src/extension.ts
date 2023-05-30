@@ -22,6 +22,7 @@ import * as codelens from './codelens';
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
   statusBar.activate(context);
+  codelens.activate(context);
   syntaxHighlighter.activate(context);
   goToDefinition.activate(context);
   hoverInfo.activate(context);
