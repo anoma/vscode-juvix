@@ -550,6 +550,18 @@
         "args": "Juvix: [dev] geb-compile",
         "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(debug-start)"
+      },
+      {
+        "command": "juvix-mode.enableCodeLens",
+        "title": "Enable CodeLens",
+        "category": "Juvix",
+         "when": "editorLangId == juvix && editorTextFocus"
+      },
+            {
+        "command": "juvix-mode.disableCodeLens",
+        "title": "Disable CodeLens",
+        "category": "Juvix",
+         "when": "editorLangId == juvix && editorTextFocus"
       }
     ],
     "submenus": [
@@ -725,6 +737,11 @@
           "type": "boolean",
           "default": "false",
           "description": "Reload REPL on save"
+        },
+        "juvix-mode.codeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable code lens"
         },
         "juvix-mode.opts": {
           "type": "object",

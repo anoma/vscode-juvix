@@ -2,11 +2,11 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 import * as vscode from 'vscode';
-import * as path from 'path';
 import * as fs from 'fs';
 import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
+import { juvixRoot } from './root';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -248,24 +248,9 @@ export class JudocPanel {
       debugChannel.error('Judoc failed', errMsg);
       throw new Error(errMsg);
     }
-
-    const juvixRootCall = [
-      config.getJuvixExec(),
-      config.getGlobalFlags(),
-      'dev',
-      'root',
-      doc.uri.fsPath,
-    ].join(' ');
-
-    const rootRun = spawnSync(juvixRootCall, { shell: true, encoding: 'utf8' });
-    if (rootRun.status !== 0) {
-      const errMsg: string = "Juvix's Error: " + rootRun.stderr.toString();
-      debugChannel.error('Juvix root failed for Judoc gen:', errMsg);
-      throw new Error(errMsg);
-    }
-    const juvixRoot = rootRun.stdout.toString().trim();
+    const projRoot = juvixRoot();
     const htmlFilename = doc.uri.fsPath
-      .replace(juvixRoot, '')
+      .replace(projRoot, '')
       .replace('/', '.')
       .replace('.juvix', '.html');
 
@@ -284,12 +269,12 @@ export class JudocPanel {
     return contentDisk.replace(
       '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
       '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src ' +
-        webview.cspSource +
-        '; img-src ' +
-        webview.cspSource +
-        " https:; script-src 'nonce-" +
-        nonce +
-        '\';">'
+      webview.cspSource +
+      '; img-src ' +
+      webview.cspSource +
+      " https:; script-src 'nonce-" +
+      nonce +
+      '\';">'
     );
   }
 }

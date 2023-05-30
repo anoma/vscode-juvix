@@ -17,6 +17,7 @@ import * as dev from './dev';
 import * as check from './check';
 import * as formatter from './formatter';
 import * as vampir from './vampir/tasks';
+import * as codelens from './codelens';
 
 export async function activate(context: vscode.ExtensionContext) {
   debugChannel.clear();
@@ -32,6 +33,7 @@ export async function activate(context: vscode.ExtensionContext) {
   formatter.activate(context);
   vampir.activate(context);
   dev.activate(context);
+  codelens.activate(context);
   debugChannel.info('Juvix extension is ready!');
 
 }

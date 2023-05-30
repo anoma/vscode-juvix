@@ -3,15 +3,12 @@
  *--------------------------------------------------------*/
 'use strict';
 import * as vscode from 'vscode';
-import { debugChannel } from './utils/debug';
-import * as user from './config';
 import * as version from './juvixVersion';
 import * as utils from './utils/base';
 
 export let juvixStatusBarItemVersion: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
-  const config = new user.JuvixConfig();
   juvixStatusBarItemVersion = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right
   );
