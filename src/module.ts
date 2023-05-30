@@ -2,7 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 import * as vscode from 'vscode';
-import { juvixRoot, globalJuvixRoot, isUsingGlobalRoot } from './root';
+import { juvixRoot, isUsingGlobalRoot } from './root';
 import * as path from 'path';
 import { isJuvixFile } from './utils/base';
 
@@ -14,7 +14,7 @@ export function getModuleName(document: vscode.TextDocument): string | undefined
     if (!isJuvixFile(document)) {
         return undefined;
     }
-    
+
     let moduleName: string | undefined = undefined;
     if (isUsingGlobalRoot(document)) {
         moduleName = parsedFilepath.name;

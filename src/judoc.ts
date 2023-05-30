@@ -7,6 +7,8 @@ import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
 import { juvixRoot } from './root';
+import * as path from 'path';
+import { getModuleName } from './module';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -190,17 +192,17 @@ export class JudocPanel {
   private _getHtmlForWebview(webview: vscode.Webview) {
     const doc = JudocPanel.juvixDocument;
     if (!doc || (doc && !isJuvixFile(doc))) return;
-    // The html folder is the same as the juvixRoot folder.
-    const config = new JuvixConfig();
-    const projRoot = juvixRoot();
-    const projRootUri = vscode.Uri.file(projRoot);
-    const judocDocFolderUri = vscode.Uri.joinPath(projRootUri, 'html');
+
+    const fileName = doc.fileName;
+    const parsedFilepath = path.parse(fileName);
+    const folderDocument = path.join(parsedFilepath.dir, 'docs', path.sep);
+    const judocDocFolderUri = vscode.Uri.file(folderDocument);
 
     const { spawnSync } = require('child_process');
 
     const vscodePrefix =
-      webview.asWebviewUri(judocDocFolderUri).toString() + '/';
-
+      webview.asWebviewUri(judocDocFolderUri).toString();
+    const config = new JuvixConfig();
     const judocCall = [
       config.getJuvixExec(),
       '--internal-build-dir',
@@ -208,7 +210,6 @@ export class JudocPanel {
       'html',
       JudocPanel.onlySource ? '--only-source' : '',
       '--output-dir',
-      // this.htmlFolder,
       judocDocFolderUri.fsPath,
       '--non-recursive',
       '--prefix-assets',
@@ -217,6 +218,7 @@ export class JudocPanel {
       vscodePrefix,
       doc.uri.fsPath,
     ].join(' ');
+
     debugChannel.info('Judoc call', judocCall);
 
     const ls = spawnSync(judocCall, {
@@ -229,10 +231,7 @@ export class JudocPanel {
       debugChannel.error('Judoc failed', errMsg);
       throw new Error(errMsg);
     }
-    const htmlFilename = doc.uri.fsPath
-      .replace(projRoot, '')
-      .replace('/', '.')
-      .replace('.juvix', '.html');
+    const htmlFilename = getModuleName(doc) + '.html';
 
     const htmlByJudocForDoc = vscode.Uri.joinPath(
       judocDocFolderUri,

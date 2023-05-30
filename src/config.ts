@@ -83,10 +83,8 @@ export class JuvixConfig {
       const juvixBuildDir = buildDir.toString();
       try {
         if (fs.existsSync(juvixBuildDir)) {
-          debugChannel.info(`Directory exists: ${juvixBuildDir}`);
           return juvixBuildDir;
         } else {
-          debugChannel.info(`Directory does not exist: ${juvixBuildDir}`);
           const tmpJuvixDir = useTmpDir();
           return tmpJuvixDir
         }
