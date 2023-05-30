@@ -4,6 +4,8 @@
 import * as vscode from 'vscode';
 import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
+import { getInstalledNumericVersion } from './juvixVersion';
+import * as path from 'path';
 
 export function juvixRoot() {
     const config = new JuvixConfig();
@@ -27,4 +29,17 @@ export function juvixRoot() {
         return rootRun.stdout.toString().trim();
     }
     return undefined;
+}
+
+
+export function globalJuvixRoot() : string {
+    const juvixVersion = getInstalledNumericVersion();
+    const homeUserPath = process.env.HOME;
+    if (!homeUserPath) {
+        throw new Error('Cannot find home directory');
+    }
+    if (!juvixVersion) {
+        throw new Error('Cannot find Juvix version');
+    }
+    return path.join(homeUserPath, '.config', 'juvix', juvixVersion, 'global-project');
 }
