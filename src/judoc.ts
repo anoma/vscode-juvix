@@ -65,20 +65,17 @@ export class JudocPanel {
 
   private _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
-  // public  readonly htmlFolder : string;
 
   public static createOrShow(onlySource = false) {
     this.onlySource = onlySource;
     const editor = vscode.window.activeTextEditor;
     if (!editor || !isJuvixFile(editor.document)) return;
     this.juvixDocument = editor.document;
-    // If we already have a panel, show it.
+
     if (JudocPanel.currentPanel) {
       JudocPanel.currentPanel._panel.reveal();
       return;
     }
-
-    // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
       JudocPanel.viewType,
       'Html preview',
@@ -99,7 +96,6 @@ export class JudocPanel {
 
   private constructor(panel: vscode.WebviewPanel, _htmlFolder?: string) {
     this._panel = panel;
-    // this.htmlFolder = htmlFolder;
 
     this._disposables.push(
       vscode.workspace.onDidSaveTextDocument(document => {
@@ -111,15 +107,6 @@ export class JudocPanel {
         }
       })
     );
-
-    // this._disposables.push(
-    //   vscode.workspace.onDidCloseTextDocument((document) => {
-    //     if (document === JudocPanel.juvixDocument) {
-    //       this._panel.dispose();
-    //       // this.dispose();
-    //     }
-    //   })
-    // );
 
     this._disposables.push(
       vscode.workspace.onDidOpenTextDocument(document => {
@@ -203,17 +190,11 @@ export class JudocPanel {
   private _getHtmlForWebview(webview: vscode.Webview) {
     const doc = JudocPanel.juvixDocument;
     if (!doc || (doc && !isJuvixFile(doc))) return;
-
-    const docFolder = vscode.workspace.getWorkspaceFolder(doc.uri);
-    if (!docFolder) return;
+    // The html folder is the same as the juvixRoot folder.
     const config = new JuvixConfig();
-
-    // debugChannel.info("htmlFolder> " + this.htmlFolder);
-
-    // const judocDocFolderUri = vscode.Uri.file(this.htmlFolder);
-    // const judocDocFolderUri = vscode.Uri.file(config.getInternalBuildDir());
-    const judocDocFolderUri = vscode.Uri.joinPath(docFolder.uri, 'html');
-    // const buildDir = config.getInternalBuildDir();
+    const projRoot = juvixRoot();
+    const projRootUri = vscode.Uri.file(projRoot);
+    const judocDocFolderUri = vscode.Uri.joinPath(projRootUri, 'html');
 
     const { spawnSync } = require('child_process');
 
@@ -248,7 +229,7 @@ export class JudocPanel {
       debugChannel.error('Judoc failed', errMsg);
       throw new Error(errMsg);
     }
-    const projRoot = juvixRoot();
+  
     const htmlFilename = doc.uri.fsPath
       .replace(projRoot, '')
       .replace('/', '.')
