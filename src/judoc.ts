@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
-import { juvixRoot, globalJuvixRoot } from './root';
+import { juvixRoot } from './root';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(

@@ -6,6 +6,7 @@ import { debugChannel } from './utils/debug';
 import { JuvixConfig } from './config';
 import { getInstalledNumericVersion } from './juvixVersion';
 import * as path from 'path';
+import { isJuvixFile } from './utils/base';
 
 export function juvixRoot() {
     const config = new JuvixConfig();
@@ -31,7 +32,6 @@ export function juvixRoot() {
     return undefined;
 }
 
-
 export function globalJuvixRoot() : string {
     const juvixVersion = getInstalledNumericVersion();
     const homeUserPath = process.env.HOME;
@@ -42,4 +42,13 @@ export function globalJuvixRoot() : string {
         throw new Error('Cannot find Juvix version');
     }
     return path.join(homeUserPath, '.config', 'juvix', juvixVersion, 'global-project', path.sep);
+}
+
+export function isUsingGlobalRoot(doc: vscode.TextDocument) : boolean {
+    if (doc && isJuvixFile(doc)) {
+        const projRoot = juvixRoot();
+        const globalProjRoot = globalJuvixRoot();
+        return projRoot == globalProjRoot;
+    }
+    return false;
 }
