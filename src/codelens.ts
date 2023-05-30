@@ -2,9 +2,8 @@ import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
 import { juvixRoot, globalJuvixRoot } from './root';
 import { isJuvixFile } from './utils/base';
-import { debugChannel } from './utils/debug';
 import * as path from 'path';
-import { debug } from 'console';
+import { debugChannel } from './utils/debug';
 
 /**
  * CodelensProvider
@@ -58,15 +57,12 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         , _token: vscode.CancellationToken)
         : vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 
-
-
         if (vscode.workspace.getConfiguration("juvix-mode").get("codeLens", true)) {
             this.codeLenses = [];
             const text = document.getText();
             const parsedFilepath = path.parse(document.fileName);
 
             let firstLineRange = document.lineAt(0).range;
-
             /*
             Add a code lenses to show the Juvix version
             in the first line of the document.
@@ -87,17 +83,22 @@ export class CodelensProvider implements vscode.CodeLensProvider {
             and the slashes are replaced by dots.
             */
 
-
             let regex = /module\s+([\w.]+);/;
             let match = text.match(regex);
             let projRoot = juvixRoot();
-
+            let globalProjRoot = globalJuvixRoot();
+            let moduleName: string;
             if (isJuvixFile(document) && (text.length === 0 || match === null)) {
-                let relativeModulePath: string = path.relative(projRoot, parsedFilepath.dir).replace(path.sep, ".");
-                let moduleName: string =
-                    (projRoot === globalJuvixRoot()) ?
-                        parsedFilepath.name :
-                        `${relativeModulePath}${relativeModulePath.length > 0 ? '.' : ''}${parsedFilepath.name}`;
+                if (projRoot == globalProjRoot) {
+                    moduleName = parsedFilepath.name;
+                } else {
+                    let relativeModulePath: string = path.relative(projRoot, parsedFilepath.dir).replace(path.sep, ".");
+                    moduleName =
+                        (projRoot === globalProjRoot) ?
+                            parsedFilepath.name :
+                            `${relativeModulePath}${relativeModulePath.length > 0 ? '.' : ''}${parsedFilepath.name}`;
+                }
+                debugChannel.info(`Expected module name: ${moduleName}`);
                 let moduleTopHeader: string = `module ${moduleName};`;
                 let insertModuleCodeLenses = new vscode.CodeLens(
                     new vscode.Range(new vscode.Position(0, 0), new vscode.Position(0, 0)),

@@ -41,5 +41,5 @@ export function globalJuvixRoot() : string {
     if (!juvixVersion) {
         throw new Error('Cannot find Juvix version');
     }
-    return path.join(homeUserPath, '.config', 'juvix', juvixVersion, 'global-project');
+    return path.join(homeUserPath, '.config', 'juvix', juvixVersion, 'global-project', path.sep);
 }

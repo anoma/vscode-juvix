@@ -124,7 +124,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
 
-    debugChannel.info('Highlighting output: ' + JSON.stringify(output, null, 2));
+    // debugChannel.info('Highlighting output: ' + JSON.stringify(output, null, 2));
 
     /*
       Populate the location map for the Goto feature
@@ -166,7 +166,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       The actual tokenization and syntax highlighting
     */
     const allTokens = output.face;
-    debugChannel.debug('> Tokens length: ' + allTokens.length);
+    // debugChannel.debug('> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {
