@@ -3,7 +3,7 @@
  *--------------------------------------------------------*/
 import * as vscode from 'vscode';
 
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 import * as user from './config';
 import * as utils from './utils/base';
 import * as versioning from 'compare-versions';
@@ -19,7 +19,7 @@ export function getInstalledFullVersion(): string | undefined {
   const ls = spawnSync(config.getJuvixExec(), ['--version']);
   let execJuvixVersion: string;
   if (ls.status !== 0) {
-    debugChannel.error(ERROR_JUVIX_NOT_INSTALLED);
+    logger.error(ERROR_JUVIX_NOT_INSTALLED);
     return;
   } else {
     execJuvixVersion = ls.stdout.toString().replace('version ', 'v');
@@ -34,7 +34,7 @@ export function getInstalledNumericVersion(): string | undefined {
   const ls = spawnSync(config.getJuvixExec(), ['--numeric-version']);
   let execJuvixVersion: string;
   if (ls.status !== 0) {
-    debugChannel.error(ERROR_JUVIX_NOT_INSTALLED);
+    logger.error(ERROR_JUVIX_NOT_INSTALLED);
     return;
   } else {
     execJuvixVersion = ls.stdout.toString().split('\n')[0];
@@ -50,8 +50,8 @@ export function isJuvixVersionSupported(): boolean {
   // Read Juvix version from file juvix.version
   const installedVersion = getInstalledNumericVersion();
   if (installedVersion) {
-    debugChannel.info('Juvix version installed: ' + installedVersion);
-    debugChannel.info('Juvix version supported: ' + supportedVersion);
+    logger.trace('Juvix version installed: ' + installedVersion);
+    logger.trace('Juvix version supported: ' + supportedVersion);
     return versioning.satisfies(installedVersion, '>=' + supportedVersion);
   } else {
     return false;

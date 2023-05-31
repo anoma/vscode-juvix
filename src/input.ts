@@ -15,11 +15,11 @@ import { AbbreviationProvider } from './abbreviation/AbbreviationProvider';
 import { AbbreviationRewriter } from './abbreviation/rewriter/AbbreviationRewriter';
 import { autorunDisposable } from './utils/autorunDisposable';
 import { Disposable, languages, TextEditor, window } from 'vscode';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(new Abbr());
-  debugChannel.info('Abbreviation rewriter registered');
+  logger.trace('Abbreviation rewriter registered');
 }
 
 class Abbr {
@@ -47,7 +47,7 @@ class Abbr {
         this.config,
         this.table,
         currentEditor,
-        debugChannel
+        logger.outputChannel
       );
       this.disposables.push(rewriter);
     }
@@ -58,7 +58,7 @@ class Abbr {
           this.config,
           this.table,
           editor,
-          debugChannel
+          logger.outputChannel
         );
         this.disposables.push(rewriter);
       }

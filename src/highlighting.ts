@@ -5,7 +5,7 @@
 import * as def from './definitions';
 import * as hover from './hover';
 import * as vscode from 'vscode';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 import { FaceProperty, GotoProperty, RawInterval, DevHighlightOutput, HoverProperty } from './interfaces';
 import { JuvixConfig } from './config';
 import { spawnSync } from 'child_process';
@@ -43,9 +43,12 @@ export async function activate(context: vscode.ExtensionContext) {
         }
       })
     );
-    debugChannel.debug('Semantic syntax highlighter registered');
   } catch (error) {
-    debugChannel.error('No semantic provider', error);
+    logger.error(
+      'Juvix: Could not register semantic syntax highlighter\n'
+      + error
+      , 'highlighting.ts'
+    );
   }
 }
 
@@ -108,7 +111,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       '--stdin',
     ].join(' ');
 
-    debugChannel.info('Highlighter call: ' + highlighterCall);
+    logger.trace('Highlighter call: ' + highlighterCall);
 
     const ls = spawnSync(highlighterCall, {
       input: content,
@@ -118,13 +121,13 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      debugChannel.error('highlighting provider error', errMsg);
+      vscode.window.showErrorMessage(errMsg);
       throw new Error(errMsg);
     }
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
 
-    // debugChannel.info('Highlighting output: ' + JSON.stringify(output, null, 2));
+    logger.trace('Highlighting output: ' + JSON.stringify(output, null, 2));
 
     /*
       Populate the location map for the Goto feature
@@ -166,7 +169,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       The actual tokenization and syntax highlighting
     */
     const allTokens = output.face;
-    // debugChannel.debug('> Tokens length: ' + allTokens.length);
+    // log.debug('> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {

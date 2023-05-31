@@ -4,7 +4,7 @@
 
 import * as vscode from 'vscode';
 import * as user from './config';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 
 export const TASK_TYPE = 'Juvix';
 
@@ -21,7 +21,7 @@ export async function activate(context: vscode.ExtensionContext) {
       'Juvix extension requires at least one workspace open.\n' +
       'Open a folder containing a Juvix project and try again.';
     vscode.window.showErrorMessage(msg);
-    debugChannel.error(msg);
+    logger.error(msg);
     return;
   }
 
@@ -41,20 +41,20 @@ export async function activate(context: vscode.ExtensionContext) {
           () => {
             const ex = vscode.tasks.executeTask(task);
             ex.then((v: vscode.TaskExecution) => {
-              debugChannel.info('Task "' + cmdName + '" executed');
+              logger.trace('Task "' + cmdName + '" executed');
               v.terminate();
               return true;
             });
-            debugChannel.info('Task "' + cmdName + '" executed');
+            logger.trace('Task "' + cmdName + '" executed');
             return false;
           }
         );
         context.subscriptions.push(cmd);
-        debugChannel.info('[!] "' + cmdName + '" command registered');
+        logger.trace('[!] "' + cmdName + '" command registered');
       }
     })
     .catch(err => {
-      debugChannel.error('Task provider error: ' + err);
+      logger.error('Task provider error: ' + err);
     });
 }
 
@@ -159,8 +159,8 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       };
       tasks.push(vscodeTask);
     }
-    // debugChannel.info('Tasks to be added:');
-    // debugChannel.info(JSON.stringify(tasks).toString());
+    // log.trace('Tasks to be added:');
+    // log.trace(JSON.stringify(tasks).toString());
     return tasks;
   }
 
@@ -170,7 +170,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       const args = [definition.command].concat(definition.args ?? []);
       return await JuvixTask(definition, task.name, args);
     }
-    debugChannel.warn('resolveTask: fail to resolve', task);
+    logger.warn('resolveTask: fail to resolve', task);
     return undefined;
   }
 }
@@ -206,7 +206,7 @@ export async function JuvixTask(
       const gebCompile =
         config.getGebExec() +
         ` -i ${fl}.lisp -e "${fl}::*entry*" -l -v -o ${fl}.pir`;
-      debugChannel.info(gebCompile);
+      logger.trace(gebCompile);
       exec = new vscode.ShellExecution(gebCompile);
       break;
     case 'geb-eval':

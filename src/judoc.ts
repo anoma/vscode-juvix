@@ -3,7 +3,7 @@
  *--------------------------------------------------------*/
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
 import * as path from 'path';
@@ -218,7 +218,7 @@ export class JudocPanel {
       doc.uri.fsPath,
     ].join(' ');
 
-    debugChannel.info('Judoc call', judocCall);
+    logger.trace('Judoc call', judocCall);
 
     const ls = spawnSync(judocCall, {
       shell: true,
@@ -227,7 +227,7 @@ export class JudocPanel {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      debugChannel.error('Judoc failed', errMsg);
+      logger.error('Judoc failed', errMsg);
       throw new Error(errMsg);
     }
     const htmlFilename = getModuleName(doc) + '.html';
@@ -237,7 +237,7 @@ export class JudocPanel {
       htmlFilename
     ).fsPath;
 
-    debugChannel.info('Rendering html file: ', htmlByJudocForDoc);
+    logger.trace('Rendering html file: ', htmlByJudocForDoc);
 
     const contentDisk: string = fs.readFileSync(htmlByJudocForDoc, 'utf8');
 

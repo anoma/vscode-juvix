@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
 import { getModuleName } from './module';
+import { logger } from './utils/debug';
+import { isJuvixFile } from './utils/base';
 
 /**
  * CodelensProvider
@@ -54,8 +56,13 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         , _token: vscode.CancellationToken)
         : vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 
+        if (!isJuvixFile(document)) {
+        return [];
+        }
+
         if (vscode.workspace.getConfiguration("juvix-mode").get("codeLens", true)) {
             this.codeLenses = [];
+
             const text = document.getText();
             let firstLineRange = document.lineAt(0).range;
             /*

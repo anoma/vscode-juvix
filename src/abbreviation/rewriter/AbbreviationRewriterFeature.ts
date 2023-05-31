@@ -4,7 +4,7 @@
 import { observable } from 'mobx';
 import { Disposable, languages, TextEditor, window } from 'vscode';
 import { autorunDisposable } from '../../utils/autorunDisposable';
-import { debugChannel } from '../../utils/debug';
+import { logger } from '../../utils/debug';
 import { AbbreviationProvider } from '../AbbreviationProvider';
 import { AbbreviationConfig } from '../config';
 import { AbbreviationRewriter } from './AbbreviationRewriter';
@@ -42,7 +42,7 @@ export class AbbreviationRewriterFeature {
               config,
               abbreviationProvider,
               this.activeTextEditor,
-              debugChannel
+              logger.outputChannel
             )
           );
         }

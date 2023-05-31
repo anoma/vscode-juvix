@@ -4,7 +4,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 import * as tasks from './tasks';
 import * as statusBar from './statusbar';
 import * as syntaxHighlighter from './highlighting';
@@ -20,7 +20,6 @@ import * as vampir from './vampir/tasks';
 import * as codelens from './codelens';
 
 export async function activate(context: vscode.ExtensionContext) {
-  debugChannel.clear();
   statusBar.activate(context);
   codelens.activate(context);
   syntaxHighlighter.activate(context);
@@ -34,7 +33,4 @@ export async function activate(context: vscode.ExtensionContext) {
   formatter.activate(context);
   vampir.activate(context);
   dev.activate(context);
-  codelens.activate(context);
-  debugChannel.info('Juvix extension is ready!');
-
 }
