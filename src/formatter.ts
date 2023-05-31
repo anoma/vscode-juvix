@@ -23,10 +23,8 @@ export function activate(_context: vscode.ExtensionContext) {
         config.getJuvixExec(),
         config.getGlobalFlags(),
         '--stdin',
-        'dev',
-        'scope',
+        'format',
         filePath,
-        '--with-comments',
       ].join(' ');
 
       const { spawnSync } = require('child_process');
