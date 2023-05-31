@@ -32,7 +32,6 @@ export function juvixRoot() {
     return undefined;
 }
 
-
 export function globalJuvixRoot() : string {
     const juvixVersion = getInstalledNumericVersion();
     const homeUserPath = process.env.HOME;
