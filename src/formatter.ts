@@ -4,7 +4,7 @@
 
 import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 
 export function activate(_context: vscode.ExtensionContext) {
   const config = new JuvixConfig();
@@ -27,9 +27,6 @@ export function activate(_context: vscode.ExtensionContext) {
         filePath,
       ].join(' ');
 
-      debugChannel.info(`Formatting ${filePath}`);
-      debugChannel.appendLine(formatterCall);
-
       const { spawnSync } = require('child_process');
       const ls = spawnSync(formatterCall, {
         shell: true,
@@ -42,6 +39,7 @@ export function activate(_context: vscode.ExtensionContext) {
         return [vscode.TextEdit.replace(range, stdout)];
       } else {
         const errMsg: string = ls.stderr.toString();
+        logger.error('formatter provider error' + errMsg, 'formatter.ts');
         throw new Error(errMsg);
       }
     },
@@ -57,7 +55,6 @@ export function activate(_context: vscode.ExtensionContext) {
       );
 
       const filePath = document.uri.fsPath;
-      debugChannel.appendLine(`Formatting ${filePath}`);
       const formatterCall = [
         config.getJuvixExec(),
         config.getGlobalFlags(),
@@ -68,16 +65,12 @@ export function activate(_context: vscode.ExtensionContext) {
         filePath,
       ].join(' ');
 
-      debugChannel.appendLine(formatterCall);
-
       const { spawnSync } = require('child_process');
       const ls = spawnSync(formatterCall, {
         shell: true,
         input: document.getText(),
         encoding: 'utf8',
       });
-
-      debugChannel.appendLine(ls.stdout);
 
       if (ls.status == 0) {
         const stdout = ls.stdout;

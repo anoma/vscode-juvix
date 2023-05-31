@@ -5,8 +5,14 @@
 import * as def from './definitions';
 import * as hover from './hover';
 import * as vscode from 'vscode';
-import { debugChannel } from './utils/debug';
-import { FaceProperty, GotoProperty, RawInterval, DevHighlightOutput, HoverProperty } from './interfaces';
+import { logger } from './utils/debug';
+import {
+  FaceProperty,
+  GotoProperty,
+  RawInterval,
+  DevHighlightOutput,
+  HoverProperty,
+} from './interfaces';
 import { JuvixConfig } from './config';
 import { spawnSync } from 'child_process';
 
@@ -43,9 +49,11 @@ export async function activate(context: vscode.ExtensionContext) {
         }
       })
     );
-    debugChannel.debug('Semantic syntax highlighter registered');
   } catch (error) {
-    debugChannel.error('No semantic provider', error);
+    logger.error(
+      'Juvix: Could not register semantic syntax highlighter\n' + error,
+      'highlighting.ts'
+    );
   }
 }
 
@@ -82,7 +90,6 @@ export const legend: vscode.SemanticTokensLegend = (function () {
   );
 })();
 
-
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   async provideDocumentSemanticTokens(
     document: vscode.TextDocument,
@@ -108,8 +115,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       '--stdin',
     ].join(' ');
 
-    debugChannel.info('Highlighter call: ' + highlighterCall);
-
     const ls = spawnSync(highlighterCall, {
       input: content,
       shell: true,
@@ -118,13 +123,10 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      debugChannel.error('highlighting provider error', errMsg);
-      throw new Error(errMsg);
+      logger.error(errMsg);
     }
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
-
-    // debugChannel.info('Highlighting output: ' + JSON.stringify(output, null, 2));
 
     /*
       Populate the location map for the Goto feature
@@ -166,7 +168,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       The actual tokenization and syntax highlighting
     */
     const allTokens = output.face;
-    // debugChannel.debug('> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {
@@ -203,7 +204,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     });
     return builder.build();
   }
-
 
   private numberOfAstralSymbols(
     str: string,
@@ -244,7 +244,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     }
     return 0;
   }
-
 
   private getFaceProperty(
     entry: ((string | number)[] | string)[]

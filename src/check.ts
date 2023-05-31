@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import * as user from './config';
 import { isJuvixFile } from './utils/base';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 import { spawnSync } from 'child_process';
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -22,18 +22,13 @@ export async function activate(context: vscode.ExtensionContext) {
     if (activeEditor && activeEditor.document == doc) {
       if (doc && isJuvixFile(doc)) {
         const filePath = doc.fileName;
-        debugChannel.info(`Checking... ${filePath}!`);
         const typecheckerCall = [
           config.getJuvixExec(),
           config.getGlobalFlags(),
           '--only-errors',
           'typecheck',
           filePath,
-          // '--stdin',
-          // content,
         ].join(' ');
-
-        debugChannel.info('Typecheker call: ' + typecheckerCall);
 
         const ls = spawnSync(typecheckerCall, {
           input: content,
@@ -43,10 +38,13 @@ export async function activate(context: vscode.ExtensionContext) {
 
         if (ls.status !== 0) {
           const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-          debugChannel.error('typechecking-silent provider error', errMsg);
+          logger.error(
+            'typechecking-silent provider error' + errMsg,
+            'check.ts'
+          );
           throw new Error(errMsg);
         }
-        const stdout = ls.stdout;
+        return ls.stdout;
       }
     }
   };

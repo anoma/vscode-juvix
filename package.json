@@ -555,13 +555,13 @@
         "command": "juvix-mode.enableCodeLens",
         "title": "Enable CodeLens",
         "category": "Juvix",
-         "when": "editorLangId == juvix && editorTextFocus"
+        "when": "editorLangId == juvix && editorTextFocus"
       },
-            {
+      {
         "command": "juvix-mode.disableCodeLens",
         "title": "Disable CodeLens",
         "category": "Juvix",
-         "when": "editorLangId == juvix && editorTextFocus"
+        "when": "editorLangId == juvix && editorTextFocus"
       }
     ],
     "submenus": [

@@ -6,23 +6,20 @@ import { juvixRoot, isUsingGlobalRoot } from './root';
 import * as path from 'path';
 import { isJuvixFile } from './utils/base';
 
-
-export function getModuleName(document: vscode.TextDocument): string | undefined {
-
-    const projRoot = juvixRoot();
-    const parsedFilepath = path.parse(document.fileName);
-    if (!isJuvixFile(document)) {
-        return undefined;
-    }
-    let moduleName: string | undefined = undefined;
-    if (isUsingGlobalRoot(document)) {
-        moduleName = parsedFilepath.name;
-    } else {
-        let relativeModulePath: string =
-            path.relative(projRoot, parsedFilepath.dir).replace(path.sep, ".");
-        moduleName =
-            `${relativeModulePath}${relativeModulePath.length > 0 ? '.' : ''}${parsedFilepath.name}`;
-    }
-    return moduleName;
-
+export function getModuleName(
+  document: vscode.TextDocument
+): string | undefined {
+  if (!isJuvixFile(document)) return undefined;
+  const projRoot = juvixRoot();
+  if (!projRoot) {
+    return undefined;
+  }
+  const parsedFilepath = path.parse(document.fileName);
+  const moduleName = isUsingGlobalRoot(document)
+    ? parsedFilepath.name
+    : `${path
+        .relative(projRoot, parsedFilepath.dir)
+        .split(path.sep)
+        .join('.')}.${parsedFilepath.name}`;
+  return moduleName;
 }

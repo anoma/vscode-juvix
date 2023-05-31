@@ -8,7 +8,7 @@ import { serializerWithDefault, VsCodeSetting } from './utils/VsCodeSetting';
 import * as fs from 'fs';
 import * as path from 'path';
 import { tmpdir } from 'os';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 
 export class JuvixConfig {
   readonly binaryName = new VsCodeSetting('juvix-mode.bin.name', {
@@ -64,18 +64,19 @@ export class JuvixConfig {
   readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir');
 
   public getInternalBuildDir(): string | undefined {
-
     const useTmpDir = () => {
       const tmpPath = path.join(tmpdir(), '.juvix-build');
       try {
         const tmp = fs.mkdtempSync(tmpPath);
         const juvixBuildDir = tmp.toString();
-        console.log("TMP dir", juvixBuildDir);
         return juvixBuildDir;
       } catch (e) {
-        debugChannel.error(`Error creating temporary directory ${tmpPath}: ${e}`);
+        logger.error(
+          `Error creating temporary directory ${tmpPath}: ${e}`,
+          'config.ts'
+        );
       }
-    }
+    };
 
     const buildDir = this.internalBuildDir.get();
 
@@ -86,14 +87,13 @@ export class JuvixConfig {
           return juvixBuildDir;
         } else {
           const tmpJuvixDir = useTmpDir();
-          return tmpJuvixDir
+          return tmpJuvixDir;
         }
       } catch (e) {
-        debugChannel.error(`An error occurred: ${e}`);
+        logger.error(`An error occurred: ${e}`, 'config.ts');
         const tmpJuvixBuildDir = useTmpDir();
         return tmpJuvixBuildDir;
       }
-
     }
     const tmpJuvixBuildDir = useTmpDir();
     return tmpJuvixBuildDir;
@@ -107,7 +107,10 @@ export class JuvixConfig {
       fs.mkdirSync(tmp);
       return tmp.toString();
     } catch (e) {
-      debugChannel.error('Error creating temporary directory for Judoc: ' + e);
+      logger.error(
+        'Error creating temporary directory for Judoc: ' + e,
+        'config.ts'
+      );
     }
     return 'html';
   }
@@ -218,3 +221,5 @@ export class JuvixConfig {
 export interface TaggedList {
   [abbrev: string]: string;
 }
+
+export let config = new JuvixConfig();

@@ -1,45 +1,39 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
-import * as vscode from 'vscode';
-
-import { debugChannel } from './utils/debug';
-import * as user from './config';
-import * as utils from './utils/base';
+import { logger } from './utils/debug';
+import { JuvixConfig } from './config';
 import * as versioning from 'compare-versions';
 import * as fs from 'fs';
 import * as path from 'path';
+import { spawnSync } from 'child_process';
 
-const ERROR_JUVIX_NOT_INSTALLED =
-  'Juvix binary is not installed. Please check the binary path in the configuration page or the instructions on https://docs.juvix.org/howto/installing.html';
+const ERROR_JUVIX_NOT_INSTALLED = [
+  'Juvix binary is not installed. Please check the binary path in the',
+  'configuration page or the instructions on',
+  'https://docs.juvix.org/howto/installing.html',
+].join(' ');
 
 export function getInstalledFullVersion(): string | undefined {
-  const config = new user.JuvixConfig();
-  const { spawnSync } = require('child_process');
+  const config = new JuvixConfig();
   const ls = spawnSync(config.getJuvixExec(), ['--version']);
-  let execJuvixVersion: string;
+
   if (ls.status !== 0) {
-    debugChannel.error(ERROR_JUVIX_NOT_INSTALLED);
+    logger.error(ERROR_JUVIX_NOT_INSTALLED);
     return;
-  } else {
-    execJuvixVersion = ls.stdout.toString().replace('version ', 'v');
-    const juvixBinaryVersion: string = execJuvixVersion.split('\n')[0];
-    return juvixBinaryVersion;
   }
+
+  return ls.stdout.toString().replace('version ', 'v').split('\n')[0];
 }
 
 export function getInstalledNumericVersion(): string | undefined {
-  const config = new user.JuvixConfig();
-  const { spawnSync } = require('child_process');
+  const config = new JuvixConfig();
   const ls = spawnSync(config.getJuvixExec(), ['--numeric-version']);
-  let execJuvixVersion: string;
   if (ls.status !== 0) {
-    debugChannel.error(ERROR_JUVIX_NOT_INSTALLED);
+    logger.error(ERROR_JUVIX_NOT_INSTALLED);
     return;
-  } else {
-    execJuvixVersion = ls.stdout.toString().split('\n')[0];
-    return execJuvixVersion;
   }
+  return ls.stdout.toString().split('\n')[0];
 }
 
 export const supportedVersion: string = fs
@@ -47,13 +41,8 @@ export const supportedVersion: string = fs
   .trim();
 
 export function isJuvixVersionSupported(): boolean {
-  // Read Juvix version from file juvix.version
   const installedVersion = getInstalledNumericVersion();
-  if (installedVersion) {
-    debugChannel.info('Juvix version installed: ' + installedVersion);
-    debugChannel.info('Juvix version supported: ' + supportedVersion);
-    return versioning.satisfies(installedVersion, '>=' + supportedVersion);
-  } else {
-    return false;
-  }
+  return installedVersion
+    ? versioning.satisfies(installedVersion, `>=${supportedVersion}`)
+    : false;
 }

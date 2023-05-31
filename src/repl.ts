@@ -2,7 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
 import { observable } from 'mobx';
@@ -29,12 +29,8 @@ export class JuvixRepl {
   public document: vscode.TextDocument;
 
   constructor(document: vscode.TextDocument) {
-    debugChannel.info('Creating Juvix REPL');
     this.config = new JuvixConfig();
-
     this.document = document;
-    debugChannel.info('document: ' + document.fileName);
-
     const options: vscode.TerminalOptions = {
       name: terminalName,
       cwd: path.dirname(document.fileName),
@@ -44,7 +40,6 @@ export class JuvixRepl {
         preserveFocus: true,
       },
     };
-    debugChannel.info('options: ' + JSON.stringify(options));
     this.terminal = vscode.window.createTerminal(options);
     this.openRepl();
 
@@ -92,28 +87,24 @@ export class JuvixRepl {
 
   /* Open the REPL for the current file */
   public openRepl(): void {
-    debugChannel.info('Exec juvix repl');
     let shellCmd = this.config.getJuvixExec();
     if (isJuvixFile(this.document)) {
       shellCmd += ' ' + 'repl';
     } else if (isJuvixCoreFile(this.document)) {
       shellCmd += ' ' + 'dev core repl';
     } else if (isJuvixGebFile(this.document)) {
-      debugChannel.info('Geb repl');
       shellCmd += ' ' + 'dev geb repl';
     } else {
-      debugChannel.error('Unknown language');
+      logger.error('Unknown language', 'repl.ts');
       return;
     }
     const ready: Promise<vscode.TerminalExitStatus> =
       this.promiseCall(shellCmd);
     ready.then(status => {
       if (status.code == 0) {
-        vscode.window.showInformationMessage('Juvix REPL ready');
         this.terminal.show();
         this.ready = true;
       } else {
-        debugChannel.info('Juvix REPL was closed:', status.code);
         this.ready = false;
       }
     });
@@ -122,16 +113,13 @@ export class JuvixRepl {
   /* Load the current file in the REPL */
   public loadFileRepl(): void {
     const filename = this.document.fileName;
-    debugChannel.info('Loading file in REPL: ' + filename);
     if (canRunRepl(this.document)) this.document.save();
     if (isJuvixFile(this.document)) {
       if (!this.reloadNextTime) this.terminal.sendText(`:load ${filename}`);
       else this.terminal.sendText(`\n:reload ${filename}`);
     } else if (isJuvixCoreFile(this.document)) {
-      debugChannel.info('Loading to the Repl a Juvix Core file');
       this.terminal.sendText(`:l ${filename}`);
     } else if (isJuvixGebFile(this.document)) {
-      debugChannel.info('Loading to the Repl a Juvix Geb file');
       this.terminal.sendText(`:l ${filename}`);
     } else return;
     this.reloadNextTime = true;
@@ -139,12 +127,10 @@ export class JuvixRepl {
   }
 
   public sendText(msg: string): void {
-    debugChannel.info('Sending text to REPL: ' + msg);
     this.terminal.sendText(msg);
   }
 
   public dispose(): void {
-    debugChannel.info('Disposing Juvix REPL');
     this.terminal.dispose();
     for (const disposable of this.disposables) disposable.dispose();
   }
@@ -208,7 +194,6 @@ export async function activate(context: vscode.ExtensionContext) {
         repl?.dispose();
         repl = new JuvixRepl(document);
       }
-      debugChannel.info('repl: ' + repl.document.fileName);
       repl.loadFileRepl();
     }
   );

@@ -4,23 +4,21 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { debugChannel } from './utils/debug';
-import * as tasks from './tasks';
-import * as statusBar from './statusbar';
-import * as syntaxHighlighter from './highlighting';
+import * as check from './check';
+import * as codelens from './codelens';
 import * as goToDefinition from './definitions';
+import * as dev from './dev';
+import * as formatter from './formatter';
+import * as syntaxHighlighter from './highlighting';
 import * as hoverInfo from './hover';
 import * as inputMethod from './input';
-import * as repl from './repl';
 import * as judoc from './judoc';
-import * as dev from './dev';
-import * as check from './check';
-import * as formatter from './formatter';
+import * as repl from './repl';
+import * as statusBar from './statusbar';
+import * as tasks from './tasks';
 import * as vampir from './vampir/tasks';
-import * as codelens from './codelens';
 
 export async function activate(context: vscode.ExtensionContext) {
-  debugChannel.clear();
   statusBar.activate(context);
   codelens.activate(context);
   syntaxHighlighter.activate(context);
@@ -34,7 +32,4 @@ export async function activate(context: vscode.ExtensionContext) {
   formatter.activate(context);
   vampir.activate(context);
   dev.activate(context);
-  codelens.activate(context);
-  debugChannel.info('Juvix extension is ready!');
-
 }

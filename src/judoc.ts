@@ -3,7 +3,7 @@
  *--------------------------------------------------------*/
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { debugChannel } from './utils/debug';
+import { logger } from './utils/debug';
 import { JuvixConfig } from './config';
 import { isJuvixFile } from './utils/base';
 import * as path from 'path';
@@ -199,8 +199,7 @@ export class JudocPanel {
 
     const { spawnSync } = require('child_process');
 
-    const vscodePrefix =
-      webview.asWebviewUri(judocDocFolderUri).toString();
+    const vscodePrefix = webview.asWebviewUri(judocDocFolderUri).toString();
     const config = new JuvixConfig();
     const judocCall = [
       config.getJuvixExec(),
@@ -218,8 +217,6 @@ export class JudocPanel {
       doc.uri.fsPath,
     ].join(' ');
 
-    debugChannel.info('Judoc call', judocCall);
-
     const ls = spawnSync(judocCall, {
       shell: true,
       encoding: 'utf8',
@@ -227,8 +224,7 @@ export class JudocPanel {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      debugChannel.error('Judoc failed', errMsg);
-      throw new Error(errMsg);
+      logger.error(errMsg, 'judoc');
     }
     const htmlFilename = getModuleName(doc) + '.html';
 
@@ -236,8 +232,6 @@ export class JudocPanel {
       judocDocFolderUri,
       htmlFilename
     ).fsPath;
-
-    debugChannel.info('Rendering html file: ', htmlByJudocForDoc);
 
     const contentDisk: string = fs.readFileSync(htmlByJudocForDoc, 'utf8');
 
@@ -247,12 +241,12 @@ export class JudocPanel {
     return contentDisk.replace(
       '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
       '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src ' +
-      webview.cspSource +
-      '; img-src ' +
-      webview.cspSource +
-      " https:; script-src 'nonce-" +
-      nonce +
-      '\';">'
+        webview.cspSource +
+        '; img-src ' +
+        webview.cspSource +
+        " https:; script-src 'nonce-" +
+        nonce +
+        '\';">'
     );
   }
 }

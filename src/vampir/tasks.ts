@@ -4,7 +4,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { debugChannel } from '../utils/debug';
+import { logger } from '../utils/debug';
 import { JuvixConfig } from '../config';
 
 export const TASK_TYPE = 'VampIR';
@@ -13,7 +13,7 @@ export async function activate(context: vscode.ExtensionContext) {
   if (vscode.workspace.workspaceFolders === undefined) {
     const msg = 'VampIR extension requires at least one workspace open.\n';
     vscode.window.showErrorMessage(msg);
-    debugChannel.error(msg);
+    logger.error(msg);
     return;
   }
 
@@ -33,20 +33,17 @@ export async function activate(context: vscode.ExtensionContext) {
           () => {
             const ex = vscode.tasks.executeTask(task);
             ex.then((v: vscode.TaskExecution) => {
-              debugChannel.info('Task "' + cmdName + '" executed');
               v.terminate();
               return true;
             });
-            debugChannel.info('VampIR Task "' + cmdName + '" executed');
             return false;
           }
         );
         context.subscriptions.push(cmd);
-        debugChannel.info('[!] VampIR "' + cmdName + '" command registered');
       }
     })
     .catch(err => {
-      debugChannel.error('VampIR Task provider error: ' + err);
+      logger.error('VampIR Task provider error: ' + err);
     });
 }
 
@@ -144,7 +141,6 @@ export class VampIRProvider implements vscode.TaskProvider {
       const args = [definition.command].concat(definition.args ?? []);
       return await VampIR(definition, task.name, args);
     }
-    debugChannel.warn('resolveTask: fail to resolve', task);
     return undefined;
   }
 }
