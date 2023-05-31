@@ -33,16 +33,13 @@ export async function activate(context: vscode.ExtensionContext) {
           () => {
             const ex = vscode.tasks.executeTask(task);
             ex.then((v: vscode.TaskExecution) => {
-              logger.trace('Task "' + cmdName + '" executed');
               v.terminate();
               return true;
             });
-            logger.trace('VampIR Task "' + cmdName + '" executed');
             return false;
           }
         );
         context.subscriptions.push(cmd);
-        logger.trace('[!] VampIR "' + cmdName + '" command registered');
       }
     })
     .catch(err => {
@@ -144,7 +141,6 @@ export class VampIRProvider implements vscode.TaskProvider {
       const args = [definition.command].concat(definition.args ?? []);
       return await VampIR(definition, task.name, args);
     }
-    logger.warn('resolveTask: fail to resolve', task);
     return undefined;
   }
 }

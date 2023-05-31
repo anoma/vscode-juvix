@@ -4,7 +4,6 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { logger } from './utils/debug';
 import * as tasks from './tasks';
 import * as statusBar from './statusbar';
 import * as syntaxHighlighter from './highlighting';

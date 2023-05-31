@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
 import { getModuleName } from './module';
-import { logger } from './utils/debug';
 import { isJuvixFile } from './utils/base';
 
 /**

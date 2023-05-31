@@ -218,8 +218,6 @@ export class JudocPanel {
       doc.uri.fsPath,
     ].join(' ');
 
-    logger.trace('Judoc call', judocCall);
-
     const ls = spawnSync(judocCall, {
       shell: true,
       encoding: 'utf8',
@@ -227,8 +225,7 @@ export class JudocPanel {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      logger.error('Judoc failed', errMsg);
-      throw new Error(errMsg);
+      logger.error(errMsg, 'judoc');
     }
     const htmlFilename = getModuleName(doc) + '.html';
 
@@ -236,8 +233,6 @@ export class JudocPanel {
       judocDocFolderUri,
       htmlFilename
     ).fsPath;
-
-    logger.trace('Rendering html file: ', htmlByJudocForDoc);
 
     const contentDisk: string = fs.readFileSync(htmlByJudocForDoc, 'utf8');
 

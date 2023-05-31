@@ -29,12 +29,8 @@ export class JuvixRepl {
   public document: vscode.TextDocument;
 
   constructor(document: vscode.TextDocument) {
-    logger.trace('Creating Juvix REPL');
     this.config = new JuvixConfig();
-
     this.document = document;
-    logger.trace('document: ' + document.fileName);
-
     const options: vscode.TerminalOptions = {
       name: terminalName,
       cwd: path.dirname(document.fileName),
@@ -44,7 +40,6 @@ export class JuvixRepl {
         preserveFocus: true,
       },
     };
-    logger.trace('options: ' + JSON.stringify(options));
     this.terminal = vscode.window.createTerminal(options);
     this.openRepl();
 
@@ -103,7 +98,6 @@ export class JuvixRepl {
       logger.error('Unknown language', 'repl.ts');
       return;
     }
-    logger.trace('Opening REPL with command: ' + shellCmd);
     const ready: Promise<vscode.TerminalExitStatus> =
       this.promiseCall(shellCmd);
     ready.then(status => {
@@ -111,7 +105,6 @@ export class JuvixRepl {
         this.terminal.show();
         this.ready = true;
       } else {
-        logger.trace('Juvix REPL was closed', 'repl.ts');
         this.ready = false;
       }
     });
@@ -120,16 +113,13 @@ export class JuvixRepl {
   /* Load the current file in the REPL */
   public loadFileRepl(): void {
     const filename = this.document.fileName;
-    logger.trace('Loading file in REPL: ' + filename);
     if (canRunRepl(this.document)) this.document.save();
     if (isJuvixFile(this.document)) {
       if (!this.reloadNextTime) this.terminal.sendText(`:load ${filename}`);
       else this.terminal.sendText(`\n:reload ${filename}`);
     } else if (isJuvixCoreFile(this.document)) {
-      logger.trace('Loading to the Repl a Juvix Core file');
       this.terminal.sendText(`:l ${filename}`);
     } else if (isJuvixGebFile(this.document)) {
-      logger.trace('Loading to the Repl a Juvix Geb file');
       this.terminal.sendText(`:l ${filename}`);
     } else return;
     this.reloadNextTime = true;
@@ -137,12 +127,10 @@ export class JuvixRepl {
   }
 
   public sendText(msg: string): void {
-    logger.trace('Sending text to REPL: ' + msg);
     this.terminal.sendText(msg);
   }
 
   public dispose(): void {
-    logger.trace('Disposing Juvix REPL');
     this.terminal.dispose();
     for (const disposable of this.disposables) disposable.dispose();
   }
@@ -206,7 +194,6 @@ export async function activate(context: vscode.ExtensionContext) {
         repl?.dispose();
         repl = new JuvixRepl(document);
       }
-      logger.trace('repl: ' + repl.document.fileName);
       repl.loadFileRepl();
     }
   );

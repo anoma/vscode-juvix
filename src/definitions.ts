@@ -35,16 +35,13 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
     const line = position.line;
     const col = position.character;
 
-
     const definitionInfo = locationMap.get(filePath);
     if (!definitionInfo) {
-      logger.warn(`There is no definitions registered in file: ${filePath}`, 'definitions.ts');
       return undefined;
     }
 
     const definitionsByLine = definitionInfo.get(line);
     if (!definitionsByLine) {
-      logger.warn(`There is no definitions registered in line: ${line + 1}`, 'definitions.ts');
       return undefined;
     }
 

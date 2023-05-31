@@ -41,16 +41,13 @@ export async function activate(context: vscode.ExtensionContext) {
           () => {
             const ex = vscode.tasks.executeTask(task);
             ex.then((v: vscode.TaskExecution) => {
-              logger.trace('Task "' + cmdName + '" executed');
               v.terminate();
               return true;
             });
-            logger.trace('Task "' + cmdName + '" executed');
             return false;
           }
         );
         context.subscriptions.push(cmd);
-        logger.trace('[!] "' + cmdName + '" command registered');
       }
     })
     .catch(err => {
@@ -159,8 +156,6 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       };
       tasks.push(vscodeTask);
     }
-    // log.trace('Tasks to be added:');
-    // log.trace(JSON.stringify(tasks).toString());
     return tasks;
   }
 
@@ -170,7 +165,6 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       const args = [definition.command].concat(definition.args ?? []);
       return await JuvixTask(definition, task.name, args);
     }
-    logger.warn('resolveTask: fail to resolve', task);
     return undefined;
   }
 }
@@ -206,7 +200,6 @@ export async function JuvixTask(
       const gebCompile =
         config.getGebExec() +
         ` -i ${fl}.lisp -e "${fl}::*entry*" -l -v -o ${fl}.pir`;
-      logger.trace(gebCompile);
       exec = new vscode.ShellExecution(gebCompile);
       break;
     case 'geb-eval':

@@ -17,12 +17,10 @@ export async function activate(_context: vscode.ExtensionContext) {
       { language: 'Juvix', scheme: 'file' },
       hoverProvider
     )
-    logger.trace('Hover info registered');
   } catch (error) {
-    logger.error('No hover provider'+ error);
+    logger.error('No hover provider'+ error, 'hover.ts');
   }
 }
-
 
 export class JuvixHoverProvider implements vscode.HoverProvider {
   provideHover(document: vscode.TextDocument
@@ -32,36 +30,18 @@ export class JuvixHoverProvider implements vscode.HoverProvider {
     const filePath: string = document.fileName;
     const line: number = position.line;
     const col: number = position.character;
-    // log.trace('Hover requested ------------------------');
-    // log.trace(
-    //   'info',
-    //   'In file: ' + filePath + ' at: ' + (line + 1) + ':' + (col + 1)
-    // );
     const hoversByFile = hoverMap.get(filePath);
     if (!hoversByFile) {
-      // log.trace(
-      //   'There is no hover info registered in file: ' + filePath
-      // );
       return undefined;
     }
     const hoversByLine = hoversByFile.get(line);
     if (!hoversByLine) {
-      // log.trace(
-      //   'There is no definitions registered in line: ' + (line + 1)
-      // );
       return undefined;
     }
-
-    // log.trace(
-    //   '> Found ' + hoversByLine.length + ' hovers at line: ' + (line + 1)
-    // );
 
     for (let i = 0; i < hoversByLine.length; i++) {
       const hoverProperty: HoverProperty = hoversByLine[i];
       if (hoverProperty.interval.startCol <= col && col <= hoverProperty.interval.endCol) {
-        logger.trace('info', 'Hover text: ' + hoverProperty.text);
-        logger.trace('info', 'Hover interval: ' + JSON.stringify(hoverProperty.interval));
-        logger.trace('col', col.toString());
         let enhancedText = new vscode.MarkdownString(
           hoverProperty.text
         );

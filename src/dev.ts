@@ -2,7 +2,6 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import { logger } from './utils/debug';
 import { JuvixConfig } from './config';
 import * as vscode from 'vscode';
 import { observable } from 'mobx';
@@ -11,7 +10,6 @@ import * as path from 'path';
 const debugStr = 'DEBUG:';
 
 export function activate(context: vscode.ExtensionContext) {
-  logger.trace('Enabling dev tabs');
   const devEnv = new DevEnv();
   context.subscriptions.push(devEnv);
 

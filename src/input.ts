@@ -19,7 +19,6 @@ import { logger } from './utils/debug';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(new Abbr());
-  logger.trace('Abbreviation rewriter registered');
 }
 
 class Abbr {

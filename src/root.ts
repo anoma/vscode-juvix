@@ -15,16 +15,12 @@ export function juvixRoot(document: vscode.TextDocument | undefined = undefined)
         return undefined;
     }
     const juvixRootCall = `${config.getJuvixExec()} dev root ${doc.uri.fsPath}`;
-    logger.trace(`Getting Juvix root for ${doc.uri.fsPath}`, "root.ts");
-    logger.trace(`Juvix root call: ${juvixRootCall}`, "root.ts");
-
     const { status, stderr, stdout } = spawnSync(juvixRootCall, { shell: true, encoding: 'utf8' });
     if (status !== 0) {
         logger.error(stderr.toString(), "root.ts");
         return undefined;
     }
     const root: string = stdout.toString().trim();
-    logger.trace(`Juvix root: ${root}`, "root.ts");
     return root;
 }
 
@@ -32,7 +28,6 @@ export function globalJuvixRoot(): string {
     const juvixVersion = getInstalledNumericVersion();
     const { HOME } = process.env;
     const rootPath = path.join(HOME ?? '', '.config', 'juvix', juvixVersion ?? '', 'global-project', path.sep);
-    logger.trace(`Global Juvix root: ${rootPath}`, "root.ts");
     return rootPath;
 }
 

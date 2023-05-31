@@ -29,8 +29,6 @@ export function activate(_context: vscode.ExtensionContext) {
         '--with-comments',
       ].join(' ');
 
-      logger.trace(`Formatting ${filePath}\n${formatterCall}`, 'formatter.ts');
-
       const { spawnSync } = require('child_process');
       const ls = spawnSync(formatterCall, {
         shell: true,
@@ -49,8 +47,6 @@ export function activate(_context: vscode.ExtensionContext) {
     },
   });
 
-  // JuvixGeb
-
   vscode.languages.registerDocumentFormattingEditProvider('JuvixGeb', {
     provideDocumentFormattingEdits(
       document: vscode.TextDocument
@@ -61,7 +57,6 @@ export function activate(_context: vscode.ExtensionContext) {
       );
 
       const filePath = document.uri.fsPath;
-      logger.trace(`Formatting ${filePath}`, 'formatter.ts');
       const formatterCall = [
         config.getJuvixExec(),
         config.getGlobalFlags(),
@@ -72,16 +67,12 @@ export function activate(_context: vscode.ExtensionContext) {
         filePath,
       ].join(' ');
 
-      logger.appendLine(formatterCall);
-
       const { spawnSync } = require('child_process');
       const ls = spawnSync(formatterCall, {
         shell: true,
         input: document.getText(),
         encoding: 'utf8',
       });
-
-      logger.appendLine(ls.stdout);
 
       if (ls.status == 0) {
         const stdout = ls.stdout;

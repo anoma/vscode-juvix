@@ -111,8 +111,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       '--stdin',
     ].join(' ');
 
-    logger.trace('Highlighter call: ' + highlighterCall);
-
     const ls = spawnSync(highlighterCall, {
       input: content,
       shell: true,
@@ -121,13 +119,10 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
 
     if (ls.status !== 0) {
       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-      vscode.window.showErrorMessage(errMsg);
-      throw new Error(errMsg);
+      logger.error(errMsg);
     }
     const stdout = ls.stdout;
     const output: DevHighlightOutput = JSON.parse(stdout.toString());
-
-    logger.trace('Highlighting output: ' + JSON.stringify(output, null, 2));
 
     /*
       Populate the location map for the Goto feature
@@ -169,7 +164,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       The actual tokenization and syntax highlighting
     */
     const allTokens = output.face;
-    // log.debug('> Tokens length: ' + allTokens.length);
 
     const builder = new vscode.SemanticTokensBuilder(legend);
     allTokens.forEach(entry => {
