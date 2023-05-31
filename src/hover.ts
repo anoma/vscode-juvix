@@ -16,16 +16,17 @@ export async function activate(_context: vscode.ExtensionContext) {
     vscode.languages.registerHoverProvider(
       { language: 'Juvix', scheme: 'file' },
       hoverProvider
-    )
+    );
   } catch (error) {
-    logger.error('No hover provider'+ error, 'hover.ts');
+    logger.error('No hover provider' + error, 'hover.ts');
   }
 }
 
 export class JuvixHoverProvider implements vscode.HoverProvider {
-  provideHover(document: vscode.TextDocument
-    , position: vscode.Position
-    , _token: vscode.CancellationToken
+  provideHover(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+    _token: vscode.CancellationToken
   ) {
     const filePath: string = document.fileName;
     const line: number = position.line;
@@ -41,16 +42,25 @@ export class JuvixHoverProvider implements vscode.HoverProvider {
 
     for (let i = 0; i < hoversByLine.length; i++) {
       const hoverProperty: HoverProperty = hoversByLine[i];
-      if (hoverProperty.interval.startCol <= col && col <= hoverProperty.interval.endCol) {
-        let enhancedText = new vscode.MarkdownString(
-          hoverProperty.text
-        );
+      if (
+        hoverProperty.interval.startCol <= col &&
+        col <= hoverProperty.interval.endCol
+      ) {
+        let enhancedText = new vscode.MarkdownString(hoverProperty.text);
         enhancedText.isTrusted = true;
         enhancedText.supportHtml = true;
-        let hover = new vscode.Hover(enhancedText, new vscode.Range(
-          new vscode.Position(hoverProperty.interval.line, hoverProperty.interval.startCol),
-          new vscode.Position(hoverProperty.interval.endLine, hoverProperty.interval.endCol)
-        )
+        let hover = new vscode.Hover(
+          enhancedText,
+          new vscode.Range(
+            new vscode.Position(
+              hoverProperty.interval.line,
+              hoverProperty.interval.startCol
+            ),
+            new vscode.Position(
+              hoverProperty.interval.endLine,
+              hoverProperty.interval.endCol
+            )
+          )
         );
         return hover;
       }

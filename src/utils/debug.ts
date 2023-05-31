@@ -7,8 +7,9 @@ class Log {
   public outputChannel: vscode.LogOutputChannel;
 
   constructor() {
-    this.outputChannel = vscode.window.createOutputChannel('Juvix Extension',
-      { log: true });
+    this.outputChannel = vscode.window.createOutputChannel('Juvix Extension', {
+      log: true,
+    });
   }
 
   private logString(message: string, component?: string) {

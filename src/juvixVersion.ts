@@ -11,7 +11,7 @@ import { spawnSync } from 'child_process';
 const ERROR_JUVIX_NOT_INSTALLED = [
   'Juvix binary is not installed. Please check the binary path in the',
   'configuration page or the instructions on',
-  'https://docs.juvix.org/howto/installing.html'
+  'https://docs.juvix.org/howto/installing.html',
 ].join(' ');
 
 export function getInstalledFullVersion(): string | undefined {
@@ -42,5 +42,7 @@ export const supportedVersion: string = fs
 
 export function isJuvixVersionSupported(): boolean {
   const installedVersion = getInstalledNumericVersion();
-  return installedVersion ? versioning.satisfies(installedVersion, `>=${supportedVersion}`) : false;
+  return installedVersion
+    ? versioning.satisfies(installedVersion, `>=${supportedVersion}`)
+    : false;
 }

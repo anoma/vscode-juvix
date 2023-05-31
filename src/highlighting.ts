@@ -6,7 +6,13 @@ import * as def from './definitions';
 import * as hover from './hover';
 import * as vscode from 'vscode';
 import { logger } from './utils/debug';
-import { FaceProperty, GotoProperty, RawInterval, DevHighlightOutput, HoverProperty } from './interfaces';
+import {
+  FaceProperty,
+  GotoProperty,
+  RawInterval,
+  DevHighlightOutput,
+  HoverProperty,
+} from './interfaces';
 import { JuvixConfig } from './config';
 import { spawnSync } from 'child_process';
 
@@ -45,9 +51,8 @@ export async function activate(context: vscode.ExtensionContext) {
     );
   } catch (error) {
     logger.error(
-      'Juvix: Could not register semantic syntax highlighter\n'
-      + error
-      , 'highlighting.ts'
+      'Juvix: Could not register semantic syntax highlighter\n' + error,
+      'highlighting.ts'
     );
   }
 }
@@ -84,7 +89,6 @@ export const legend: vscode.SemanticTokensLegend = (function () {
     tokenModifiersLegend
   );
 })();
-
 
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   async provideDocumentSemanticTokens(
@@ -201,7 +205,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     return builder.build();
   }
 
-
   private numberOfAstralSymbols(
     str: string,
     start: number,
@@ -241,7 +244,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     }
     return 0;
   }
-
 
   private getFaceProperty(
     entry: ((string | number)[] | string)[]

@@ -199,8 +199,7 @@ export class JudocPanel {
 
     const { spawnSync } = require('child_process');
 
-    const vscodePrefix =
-      webview.asWebviewUri(judocDocFolderUri).toString();
+    const vscodePrefix = webview.asWebviewUri(judocDocFolderUri).toString();
     const config = new JuvixConfig();
     const judocCall = [
       config.getJuvixExec(),
@@ -242,12 +241,12 @@ export class JudocPanel {
     return contentDisk.replace(
       '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
       '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src ' +
-      webview.cspSource +
-      '; img-src ' +
-      webview.cspSource +
-      " https:; script-src 'nonce-" +
-      nonce +
-      '\';">'
+        webview.cspSource +
+        '; img-src ' +
+        webview.cspSource +
+        " https:; script-src 'nonce-" +
+        nonce +
+        '\';">'
     );
   }
 }

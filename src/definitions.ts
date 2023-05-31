@@ -48,11 +48,20 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
     for (const info of definitionsByLine)
       if (info.interval.start <= col && info.interval.end >= col) {
         const { targetLine, targetStartCharacter, targetFile } = info;
-        const rangeBegin = new vscode.Position(targetLine, targetStartCharacter);
+        const rangeBegin = new vscode.Position(
+          targetLine,
+          targetStartCharacter
+        );
         const lengthIdentifier = info.interval.end - info.interval.start + 1;
-        const rangeEnd = new vscode.Position(targetLine, targetStartCharacter + lengthIdentifier);
+        const rangeEnd = new vscode.Position(
+          targetLine,
+          targetStartCharacter + lengthIdentifier
+        );
         const positionRange = new vscode.Range(rangeBegin, rangeEnd);
-        const definitionFound = new vscode.Location(vscode.Uri.file(targetFile), positionRange);
+        const definitionFound = new vscode.Location(
+          vscode.Uri.file(targetFile),
+          positionRange
+        );
         return definitionFound;
       }
   }

@@ -64,7 +64,6 @@ export class JuvixConfig {
   readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir');
 
   public getInternalBuildDir(): string | undefined {
-
     const useTmpDir = () => {
       const tmpPath = path.join(tmpdir(), '.juvix-build');
       try {
@@ -72,9 +71,12 @@ export class JuvixConfig {
         const juvixBuildDir = tmp.toString();
         return juvixBuildDir;
       } catch (e) {
-        logger.error(`Error creating temporary directory ${tmpPath}: ${e}`, 'config.ts');
+        logger.error(
+          `Error creating temporary directory ${tmpPath}: ${e}`,
+          'config.ts'
+        );
       }
-    }
+    };
 
     const buildDir = this.internalBuildDir.get();
 
@@ -85,14 +87,13 @@ export class JuvixConfig {
           return juvixBuildDir;
         } else {
           const tmpJuvixDir = useTmpDir();
-          return tmpJuvixDir
+          return tmpJuvixDir;
         }
       } catch (e) {
         logger.error(`An error occurred: ${e}`, 'config.ts');
         const tmpJuvixBuildDir = useTmpDir();
         return tmpJuvixBuildDir;
       }
-
     }
     const tmpJuvixBuildDir = useTmpDir();
     return tmpJuvixBuildDir;
@@ -106,7 +107,10 @@ export class JuvixConfig {
       fs.mkdirSync(tmp);
       return tmp.toString();
     } catch (e) {
-      logger.error('Error creating temporary directory for Judoc: ' + e, 'config.ts');
+      logger.error(
+        'Error creating temporary directory for Judoc: ' + e,
+        'config.ts'
+      );
     }
     return 'html';
   }

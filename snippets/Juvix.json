@@ -1,67 +1,41 @@
 {
   "module": {
-    "prefix": [
-      "mod",
-      "module"
-    ],
+    "prefix": ["mod", "module"],
     "body": "module ${1:moduleName};\n  ${2:moduleBody}\n",
     "description": "module type"
   },
   "data types": {
-    "prefix": [
-      "type",
-      "inductive",
-      "data"
-    ],
+    "prefix": ["type", "inductive", "data"],
     "body": "type ${1:typeName} := \n  | ${3:constructorName} : ${4:constructorArgs} -> ${5:returnType}\n  | ${6:constructorName} : ${7:constructorArgs} -> ${8:returnType};\n",
     "description": "inductive data type declaration"
   },
   "axiom": {
-    "prefix": [
-      "axiom",
-      "postulate",
-      "definition"
-    ],
+    "prefix": ["axiom", "postulate", "definition"],
     "body": "\naxiom ${1:axiomName} : ${2:axiomType};\n",
     "description": "Axiom"
   },
   "function": {
-    "prefix": [
-      "function"
-    ],
+    "prefix": ["function"],
     "body": "${1:functionName} : ${2:functionType};\n$1 := ${3:functionBody};\n",
     "description": "Axiom"
   },
   "comment": {
-    "prefix": [
-      "comment",
-      "--"
-    ],
+    "prefix": ["comment", "--"],
     "body": "-- ${1:commentBody}\n",
     "description": "comment inline"
   },
   "comment block": {
-    "prefix": [
-      "comment",
-      "--",
-      "{-"
-    ],
+    "prefix": ["comment", "--", "{-"],
     "body": "{-\n  ${1:commentBody}\n-}",
     "description": "comment block"
   },
   "judoc inline": {
-    "prefix": [
-      "judoc",
-      "---"
-    ],
+    "prefix": ["judoc", "---"],
     "body": "--- ${1:judoc inline}",
     "description": "Judoc inline documentation"
   },
   "judoc block": {
-    "prefix": [
-      "judoc",
-      "{--"
-    ],
+    "prefix": ["judoc", "{--"],
     "body": "{--\n  ${1:Judoc documenation}\n--}",
     "description": "Judoc documenation"
   }
