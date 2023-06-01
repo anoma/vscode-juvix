@@ -135,31 +135,34 @@
             "axiom": {
               "foreground": "#ad1313"
             },
+            "rules": {
+              "foreground": "#ef3e9d"
+            },
             "comment": {
               "foreground": "#a8a8a8",
               "fontStyle": "italic"
             },
             "constructor": {
-              "foreground": "#7307e0c9"
+              "foreground": "#5656e2"
             },
             "error": {
-              "foreground": "#bd3744",
+              "foreground": "#ed1452",
               "fontStyle": "bold"
             },
             "function": {
-              "foreground": "#d98200"
+              "foreground": "#ef9f00"
             },
             "type": {
-              "foreground": "#769c03"
+              "foreground": "#31a36a"
             },
             "keyword": {
-              "foreground": "#0083e1"
+              "foreground": "#000bd3"
             },
             "module": {
               "foreground": "#1b1b1b"
             },
             "number": {
-              "foreground": "#a0d500"
+              "foreground": "#6b8e00"
             },
             "string": {
               "foreground": "#ff4d00"
@@ -171,25 +174,28 @@
             "axiom": {
               "foreground": "#f07171"
             },
+            "rules": {
+              "foreground": "#ef3e9d"
+            },
             "comment": {
-              "foreground": "#646464",
+              "foreground": "#a8a8a8",
               "fontStyle": "italic"
             },
             "constructor": {
-              "foreground": "#ba8bea"
+              "foreground": "#5656e2"
             },
             "error": {
-              "foreground": "#bd3744",
+              "foreground": "#ed1452",
               "fontStyle": "bold"
             },
             "function": {
-              "foreground": "#feb64a"
+              "foreground": "#ffc522"
             },
             "type": {
-              "foreground": "#86b300"
+              "foreground": "#3cbc7f"
             },
             "keyword": {
-              "foreground": "#399ee6"
+              "foreground": "#45caff"
             },
             "module": {
               "foreground": "#ffffff"
@@ -198,7 +204,7 @@
               "foreground": "#befc04"
             },
             "string": {
-              "foreground": "#ffb168"
+              "foreground": "#fb6349"
             },
             "storage": {
               "foreground": "#befc04"
