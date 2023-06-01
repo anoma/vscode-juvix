@@ -6,32 +6,66 @@
   ],
   "patterns": [
     {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#string"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#module"
+    }
+  ],
+  "repository": {
+    "comments": [
+      {
+        "name": "comments.line.juvix",
+        "match": "(--).*$\n?",
+        "comment": "Line comment"
+      },
+      {
+        "name": "comments.documentation.line.juvix",
+        "match": "(---).*$\n?",
+        "comment": "Line comment"
+      },
+      {
+        "name": "comments.documentation.block.juvix",
+        "begin": "\\{--",
+        "end": "--\\}",
+        "comment": "Block documentation comment"
+      },
+      {
+        "name": "comments.block.juvix",
+        "begin": "\\{-",
+        "end": "-\\}",
+        "comment": "Block comment"
+      }
+    ],
+    "keywords": {
       "name": "keyword",
-      "match": "\\b(import|open|axiom|using|hiding|public|terminating|positive|syntax)\\b"
+      "match": "\\b(Type|let|in|type|import|open|axiom|using|hiding|public|terminating|builtin|positive|syntax)\\b"
     },
-    {
-      "name": "comments.line.juvix",
-      "match": "(--).*$\n?",
-      "comment": "Line comment"
+    "string": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.juvix",
+      "patterns": [
+        {
+          "match": "\\\\(.)",
+          "name": "constant.character.escape.juvix"
+        }
+      ]
     },
-    {
-      "name": "comments.documentation.line.juvix",
-      "match": "(---).*$\n?",
-      "comment": "Line comment"
+    "numbers": {
+      "name": "number",
+      "match": "\\b([0-9]+)\\b"
     },
-    {
-      "name": "comments.documentation.block.juvix",
-      "begin": "\\{--",
-      "end": "--\\}",
-      "comment": "Block documentation comment"
-    },
-    {
-      "name": "comments.block.juvix",
-      "begin": "\\{-",
-      "end": "-\\}",
-      "comment": "Block comment"
-    },
-    {
+    "module": {
       "begin": "\\b(module)\\b",
       "beginCaptures": {
         "1": {
@@ -44,74 +78,6 @@
         {
           "match": "([^(\\s|;|\\{|\\}|\\(|\\)|@)]+)",
           "name": "module"
-        }
-      ]
-    },
-    {
-      "begin": "\\b(import)\\b",
-      "beginCaptures": {
-        "1": {
-          "name": "keyword"
-        }
-      },
-      "end": "(;)",
-      "name": "axiom",
-      "patterns": [
-        {
-          "match": "([^(\\s|;|\\{|\\}|\\(|\\)|@)]+)",
-          "name": "module"
-        }
-      ]
-    },
-    {
-      "include": "#function_signature"
-    },
-    {
-      "include": "#user-defined-data-types"
-    }
-  ],
-  "repository": {
-    "parameter_type": {
-      "comment": "Parameter types in a type signature",
-      "patterns": [
-        {
-          "name": "meta.parameter.named.juvix",
-          "comment": "{x : Type}",
-          "begin": "(\\{)\\s*([\\w']+)\\s*(:)(?!:)",
-          "beginCaptures": {
-            "1": {
-              "name": "punctuation.delimiter.juvix"
-            },
-            "2": {
-              "name": "variable.parameter.juvix"
-            },
-            "3": {
-              "name": "keyword"
-            }
-          },
-          "end": "\\}",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.delimiter.juvix"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#type_expression"
-            }
-          ]
-        }
-      ]
-    },
-    "type_expression": {
-      "patterns": [
-        {
-          "name": "keyword",
-          "match": "Type"
-        },
-        {
-          "name": "keyword.operator.arrow.juvix",
-          "match": "->"
         }
       ]
     }
