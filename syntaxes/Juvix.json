@@ -6,80 +6,71 @@
   ],
   "patterns": [
     {
-      "include": "#comments"
-    },
-    {
-      "include": "#keywords"
+      "include": "#comment"
     },
     {
       "include": "#string"
     },
     {
-      "include": "#numbers"
-    },
-    {
-      "include": "#module"
+      "include": "#number"
     }
   ],
   "repository": {
-    "comments": [
-      {
-        "name": "comments.line.juvix",
-        "match": "(--).*$\n?",
-        "comment": "Line comment"
-      },
-      {
-        "name": "comments.documentation.line.juvix",
-        "match": "(---).*$\n?",
-        "comment": "Line comment"
-      },
-      {
-        "name": "comments.documentation.block.juvix",
-        "begin": "\\{--",
-        "end": "--\\}",
-        "comment": "Block documentation comment"
-      },
-      {
-        "name": "comments.block.juvix",
-        "begin": "\\{-",
-        "end": "-\\}",
-        "comment": "Block comment"
-      }
-    ],
-    "keywords": {
-      "name": "keyword",
-      "match": "\\b(Type|let|in|type|import|open|axiom|using|hiding|public|terminating|builtin|positive|syntax)\\b"
-    },
-    "string": {
-      "begin": "\"",
-      "end": "\"",
-      "name": "string.quoted.double.juvix",
+    "comment": {
       "patterns": [
         {
-          "match": "\\\\(.)",
-          "name": "constant.character.escape.juvix"
+          "match": "--.*$",
+          "name": "comments.line.double-dash.Juvix"
+        },
+        {
+          "begin": "\\{--",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.Juvix"
+            }
+          },
+          "end": "--\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.Juvix"
+            }
+          },
+          "name": "comments.documentation.block.Juvix"
+        },
+        {
+          "begin": "\\{-?",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.Juvix"
+            }
+          },
+          "end": "-\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.Juvix"
+            }
+          },
+          "name": "comments.block.Juvix"
         }
       ]
     },
-    "numbers": {
-      "name": "number",
-      "match": "\\b([0-9]+)\\b"
-    },
-    "module": {
-      "begin": "\\b(module)\\b",
-      "beginCaptures": {
-        "1": {
-          "name": "keyword"
-        }
-      },
-      "end": "(;)",
-      "name": "axiom",
-      "patterns": [
+    "string" :
+    {
+      "patterns" : [
         {
-          "match": "([^(\\s|;|\\{|\\}|\\(|\\)|@)]+)",
-          "name": "module"
+          "match" : "\".*\"",
+          "name" : "string"
+        }
+      ]
+    },
+    "number" : {
+      "patterns" : [
+        {
+          "match" : "[0-9]+",
+          "name" : "number"
         }
       ]
     }
   }
+
 }
