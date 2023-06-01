@@ -11,15 +11,13 @@ export function getModuleName(
 ): string | undefined {
   if (!isJuvixFile(document)) return undefined;
   const projRoot = juvixRoot();
-  if (!projRoot) {
-    return undefined;
-  }
+  if (!projRoot) return undefined;
   const parsedFilepath = path.parse(document.fileName);
   const moduleName = isUsingGlobalRoot(document)
     ? parsedFilepath.name
-    : `${path
-        .relative(projRoot, parsedFilepath.dir)
-        .split(path.sep)
-        .join('.')}.${parsedFilepath.name}`;
+    : (relativePath => {
+        const result = `${relativePath}.${parsedFilepath.name}`;
+        return result.startsWith('.') ? result.slice(1) : result;
+      })(path.relative(projRoot, parsedFilepath.dir).split(path.sep).join('.'));
   return moduleName;
 }
