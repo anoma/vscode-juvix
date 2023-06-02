@@ -46,8 +46,7 @@ export function fromResource<T>(
           value = getValue();
         } else {
           const msg = 'Either an argument or getValue must be provided';
-          logger.error(msg);
-          throw new Error(msg);
+          logger.error(msg, 'fromResource.ts');
         }
         atom.reportChanged();
       });

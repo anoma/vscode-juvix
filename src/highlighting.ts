@@ -13,7 +13,7 @@ import {
   DevHighlightOutput,
   HoverProperty,
 } from './interfaces';
-import { JuvixConfig } from './config';
+import { config } from './config';
 import { spawnSync } from 'child_process';
 
 /*
@@ -30,7 +30,6 @@ map that associates a file path to the corresponding information for that file.
 */
 
 export async function activate(context: vscode.ExtensionContext) {
-  const config = new JuvixConfig();
   if (!config.enableSemanticSyntax.get()) return;
   try {
     const semanticTokensProvider = new Highlighter();
@@ -98,8 +97,6 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     const filePath: string = document.fileName;
     const content: string = document.getText();
     const contentLines: string[] = content.split('\n');
-
-    const config = new JuvixConfig();
 
     /*
       Call the highlighter

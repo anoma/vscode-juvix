@@ -39,8 +39,8 @@ export function activate(_context: vscode.ExtensionContext) {
         return [vscode.TextEdit.replace(range, stdout)];
       } else {
         const errMsg: string = ls.stderr.toString();
-        logger.error('formatter provider error' + errMsg, 'formatter.ts');
-        throw new Error(errMsg);
+        logger.error(errMsg, 'formatter.ts');
+        return [];
       }
     },
   });
@@ -77,8 +77,9 @@ export function activate(_context: vscode.ExtensionContext) {
         return [vscode.TextEdit.replace(range, stdout)];
       } else {
         const errMsg: string = ls.stderr.toString();
-        throw new Error(errMsg);
+        logger.error(errMsg, 'formatter.ts');
       }
+      return [];
     },
   });
 }

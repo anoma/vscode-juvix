@@ -38,11 +38,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         if (ls.status !== 0) {
           const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-          logger.error(
-            'typechecking-silent provider error' + errMsg,
-            'check.ts'
-          );
-          throw new Error(errMsg);
+          logger.error( errMsg, 'check.ts' );
         }
         return ls.stdout;
       }

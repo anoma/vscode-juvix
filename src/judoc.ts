@@ -151,7 +151,7 @@ export class JudocPanel {
       message => {
         switch (message.command) {
           case 'alert':
-            vscode.window.showErrorMessage(message.text);
+            logger.error(message.text, 'judoc');
             return;
         }
       },

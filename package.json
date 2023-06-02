@@ -92,37 +92,158 @@
         "editor.trimAutoWhitespace": true
       },
       "editor.tokenColorCustomizations": {
-        "[*Dark*]": {
+        "[*Light*]": {
           "textMateRules": [
             {
-              "scope": "comment",
+              "scope": "comments",
               "settings": {
                 "foreground": "#a8a8a8",
                 "fontStyle": "italic"
               }
             },
             {
-              "scope": "support.type.builtin",
+              "scope": "axiom",
               "settings": {
-                "foreground": "#005693"
+                "foreground": "#ad1313"
               }
             },
             {
-              "scope": "punctuation.definition.group",
+              "scope": "constructor",
               "settings": {
-                "foreground": "#ef3e9d"
+                "foreground": "#7307e0c9"
               }
             },
             {
-              "scope": "entity.name.function",
+              "scope": "error",
+              "settings": {
+                "foreground": "#bd3744",
+                "fontStyle": "bold"
+              }
+            },
+            {
+              "scope": "function",
               "settings": {
                 "foreground": "#d98200"
               }
             },
             {
-              "scope": "entity.name.type.inductive",
+              "scope": "type",
               "settings": {
-                "foreground": "#7307e0c9"
+                "foreground": "#769c03"
+              }
+            },
+            {
+              "scope": "keyword",
+              "settings": {
+                "foreground": "#0083e1"
+              }
+            },
+            {
+              "scope": "module",
+              "settings": {
+                "foreground": "#1b1b1b"
+              }
+            },
+            {
+              "scope": "number",
+              "settings": {
+                "foreground": "#a0d500"
+              }
+            },
+            {
+              "scope": "string",
+              "settings": {
+                "foreground": "#ff4d00"
+              }
+            },
+            {
+              "scope": "storage",
+              "settings": {
+                "foreground": "#befc04"
+              }
+            },
+            {
+              "scope": "punctuation.definition.group",
+              "settings": {
+                "foreground": "#FF0000"
+              }
+            }
+          ]
+        },
+        "[*Dark*]": {
+          "textMateRules": [
+            {
+              "scope": "comments",
+              "settings": {
+                "foreground": "#646464",
+                "fontStyle": "italic"
+              }
+            },
+            {
+              "scope": "axiom",
+              "settings": {
+                "foreground": "#f07171"
+              }
+            },
+            {
+              "scope": "constructor",
+              "settings": {
+                "foreground": "#ba8bea"
+              }
+            },
+            {
+              "scope": "error",
+              "settings": {
+                "foreground": "#bd3744",
+                "fontStyle": "bold"
+              }
+            },
+            {
+              "scope": "function",
+              "settings": {
+                "foreground": "#feb64a"
+              }
+            },
+            {
+              "scope": "type",
+              "settings": {
+                "foreground": "#86b300"
+              }
+            },
+            {
+              "scope": "keyword",
+              "settings": {
+                "foreground": "#399ee6"
+              }
+            },
+            {
+              "scope": "module",
+              "settings": {
+                "foreground": "#ffffff"
+              }
+            },
+            {
+              "scope": "number",
+              "settings": {
+                "foreground": "#befc04"
+              }
+            },
+            {
+              "scope": "string",
+              "settings": {
+                "foreground": "#ff4d00"
+              }
+            },
+            {
+              "scope": "storage",
+              "settings": {
+                "foreground": "#befc04"
+              }
+            },
+            {
+              "scope": "punctuation.definition.group",
+              "settings": {
+                "foreground": "#FF0000"
               }
             }
           ]
@@ -281,6 +402,11 @@
       }
     ],
     "grammars": [
+      {
+        "language": "Juvix",
+        "scopeName": "source.Juvix",
+        "path": "./syntaxes/Juvix.json"
+      },
       {
         "language": "JuvixCore",
         "scopeName": "source.JuvixCore",

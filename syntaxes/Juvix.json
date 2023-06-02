@@ -1,0 +1,113 @@
+{
+  "name": "Juvix",
+  "scopeName": "source.Juvix",
+  "fileTypes": ["Juvix"],
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#string"
+    },
+    {
+      "include": "#number"
+    },
+    {
+      "include": "#keyword"
+    },
+    {
+      "include": "#constant"
+    },
+    {
+      "include": "#operator"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "match": "--.*$",
+          "name": "comments.line.double-dash.Juvix"
+        },
+        {
+          "begin": "\\{--",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.Juvix"
+            }
+          },
+          "end": "--\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.Juvix"
+            }
+          },
+          "name": "comments.documentation.block.Juvix"
+        },
+        {
+          "begin": "\\{-?",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.Juvix"
+            }
+          },
+          "end": "-\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.Juvix"
+            }
+          },
+          "name": "comments.block.Juvix"
+        }
+      ]
+    },
+    "string": {
+      "patterns": [
+        {
+          "match": "\".*\"",
+          "name": "string"
+        }
+      ]
+    },
+    "number": {
+      "patterns": [
+        {
+          "match": "[0-9]+",
+          "name": "number"
+        }
+      ]
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "match": "\\b(let|in|case|type|module|import|open|using|hiding|public|as|terminating|positive|Type|builtin|syntax)\\b",
+          "name": "keyword"
+        },
+        {
+          "name": "axiom",
+          "match": "(;)"
+        },
+        {
+          "name": "keyword",
+          "match": "(:=|:|\\/|->|→|↦|@|\\|)"
+        }
+      ]
+    },
+    "constant": {
+      "patterns": [
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.language"
+        }
+      ]
+    },
+    "operator": {
+      "patterns": [
+        {
+          "match": "(\\+|-|\\*|\\^|\\$|&&|\\!|==|>>|<=|>=)",
+          "name": "function"
+        }
+      ]
+    }
+  }
+}
