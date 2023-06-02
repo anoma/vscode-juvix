@@ -34,10 +34,16 @@ export function activate(_context: vscode.ExtensionContext) {
         encoding: 'utf8',
       });
 
+      // already formatted
       if (ls.status == 0) {
         const stdout = ls.stdout;
-        return [vscode.TextEdit.replace(range, stdout)];
+        return [];
       } else {
+        // not formatted and return the formatted stdout
+        if (ls.stdout != '') {
+          return [vscode.TextEdit.replace(range, ls.stdout)];
+        }
+        // else it is formatting error
         const errMsg: string = ls.stderr.toString();
         logger.error(errMsg, 'formatter.ts');
         return [];
