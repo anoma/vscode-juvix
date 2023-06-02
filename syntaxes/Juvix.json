@@ -1,9 +1,7 @@
 {
   "name": "Juvix",
   "scopeName": "source.Juvix",
-  "fileTypes": [
-    "Juvix"
-  ],
+  "fileTypes": ["Juvix"],
   "patterns": [
     {
       "include": "#comment"
@@ -13,6 +11,15 @@
     },
     {
       "include": "#number"
+    },
+    {
+      "include": "#keyword"
+    },
+    {
+      "include": "#constant"
+    },
+    {
+      "include": "#operator"
     }
   ],
   "repository": {
@@ -54,23 +61,53 @@
         }
       ]
     },
-    "string" :
-    {
-      "patterns" : [
+    "string": {
+      "patterns": [
         {
-          "match" : "\".*\"",
-          "name" : "string"
+          "match": "\".*\"",
+          "name": "string"
         }
       ]
     },
-    "number" : {
-      "patterns" : [
+    "number": {
+      "patterns": [
         {
-          "match" : "[0-9]+",
-          "name" : "number"
+          "match": "[0-9]+",
+          "name": "number"
+        }
+      ]
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "match": "\\b(let|in|case|type|module|import|open|using|hiding|public|as|terminating|positive|Type|builtin|syntax)\\b",
+          "name": "keyword"
+        },
+        {
+          "name": "axiom",
+          "match": "(;)"
+        },
+        {
+          "name": "keyword",
+          "match": "(:=|:|\\/|->|→|↦|@|\\|)"
+        }
+      ]
+    },
+    "constant": {
+      "patterns": [
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.language"
+        }
+      ]
+    },
+    "operator": {
+      "patterns": [
+        {
+          "match": "(\\+|-|\\*|\\^|\\$|&&|\\!|==|>>|<=|>=)",
+          "name": "function"
         }
       ]
     }
   }
-
 }

@@ -21,8 +21,8 @@ import * as vampir from './vampir/tasks';
 export async function activate(context: vscode.ExtensionContext) {
   statusBar.activate(context);
   codelens.activate(context);
-  // syntaxHighlighter.activate(context);
-  // goToDefinition.activate(context);
+  syntaxHighlighter.activate(context);
+  goToDefinition.activate(context);
   hoverInfo.activate(context);
   tasks.activate(context);
   inputMethod.activate(context);
