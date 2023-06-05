@@ -8,23 +8,19 @@ import * as utils from './utils/base';
 
 export let juvixStatusBarItemVersion: vscode.StatusBarItem;
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(
+  context: vscode.ExtensionContext
+): Promise<void> {
   juvixStatusBarItemVersion = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right
   );
   context.subscriptions.push(juvixStatusBarItemVersion);
   juvixStatusBarItemVersion.hide();
 
-  const fv = version.getInstalledFullVersion();
-  if (fv) {
-    juvixStatusBarItemVersion.text = fv;
-    juvixStatusBarItemVersion.show();
-
-    if (!version.isJuvixVersionSupported()) {
-      const msg = `${fv} is not supported. Please upgrade to the latest version. Visit https://docs.juvix.org/howto/installing.html for instructions.`;
-      vscode.window.showErrorMessage(msg, { modal: true });
-    }
-  }
+  const fv = await version.getInstalledFullVersion();
+  if (!fv) return;
+  juvixStatusBarItemVersion.text = fv;
+  juvixStatusBarItemVersion.show();
 
   context.subscriptions.push(
     vscode.commands.registerCommand('juvix-mode.getBinaryVersion', () => {

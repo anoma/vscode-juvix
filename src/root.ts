@@ -23,7 +23,7 @@ export function juvixRoot(
     encoding: 'utf8',
   });
   if (status !== 0) {
-    logger.error(stderr.toString(), 'root.ts');
+    logger.trace(stderr.toString());
     return undefined;
   }
   const root: string = stdout.toString().trim();

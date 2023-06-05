@@ -19,17 +19,18 @@ import * as tasks from './tasks';
 import * as vampir from './vampir/tasks';
 
 export async function activate(context: vscode.ExtensionContext) {
-  statusBar.activate(context);
-  codelens.activate(context);
-  syntaxHighlighter.activate(context);
-  goToDefinition.activate(context);
-  hoverInfo.activate(context);
-  tasks.activate(context);
-  inputMethod.activate(context);
-  repl.activate(context);
-  judoc.activate(context);
-  check.activate(context);
-  formatter.activate(context);
-  vampir.activate(context);
-  dev.activate(context);
+  statusBar.activate(context).then(() => {
+    codelens.activate(context);
+    syntaxHighlighter.activate(context);
+    goToDefinition.activate(context);
+    hoverInfo.activate(context);
+    tasks.activate(context);
+    inputMethod.activate(context);
+    repl.activate(context);
+    judoc.activate(context);
+    check.activate(context);
+    formatter.activate(context);
+    vampir.activate(context);
+    dev.activate(context);
+  });
 }

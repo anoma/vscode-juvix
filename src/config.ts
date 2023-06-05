@@ -23,6 +23,11 @@ export class JuvixConfig {
     return path.join(this.binaryPath.get(), this.binaryName.get());
   }
 
+  public setJuvixExec(juvixExec: string): void {
+    this.binaryPath.set(path.dirname(juvixExec));
+    this.binaryName.set(path.basename(juvixExec));
+  }
+
   // geb settings
   readonly vampirBinaryName = new VsCodeSetting('juvix-mode.vampirBinName', {
     serializer: serializerWithDefault('vamp-ir'),
