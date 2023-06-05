@@ -1,7 +1,9 @@
 {
   "name": "Juvix",
   "scopeName": "source.Juvix",
-  "fileTypes": ["Juvix"],
+  "fileTypes": [
+    "Juvix"
+  ],
   "patterns": [
     {
       "include": "#comment"
@@ -45,7 +47,7 @@
           "name": "comments.documentation.block.Juvix"
         },
         {
-          "begin": "\\{-?",
+          "begin": "\\{-",
           "beginCaptures": {
             "0": {
               "name": "punctuation.definition.comment.Juvix"
@@ -72,7 +74,7 @@
     "number": {
       "patterns": [
         {
-          "match": "[0-9]+",
+          "match": "\\b(\\d+)\\b",
           "name": "number"
         }
       ]
