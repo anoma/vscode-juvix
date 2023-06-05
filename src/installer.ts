@@ -3,7 +3,10 @@
  *--------------------------------------------------------*/
 'use strict';
 
+import { spawnSync } from 'child_process';
 import * as vscode from 'vscode';
+import { config } from './config';
+import { logger } from './utils/debug';
 
 export class Installer {
   private terminal: vscode.Terminal;
@@ -62,6 +65,22 @@ export class Installer {
     ready.then(status => {
       if (status.code == 0) {
         this.terminal.sendText('exit');
+        const whichJuvix = [
+         `which`,
+         `juvix`,
+        ].join(' ');
+    
+        const ls = spawnSync(whichJuvix, {
+          shell: true,
+          encoding: 'utf8',
+        });
+    
+        if (ls.status !== 0) {
+          const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
+          logger.error(errMsg);
+        }
+        const pathToJuvix = ls.stdout;
+        config.setJuvixExec(pathToJuvix);
       } else {
         vscode.window.showErrorMessage(
           'Juvix installation failed. Please check the logs.'
