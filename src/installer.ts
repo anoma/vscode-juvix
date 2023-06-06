@@ -21,12 +21,39 @@ export class Installer {
       name: 'Juvix binary installation',
       isTransient: false,
       hideFromUser: true,
-      // shellPath: '/usr/bin/fish',
       env: {
         JUVIX_INSTALLER_ASSUME_YES: '1',
       },
     };
     this.terminal = vscode.window.createTerminal(options);
+  }
+
+  public promiseCall(command: string): Promise<vscode.TerminalExitStatus> {
+    this.terminal.sendText(command);
+    return new Promise((resolve, reject) => {
+      const disposeToken = vscode.window.onDidCloseTerminal(
+        async closedTerminal => {
+          if (closedTerminal === this.terminal) {
+            disposeToken.dispose();
+            if (this.terminal.exitStatus !== undefined) {
+              resolve(this.terminal.exitStatus);
+              vscode.window
+                .showInformationMessage(
+                  'Juvix binary installation complete.',
+                  'Reload window'
+                )
+                .then(selection => {
+                  if (selection === 'Reload window') {
+                    vscode.commands.executeCommand(
+                      'workbench.action.reloadWindow'
+                    );
+                  }
+                });
+            } else reject('Terminal exited with undefined status');
+          }
+        }
+      );
+    });
   }
 
   public async run() {
@@ -40,8 +67,8 @@ export class Installer {
     vscode.window
       .withProgress(
         {
-          location: vscode.ProgressLocation.Notification,
-          title: 'Installing Juvix binary',
+          location: vscode.ProgressLocation.Window,
+          title: 'Installing Juvix',
           cancellable: true,
         },
         async (progress, token) => {
@@ -50,34 +77,19 @@ export class Installer {
             this.terminal.dispose();
             return exit(1);
           });
-
-          this.terminal.sendText(this.shellCmd);
-
-          for (let i = 0; i < 9; i++) {
-            setTimeout(() => {
-              progress.report({ increment: i * 10 });
-            }, 10000);
-          }
+          progress.report({ increment: 0 });
+          const exitStatus = await this.promiseCall(this.shellCmd);
           progress.report({ increment: 100 });
-          return this.terminal.exitStatus;
+          return exitStatus;
         }
       )
-      .then(exitStatus => () => {
+      .then(exitStatus => {
+        logger.trace('Juvix exit status: ' + exitStatus.code);
+        logger.trace('Juvix exit signal: ' + exitStatus.reason);
         if (exitStatus === undefined) {
           vscode.window.showErrorMessage('Juvix binary installation failed.');
           this.terminal.show();
-        } else {
-          vscode.window
-            .showInformationMessage(
-              'Juvix binary installation complete. Please reload your window.',
-              'Reload'
-            )
-            .then(selection => {
-              if (selection === 'Reload') {
-                vscode.commands.executeCommand('workbench.action.reloadWindow');
-              }
-            });
-        }
+        } 
       });
   }
 
@@ -99,3 +111,33 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 }
+
+
+// const ready: Promise<vscode.TerminalExitStatus> =
+//   this.promiseCall(this.shellCmd);
+// ready.then(status => {
+//   if (status.code == 0) {
+//     this.terminal.sendText('exit');
+//     const whichJuvix = [
+//      `which`,
+//      `juvix`,
+//     ].join(' ');
+
+//     const ls = spawnSync(whichJuvix, {
+//       shell: true,
+//       encoding: 'utf8',
+//     });
+
+//     if (ls.status !== 0) {
+//       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
+//       logger.error(errMsg);
+//     }
+//     const pathToJuvix = ls.stdout;
+//     config.setJuvixExec(pathToJuvix);
+//   } else {
+//     vscode.window.showErrorMessage(
+//       'Juvix installation failed. Please check the logs.'
+//     );
+//   }
+// });
+// }
