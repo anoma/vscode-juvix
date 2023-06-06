@@ -493,6 +493,11 @@
         "category": "Juvix"
       },
       {
+        "command": "juvix-mode.installBinary",
+        "title": "about",
+        "category": "Juvix"
+      },
+      {
         "command": "juvix-mode.doctor",
         "title": "doctor",
         "category": "Juvix"

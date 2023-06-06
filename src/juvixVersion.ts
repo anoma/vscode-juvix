@@ -9,35 +9,35 @@ import * as path from 'path';
 import { spawnSync } from 'child_process';
 import { installJuvix } from './installer';
 
-const ERROR_JUVIX_NOT_INSTALLED = [
-  'Juvix binary is not installed. Please check the binary path in the',
-  'configuration page or the instructions on',
-  'https://docs.juvix.org/howto/installing.html',
-].join(' ');
-
 import { window } from 'vscode';
 
 export async function juvixIsNotInstalled() {
+  const juvixVer = 'Juvix-v' + supportedVersion;
+
   const result = await window.showWarningMessage(
-    'Juvix is not installed. Do you want to install it now?',
-    'Yes',
-    'No'
+    `To proceed, you need ${juvixVer} or a newer version.
+    Please verify the binary path in the configuration page.
+    If you prefer, we can install it now. Would you like to proceed with the installation?`,
+    'Install',
+    'Show recommendations'
   );
-  if (result === 'Yes') {
+  if (result === 'Install') {
     await installJuvix();
   } else {
-    logger.error(ERROR_JUVIX_NOT_INSTALLED);
+    // open the docs
+    logger.warn(
+      'Check the binary path in the configuration page or ' +
+        'visit [https://docs.juvix.org/0.3.5/howto/installing/](https://docs.juvix.org/0.3.5/howto/installing/) for instructions.'
+    );
   }
 }
 
-export async function getInstalledFullVersion(): Promise<string | undefined> {
+export async function checkJuvixBinary(): Promise<string> {
   const config = new JuvixConfig();
   const ls = spawnSync(config.getJuvixExec(), ['--version']);
 
-  if (ls.status !== 0) {
-    await juvixIsNotInstalled();
-    return;
-  }
+  if (ls.status !== 0) await juvixIsNotInstalled();
+
   return ls.stdout.toString().replace('version ', 'v').split('\n')[0];
 }
 
@@ -59,18 +59,24 @@ export function isJuvixVersionSupported(): boolean {
     : false;
 }
 
-export async function upgradeJuvix() {
-  const version = getInstalledFullVersion();
-  if (!isJuvixVersionSupported()) {
-    const result = await window.showQuickPick(['Yes', 'No'], {
-      placeHolder: `${version} is not supported. Do you want to upgrade to the latest version?`,
-    });
-    if (result === 'Yes') {
-      await installJuvix();
-    } else {
-      logger.error(
-        'Please upgrade Juvix to the latest version. Visit https://docs.juvix.org/howto/installing.html for instructions.'
-      );
+export async function needJuvixUpgrade() {
+  checkJuvixBinary().then(version => {
+    if (!isJuvixVersionSupported()) {
+      window
+        .showWarningMessage(
+          `Juvix ${version} is not supported. Do you want to upgrade to the latest version?`,
+          'Upgrade',
+          'No'
+        )
+        .then(result => {
+          if (result === 'Upgrade') {
+            installJuvix();
+          } else {
+            logger.warn(
+              'Please upgrade Juvix to the latest version. Visit https://docs.juvix.org/latest/howto/installing/ for instructions.'
+            );
+          }
+        });
     }
-  }
+  });
 }
