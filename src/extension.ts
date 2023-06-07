@@ -25,17 +25,17 @@ export async function activate(context: vscode.ExtensionContext) {
   checkJuvixBinary().then(version => {
     statusBar.activate(context, version);
     checkForUpgrade(version);
-    // codelens.activate(context);
-    // syntaxHighlighter.activate(context);
-    // goToDefinition.activate(context);
-    // hoverInfo.activate(context);
-    // tasks.activate(context);
-    // inputMethod.activate(context);
-    // repl.activate(context);
-    // judoc.activate(context);
-    // check.activate(context);
-    // formatter.activate(context);
-    // vampir.activate(context);
-    // dev.activate(context);
+    codelens.activate(context);
+    syntaxHighlighter.activate(context);
+    goToDefinition.activate(context);
+    hoverInfo.activate(context);
+    tasks.activate(context);
+    inputMethod.activate(context);
+    repl.activate(context);
+    judoc.activate(context);
+    check.activate(context);
+    formatter.activate(context);
+    vampir.activate(context);
+    dev.activate(context);
   });
 }
