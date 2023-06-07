@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.44",
+  "version": "0.1.45",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",

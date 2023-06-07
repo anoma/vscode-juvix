@@ -13,10 +13,12 @@ import { window } from 'vscode';
 
 export async function juvixIsNotInstalled() {
   const juvixVer = 'Juvix-v' + supportedVersion;
+  const url = 'https://docs.juvix.org/' + supportedVersion + '/howto/installing/';
+  const linkDocVersion = `[${url}](${url})`;
 
   const result = await window.showWarningMessage(
     `It appears that Juvix is not installed. To proceed,
-    you require version ${juvixVer} or a newer version.
+    you require version [${juvixVer}](${url}) or a newer version.
     Please confirm the binary path on the user settings page.
     Alternatively, we can install it for you now.
     Would you like to proceed with the installation?`,
@@ -28,9 +30,10 @@ export async function juvixIsNotInstalled() {
     await installJuvix();
   } else {
     // open the docs
+
     logger.warn(
       'Check the binary path in the configuration page or ' +
-        `visit [https://docs.juvix.org/${juvixVer}/howto/installing/](https://docs.juvix.org/${juvixVer} /howto/installing/) for instructions.`
+        `visit ${linkDocVersion} for instructions.`
     );
   }
 }
@@ -64,7 +67,7 @@ export async function checkForUpgrade(version: string) {
   if (!isJuvixVersionSupported()) {
     window
       .showWarningMessage(
-        `Juvix ${version} is not supported. Do you want to upgrade to the latest version?`,
+        `${version} is not supported. Do you want to upgrade to the latest version?`,
         'Upgrade',
         'No'
       )
