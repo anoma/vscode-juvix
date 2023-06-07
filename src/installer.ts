@@ -8,8 +8,9 @@ import * as vscode from 'vscode';
 import { logger } from './utils/debug';
 import { config } from './config';
 import { env } from 'process';
+import * as path from 'path';
 
-const INSTALLBIN_PATH = env.HOME + '/.local/bin';
+const INSTALLBIN_PATH = path.join(env.HOME || '~', '.local', 'bin');
 
 export class Installer {
   private terminal: vscode.Terminal;
