@@ -18,12 +18,13 @@ import * as statusBar from './statusbar';
 import * as tasks from './tasks';
 import * as vampir from './vampir/tasks';
 import * as installer from './installer';
-import { checkJuvixBinary } from './juvixVersion';
+import { checkForUpgrade, checkJuvixBinary } from './juvixVersion';
 
 export async function activate(context: vscode.ExtensionContext) {
   installer.activate(context);
   checkJuvixBinary().then(version => {
     statusBar.activate(context, version);
+    checkForUpgrade(version);
     // codelens.activate(context);
     // syntaxHighlighter.activate(context);
     // goToDefinition.activate(context);

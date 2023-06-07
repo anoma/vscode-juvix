@@ -3,10 +3,8 @@
  *--------------------------------------------------------*/
 'use strict';
 
-import { spawnSync } from 'child_process';
 import { exit } from 'process';
 import * as vscode from 'vscode';
-import { config } from './config';
 import { logger } from './utils/debug';
 
 export class Installer {
@@ -14,7 +12,7 @@ export class Installer {
   private disposables: vscode.Disposable[] = [];
 
   readonly shellCmd =
-    "curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/anoma/juvix-installer/main/juvix-installer.sh | sh";
+    "curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/anoma/juvix-installer/main/juvix-installer.sh | sh && exit 0";
 
   constructor() {
     const options: vscode.TerminalOptions = {
@@ -37,18 +35,7 @@ export class Installer {
             disposeToken.dispose();
             if (this.terminal.exitStatus !== undefined) {
               resolve(this.terminal.exitStatus);
-              vscode.window
-                .showInformationMessage(
-                  'Juvix binary installation complete.',
-                  'Reload window'
-                )
-                .then(selection => {
-                  if (selection === 'Reload window') {
-                    vscode.commands.executeCommand(
-                      'workbench.action.reloadWindow'
-                    );
-                  }
-                });
+              vscode.window.showInformationMessage( 'Juvix binary installation complete.' )
             } else reject('Terminal exited with undefined status');
           }
         }
@@ -67,20 +54,17 @@ export class Installer {
     vscode.window
       .withProgress(
         {
-          location: vscode.ProgressLocation.Window,
+          location: vscode.ProgressLocation.Notification,
           title: 'Installing Juvix',
           cancellable: true,
         },
-        async (progress, token) => {
+        async (_progress, token) => {
           token.onCancellationRequested(() => {
             logger.trace('User canceled the Juvix binary installation');
             this.terminal.dispose();
             return exit(1);
           });
-          progress.report({ increment: 0 });
-          const exitStatus = await this.promiseCall(this.shellCmd);
-          progress.report({ increment: 100 });
-          return exitStatus;
+          return await this.promiseCall(this.shellCmd);
         }
       )
       .then(exitStatus => {
@@ -89,7 +73,7 @@ export class Installer {
         if (exitStatus === undefined) {
           vscode.window.showErrorMessage('Juvix binary installation failed.');
           this.terminal.show();
-        } 
+        }
       });
   }
 
@@ -111,33 +95,3 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 }
-
-
-// const ready: Promise<vscode.TerminalExitStatus> =
-//   this.promiseCall(this.shellCmd);
-// ready.then(status => {
-//   if (status.code == 0) {
-//     this.terminal.sendText('exit');
-//     const whichJuvix = [
-//      `which`,
-//      `juvix`,
-//     ].join(' ');
-
-//     const ls = spawnSync(whichJuvix, {
-//       shell: true,
-//       encoding: 'utf8',
-//     });
-
-//     if (ls.status !== 0) {
-//       const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-//       logger.error(errMsg);
-//     }
-//     const pathToJuvix = ls.stdout;
-//     config.setJuvixExec(pathToJuvix);
-//   } else {
-//     vscode.window.showErrorMessage(
-//       'Juvix installation failed. Please check the logs.'
-//     );
-//   }
-// });
-// }
