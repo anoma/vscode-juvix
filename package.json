@@ -33,8 +33,7 @@
     "onLanguage:JuvixAsm",
     "onLanguage:JuvixCore",
     "onLanguage:JuvixGeb",
-    "onLanguage:VampIR",
-    "workspaceContains:**/juvix-mode.yaml"
+    "onLanguage:VampIR"
   ],
   "main": "./out/extension.js",
   "scripts": {
