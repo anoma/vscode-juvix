@@ -6,6 +6,10 @@
 import { exit } from 'process';
 import * as vscode from 'vscode';
 import { logger } from './utils/debug';
+import { config } from './config';
+import { env } from 'process';
+
+const INSTALLBIN_PATH = env.HOME + '/.local/bin';
 
 export class Installer {
   private terminal: vscode.Terminal;
@@ -35,6 +39,7 @@ export class Installer {
             disposeToken.dispose();
             if (this.terminal.exitStatus !== undefined) {
               resolve(this.terminal.exitStatus);
+              config.binaryPath.set(INSTALLBIN_PATH);
               vscode.window
                 .showInformationMessage(
                   'Juvix binary installation complete.',

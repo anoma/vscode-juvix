@@ -2,7 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 import { logger } from './utils/debug';
-import { JuvixConfig } from './config';
+import { config } from './config';
 import * as versioning from 'compare-versions';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -13,7 +13,8 @@ import { window } from 'vscode';
 
 export async function juvixIsNotInstalled() {
   const juvixVer = 'Juvix-v' + supportedVersion;
-  const url = 'https://docs.juvix.org/' + supportedVersion + '/howto/installing/';
+  const url =
+    'https://docs.juvix.org/' + supportedVersion + '/howto/installing/';
   const linkDocVersion = `[${url}](${url})`;
 
   const result = await window.showWarningMessage(
@@ -29,8 +30,6 @@ export async function juvixIsNotInstalled() {
   if (result === 'Install') {
     await installJuvix();
   } else {
-    // open the docs
-
     logger.warn(
       'Check the binary path in the configuration page or ' +
         `visit ${linkDocVersion} for instructions.`
@@ -39,14 +38,12 @@ export async function juvixIsNotInstalled() {
 }
 
 export async function checkJuvixBinary(): Promise<string> {
-  const config = new JuvixConfig();
   const ls = spawnSync(config.getJuvixExec(), ['--version']);
   if (ls.status !== 0) await juvixIsNotInstalled();
   return ls.stdout.toString().replace('version ', 'v').split('\n')[0];
 }
 
 export function getInstalledNumericVersion(): string | undefined {
-  const config = new JuvixConfig();
   const ls = spawnSync(config.getJuvixExec(), ['--numeric-version']);
   if (ls.status == 0) return ls.stdout.toString().split('\n')[0];
   else juvixIsNotInstalled();
