@@ -13,7 +13,7 @@ class Log {
   }
 
   private logString(message: string, component?: string) {
-    return component ? `${component}> ${message}` : message;
+    return component ? `Juvix (${component}): ${message}` : message;
   }
 
   public trace(message: string, component?: string) {

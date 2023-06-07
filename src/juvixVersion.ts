@@ -30,7 +30,7 @@ export async function juvixIsNotInstalled() {
     // open the docs
     logger.warn(
       'Check the binary path in the configuration page or ' +
-      'visit [https://docs.juvix.org/0.3.5/howto/installing/](https://docs.juvix.org/0.3.5/howto/installing/) for instructions.'
+        'visit [https://docs.juvix.org/0.3.5/howto/installing/](https://docs.juvix.org/0.3.5/howto/installing/) for instructions.'
     );
   }
 }
@@ -45,8 +45,7 @@ export async function checkJuvixBinary(): Promise<string> {
 export function getInstalledNumericVersion(): string | undefined {
   const config = new JuvixConfig();
   const ls = spawnSync(config.getJuvixExec(), ['--numeric-version']);
-  if (ls.status == 0)
-    return ls.stdout.toString().split('\n')[0];
+  if (ls.status == 0) return ls.stdout.toString().split('\n')[0];
   else juvixIsNotInstalled();
 }
 

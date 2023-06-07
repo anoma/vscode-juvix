@@ -35,7 +35,18 @@ export class Installer {
             disposeToken.dispose();
             if (this.terminal.exitStatus !== undefined) {
               resolve(this.terminal.exitStatus);
-              vscode.window.showInformationMessage( 'Juvix binary installation complete.' )
+              vscode.window
+                .showInformationMessage(
+                  'Juvix binary installation complete.',
+                  'Reload window'
+                )
+                .then(selection => {
+                  if (selection === 'Reload window') {
+                    vscode.commands.executeCommand(
+                      'workbench.action.reloadWindow'
+                    );
+                  }
+                });
             } else reject('Terminal exited with undefined status');
           }
         }

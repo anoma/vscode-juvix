@@ -95,7 +95,7 @@ export class JuvixRepl {
     } else if (isJuvixGebFile(this.document)) {
       shellCmd += ' ' + 'dev geb repl';
     } else {
-      logger.error('Unknown language', 'repl.ts');
+      logger.warn('Unknown language', 'repl.ts');
       return;
     }
     const ready: Promise<vscode.TerminalExitStatus> =

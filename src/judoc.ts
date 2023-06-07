@@ -151,7 +151,7 @@ export class JudocPanel {
       message => {
         switch (message.command) {
           case 'alert':
-            logger.error(message.text, 'judoc');
+            logger.warn(message.text, 'judoc');
             return;
         }
       },
