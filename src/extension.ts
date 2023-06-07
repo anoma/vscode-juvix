@@ -17,19 +17,25 @@ import * as repl from './repl';
 import * as statusBar from './statusbar';
 import * as tasks from './tasks';
 import * as vampir from './vampir/tasks';
+import * as installer from './installer';
+import { checkForUpgrade, checkJuvixBinary } from './juvixVersion';
 
 export async function activate(context: vscode.ExtensionContext) {
-  statusBar.activate(context);
-  codelens.activate(context);
-  syntaxHighlighter.activate(context);
-  goToDefinition.activate(context);
-  hoverInfo.activate(context);
-  tasks.activate(context);
-  inputMethod.activate(context);
-  repl.activate(context);
-  judoc.activate(context);
-  check.activate(context);
-  formatter.activate(context);
-  vampir.activate(context);
-  dev.activate(context);
+  installer.activate(context);
+  checkJuvixBinary().then(version => {
+    statusBar.activate(context, version);
+    checkForUpgrade(version);
+    codelens.activate(context);
+    syntaxHighlighter.activate(context);
+    goToDefinition.activate(context);
+    hoverInfo.activate(context);
+    tasks.activate(context);
+    inputMethod.activate(context);
+    repl.activate(context);
+    judoc.activate(context);
+    check.activate(context);
+    formatter.activate(context);
+    vampir.activate(context);
+    dev.activate(context);
+  });
 }

@@ -38,7 +38,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         if (ls.status !== 0) {
           const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
-          logger.error( errMsg, 'check.ts' );
+          logger.error(errMsg, 'check.ts');
         }
         return ls.stdout;
       }

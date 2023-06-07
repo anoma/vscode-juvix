@@ -1,9 +1,7 @@
 {
   "name": "Juvix",
   "scopeName": "source.Juvix",
-  "fileTypes": [
-    "Juvix"
-  ],
+  "fileTypes": ["Juvix"],
   "patterns": [
     {
       "include": "#comment"

@@ -13,7 +13,7 @@ class Log {
   }
 
   private logString(message: string, component?: string) {
-    return component ? `${component}> ${message}` : message;
+    return component ? `Juvix (${component}): ${message}` : message;
   }
 
   public trace(message: string, component?: string) {
@@ -34,10 +34,10 @@ class Log {
     vscode.window.showWarningMessage(msg);
   }
 
-  public error(message: string, component?: string, modal:boolean = false) {
+  public error(message: string, component?: string, modal: boolean = false) {
     const msg = this.logString(message, component);
     this.outputChannel.error(msg);
-    vscode.window.showErrorMessage(msg, {modal : modal });
+    vscode.window.showErrorMessage(msg, { modal: modal });
     throw new Error(msg);
   }
 }
