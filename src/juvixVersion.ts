@@ -30,7 +30,7 @@ export async function juvixIsNotInstalled() {
     // open the docs
     logger.warn(
       'Check the binary path in the configuration page or ' +
-        'visit [https://docs.juvix.org/0.3.5/howto/installing/](https://docs.juvix.org/0.3.5/howto/installing/) for instructions.'
+        `visit [https://docs.juvix.org/${juvixVer}/howto/installing/](https://docs.juvix.org/${juvixVer} /howto/installing/) for instructions.`
     );
   }
 }
