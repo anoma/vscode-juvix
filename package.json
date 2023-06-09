@@ -711,77 +711,77 @@
     "menus": {
       "editor/title": [
         {
-          "when": "juvix-mode:ready",
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb)",
           "command": "juvix-mode.loadFileRepl",
           "group": "navigation@0"
         },
         {
-          "when": "juvix-mode:ready",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.typecheck",
           "group": "navigation@1"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.compile",
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.run",
           "group": "navigation@3"
         },
         {
-          "when": "editorLangId == JuvixCore",
+          "when": "juvix-mode:ready && editorLangId == JuvixCore",
           "command": "juvix-mode.core-compile",
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == JuvixCore",
+          "when": "juvix-mode:ready && editorLangId == JuvixCore",
           "command": "juvix-mode.core-eval",
           "group": "navigation@3"
         },
         {
-          "when": "editorLangId == JuvixGeb",
+          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
           "command": "juvix-mode.geb-check",
           "group": "navigation@1"
         },
         {
-          "when": "editorLangId == JuvixGeb",
+          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
           "command": "juvix-mode.geb-compile",
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == JuvixGeb",
+          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
           "command": "juvix-mode.geb-eval",
           "group": "navigation@3"
         },
         {
-          "when": "editorLangId == VampIR",
+          "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-setup",
           "group": "navigation@0"
         },
         {
-          "when": "editorLangId == VampIR",
+          "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-compile",
           "group": "navigation@1"
         },
         {
-          "when": "editorLangId == VampIR",
+          "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-prove",
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == VampIR",
+          "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-verify",
           "group": "navigation@3"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.createOrShowJudoc",
           "group": "navigation@4"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.createOrShowJudocOnlySource",
           "group": "navigation@5"
         }
@@ -790,7 +790,7 @@
         {
           "submenu": "juvix-submenu",
           "group": "navigation",
-          "when": "editorLangId == Juvix"
+          "when": "juvix-mode:ready && editorLangId == Juvix"
         }
       ],
       "juvix-submenu": [
@@ -808,6 +808,10 @@
         },
         {
           "command": "juvix-mode.doctor",
+          "group": "navigation@1.31"
+        },
+        {
+          "command": "juvix-mode.createOrShowJudoc",
           "group": "navigation@1.31"
         }
       ]
