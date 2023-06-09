@@ -33,7 +33,8 @@
     "onLanguage:JuvixAsm",
     "onLanguage:JuvixCore",
     "onLanguage:JuvixGeb",
-    "onLanguage:VampIR"
+    "onLanguage:VampIR",
+    "onCommand:juvix-mode.installJuvixBinary"
   ],
   "main": "./out/extension.js",
   "scripts": {
@@ -487,6 +488,11 @@
     ],
     "commands": [
       {
+        "command": "juvix-mode.installJuvixBinary",
+        "title": "Install Juvix Binary",
+        "category": "Juvix"
+      },
+      {
         "command": "juvix-mode.getBinaryVersion",
         "title": "about",
         "category": "Juvix"
@@ -705,77 +711,77 @@
     "menus": {
       "editor/title": [
         {
-          "when": "editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb",
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb)",
           "command": "juvix-mode.loadFileRepl",
           "group": "navigation@0"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.typecheck",
           "group": "navigation@1"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.compile",
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.run",
           "group": "navigation@3"
         },
         {
-          "when": "editorLangId == JuvixCore",
+          "when": "juvix-mode:ready && editorLangId == JuvixCore",
           "command": "juvix-mode.core-compile",
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == JuvixCore",
+          "when": "juvix-mode:ready && editorLangId == JuvixCore",
           "command": "juvix-mode.core-eval",
           "group": "navigation@3"
         },
         {
-          "when": "editorLangId == JuvixGeb",
+          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
           "command": "juvix-mode.geb-check",
           "group": "navigation@1"
         },
         {
-          "when": "editorLangId == JuvixGeb",
+          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
           "command": "juvix-mode.geb-compile",
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == JuvixGeb",
+          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
           "command": "juvix-mode.geb-eval",
           "group": "navigation@3"
         },
         {
-          "when": "editorLangId == VampIR",
+          "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-setup",
           "group": "navigation@0"
         },
         {
-          "when": "editorLangId == VampIR",
+          "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-compile",
           "group": "navigation@1"
         },
         {
-          "when": "editorLangId == VampIR",
+          "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-prove",
           "group": "navigation@2"
         },
         {
-          "when": "editorLangId == VampIR",
+          "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-verify",
           "group": "navigation@3"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.createOrShowJudoc",
           "group": "navigation@4"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.createOrShowJudocOnlySource",
           "group": "navigation@5"
         }
@@ -784,7 +790,7 @@
         {
           "submenu": "juvix-submenu",
           "group": "navigation",
-          "when": "editorLangId == Juvix"
+          "when": "juvix-mode:ready && editorLangId == Juvix"
         }
       ],
       "juvix-submenu": [
@@ -803,23 +809,27 @@
         {
           "command": "juvix-mode.doctor",
           "group": "navigation@1.31"
+        },
+        {
+          "command": "juvix-mode.createOrShowJudoc",
+          "group": "navigation@1.31"
         }
       ]
     },
     "configuration": {
       "title": "Juvix Mode",
       "properties": {
-        "juvix-mode.bin.name": {
+        "juvix-mode.juvixBinName": {
           "type": "string",
           "default": "juvix",
           "scope": "machine-overridable",
           "description": "Name of the executable of Juvix. (e.g. juvix-v0.3.0)"
         },
-        "juvix-mode.bin.path": {
+        "juvix-mode.juvixBinPath": {
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "description": "Absolute path to the executable of Juvix. (e.g. /usr/local/bin/)"
+          "description": "Absolute path where the Juvix binary is located (e.g. /usr/local/bin/)"
         },
         "juvix-mode.vampirBinName": {
           "type": "string",

@@ -9,18 +9,23 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { tmpdir } from 'os';
 import { logger } from './utils/debug';
+import { ConfigurationTarget } from 'vscode';
 
 export class JuvixConfig {
-  readonly binaryName = new VsCodeSetting('juvix-mode.bin.name', {
-    serializer: serializerWithDefault('Juvix'),
+  readonly binaryName = new VsCodeSetting('juvix-mode.juvixBinName', {
+    serializer: serializerWithDefault('juvix')
   });
 
-  readonly binaryPath = new VsCodeSetting('juvix-mode.bin.path', {
-    serializer: serializerWithDefault(''),
+  readonly binaryPath = new VsCodeSetting('juvix-mode.juvixBinPath', {
+    serializer: serializerWithDefault('')
   });
 
   public getJuvixExec(): string {
-    return path.join(this.binaryPath.get(), this.binaryName.get());
+    let binPath = this.binaryPath.get();
+    let binName = this.binaryName.get();
+    logger.debug(`binPath: ${binPath}`);
+    logger.debug(`binName: ${binName}`);
+    return path.join(binPath, binName);
   }
 
   public setJuvixExec(juvixExec: string): void {
@@ -31,9 +36,11 @@ export class JuvixConfig {
   // geb settings
   readonly vampirBinaryName = new VsCodeSetting('juvix-mode.vampirBinName', {
     serializer: serializerWithDefault('vamp-ir'),
+    target: ConfigurationTarget.Global,
   });
   readonly vampirBinaryPath = new VsCodeSetting('juvix-mode.vampirBinPath', {
     serializer: serializerWithDefault(''),
+    target: ConfigurationTarget.Global,
   });
 
   public getVampirExec(): string {
@@ -43,30 +50,52 @@ export class JuvixConfig {
   // Geb settings
   readonly gebBinaryName = new VsCodeSetting('juvix-mode.gebName', {
     serializer: serializerWithDefault('geb.image'),
+    target: ConfigurationTarget.Global,
   });
   readonly gebBinaryPath = new VsCodeSetting('juvix-mode.gebBinPath', {
     serializer: serializerWithDefault(''),
+    target: ConfigurationTarget.Global,
   });
 
   public getGebExec(): string {
     return path.join(this.gebBinaryPath.get(), this.gebBinaryName.get());
   }
 
-  readonly revealPanel = new VsCodeSetting('juvix-mode.revealPanel');
-  readonly typecheckOn = new VsCodeSetting('juvix-mode.typecheckOn');
+  readonly revealPanel = new VsCodeSetting('juvix-mode.revealPanel', {
+    target: ConfigurationTarget.Global,
+  });
+  readonly typecheckOn = new VsCodeSetting('juvix-mode.typecheckOn', {
+    target: ConfigurationTarget.Global,
+  });
 
-  readonly noColors = new VsCodeSetting('juvix-mode.opts.noColors');
+  readonly noColors = new VsCodeSetting('juvix-mode.opts.noColors', {
+    target: ConfigurationTarget.Global,
+  });
 
-  readonly showNameIds = new VsCodeSetting('juvix-mode.opts.showNameIds');
-  readonly onlyErrors = new VsCodeSetting('juvix-mode.opts.onlyErrors');
-  readonly noTermination = new VsCodeSetting('juvix-mode.opts.noTermination');
-  readonly noPositivity = new VsCodeSetting('juvix-mode.opts.noPositivity');
-  readonly noStdlib = new VsCodeSetting('juvix-mode.opts.noStdlib');
+  readonly showNameIds = new VsCodeSetting('juvix-mode.opts.showNameIds', {
+    target: ConfigurationTarget.Global,
+  });
+  readonly onlyErrors = new VsCodeSetting('juvix-mode.opts.onlyErrors', {
+    target: ConfigurationTarget.Global,
+  });
+  readonly noTermination = new VsCodeSetting('juvix-mode.opts.noTermination', {
+    target: ConfigurationTarget.Global,
+  });
+  readonly noPositivity = new VsCodeSetting('juvix-mode.opts.noPositivity', {
+    target: ConfigurationTarget.Global,
+  });
+  readonly noStdlib = new VsCodeSetting('juvix-mode.opts.noStdlib', {
+    target: ConfigurationTarget.Global,
+  });
   readonly internalBuildDir = new VsCodeSetting(
-    'juvix-mode.opts.internalBuildDir'
+    'juvix-mode.opts.internalBuildDir',
+    {
+      target: ConfigurationTarget.Global,
+    }
   );
-
-  readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir');
+  readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir', {
+    target: ConfigurationTarget.Global,
+  });
 
   public getInternalBuildDir(): string | undefined {
     const useTmpDir = () => {

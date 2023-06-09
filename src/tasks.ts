@@ -20,7 +20,7 @@ export async function activate(context: vscode.ExtensionContext) {
     const msg =
       'Juvix extension requires at least one workspace open.\n' +
       'Open a folder containing a Juvix project and try again.';
-    logger.error(msg, 'tasks.ts');
+    logger.warn(msg, 'tasks.ts');
     return;
   }
 
