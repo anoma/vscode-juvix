@@ -13,7 +13,7 @@ export async function activate(context: vscode.ExtensionContext) {
   if (vscode.workspace.workspaceFolders === undefined) {
     const msg = 'VampIR extension requires at least one workspace open.\n';
     vscode.window.showErrorMessage(msg);
-    logger.error(msg);
+    logger.warn(msg);
     return;
   }
 

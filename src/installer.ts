@@ -10,7 +10,8 @@ import { config } from './config';
 import { env } from 'process';
 import * as path from 'path';
 
-const INSTALLBIN_PATH = path.join(env.HOME || '~', '.local', 'bin');
+const userHome = env['XDG_BIN_HOME'] || env.HOME || '~';
+const INSTALLBIN_PATH = path.join(userHome, '.local', 'bin');
 
 export class Installer {
   private terminal: vscode.Terminal;
@@ -48,9 +49,8 @@ export class Installer {
                 )
                 .then(selection => {
                   if (selection === 'Reload window') {
-                    vscode.commands.executeCommand(
-                      'workbench.action.reloadWindow'
-                    );
+                    vscode.window.terminals.forEach(t => t.dispose());
+                    vscode.commands.executeCommand( 'workbench.action.reloadWindow' );
                   }
                 });
             } else reject('Terminal exited with undefined status');
@@ -107,7 +107,7 @@ export async function installJuvix() {
 
 export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand('juvix-mode.installBinary', () => {
+    vscode.commands.registerCommand('juvix-mode.installJuvixBinary', () => {
       installJuvix();
     })
   );

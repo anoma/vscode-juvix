@@ -12,18 +12,20 @@ import { logger } from './utils/debug';
 import { ConfigurationTarget } from 'vscode';
 
 export class JuvixConfig {
-  readonly binaryName = new VsCodeSetting('juvix-mode.bin.name', {
-    serializer: serializerWithDefault('Juvix'),
-    target: ConfigurationTarget.Global,
+  readonly binaryName = new VsCodeSetting('juvix-mode.juvixBinName', {
+    serializer: serializerWithDefault('juvix')
   });
 
-  readonly binaryPath = new VsCodeSetting('juvix-mode.bin.path', {
-    serializer: serializerWithDefault(''),
-    target: ConfigurationTarget.Global,
+  readonly binaryPath = new VsCodeSetting('juvix-mode.juvixBinPath', {
+    serializer: serializerWithDefault('')
   });
 
   public getJuvixExec(): string {
-    return path.join(this.binaryPath.get(), this.binaryName.get());
+    let binPath = this.binaryPath.get();
+    let binName = this.binaryName.get();
+    logger.debug(`binPath: ${binPath}`);
+    logger.debug(`binName: ${binName}`);
+    return path.join(binPath, binName);
   }
 
   public setJuvixExec(juvixExec: string): void {

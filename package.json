@@ -33,7 +33,8 @@
     "onLanguage:JuvixAsm",
     "onLanguage:JuvixCore",
     "onLanguage:JuvixGeb",
-    "onLanguage:VampIR"
+    "onLanguage:VampIR",
+    "onCommand:juvix-mode.installJuvixBinary"
   ],
   "main": "./out/extension.js",
   "scripts": {
@@ -487,6 +488,11 @@
     ],
     "commands": [
       {
+        "command": "juvix-mode.installJuvixBinary",
+        "title": "Install Juvix Binary",
+        "category": "Juvix"
+      },
+      {
         "command": "juvix-mode.getBinaryVersion",
         "title": "about",
         "category": "Juvix"
@@ -705,12 +711,12 @@
     "menus": {
       "editor/title": [
         {
-          "when": "editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb",
+          "when": "juvix-mode:ready",
           "command": "juvix-mode.loadFileRepl",
           "group": "navigation@0"
         },
         {
-          "when": "editorLangId == Juvix",
+          "when": "juvix-mode:ready",
           "command": "juvix-mode.typecheck",
           "group": "navigation@1"
         },
@@ -809,17 +815,17 @@
     "configuration": {
       "title": "Juvix Mode",
       "properties": {
-        "juvix-mode.bin.name": {
+        "juvix-mode.juvixBinName": {
           "type": "string",
           "default": "juvix",
           "scope": "machine-overridable",
           "description": "Name of the executable of Juvix. (e.g. juvix-v0.3.0)"
         },
-        "juvix-mode.bin.path": {
+        "juvix-mode.juvixBinPath": {
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "description": "Absolute path to the executable of Juvix. (e.g. /usr/local/bin/)"
+          "description": "Absolute path where the Juvix binary is located (e.g. /usr/local/bin/)"
         },
         "juvix-mode.vampirBinName": {
           "type": "string",
