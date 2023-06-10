@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.47",
+  "version": "0.1.48",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
@@ -110,7 +110,7 @@
             {
               "scope": "constructor",
               "settings": {
-                "foreground": "#7307e0c9"
+                "foreground": "#8d8dff"
               }
             },
             {
@@ -188,7 +188,7 @@
             {
               "scope": "constructor",
               "settings": {
-                "foreground": "#ba8bea"
+                "foreground": "#8d8dff"
               }
             },
             {
@@ -264,7 +264,7 @@
               "fontStyle": "italic"
             },
             "constructor": {
-              "foreground": "#5656e2"
+              "foreground": "#8d8dff"
             },
             "error": {
               "foreground": "#ed1452",
@@ -303,7 +303,7 @@
               "fontStyle": "italic"
             },
             "constructor": {
-              "foreground": "#5656e2"
+              "foreground": "#8d8dff"
             },
             "error": {
               "foreground": "#ed1452",

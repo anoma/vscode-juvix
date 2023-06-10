@@ -23,8 +23,8 @@ export class JuvixConfig {
   public getJuvixExec(): string {
     let binPath = this.binaryPath.get();
     let binName = this.binaryName.get();
-    logger.debug(`binPath: ${binPath}`);
-    logger.debug(`binName: ${binName}`);
+    // logger.debug(`binPath: ${binPath}`);
+    // logger.debug(`binName: ${binName}`);
     return path.join(binPath, binName);
   }
 

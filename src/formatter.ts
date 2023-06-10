@@ -33,21 +33,12 @@ export function activate(_context: vscode.ExtensionContext) {
         encoding: 'utf8',
       });
 
-      logger.debug(`format: ${formatterCall}`);
-      logger.debug(`stdout: ${ls.stdout}`);
-
-      // already formatted
       if (ls.status == 0) {
         const stdout = ls.stdout;
-        return [];
+        return [vscode.TextEdit.replace(range, stdout)];
       } else {
-        // not formatted and return the formatted stdout
-        if (ls.stdout != '') {
-          return [vscode.TextEdit.replace(range, ls.stdout)];
-        }
-        // else it is formatting error
         const errMsg: string = ls.stderr.toString();
-        logger.error(errMsg, 'formatter.ts');
+        logger.warn(errMsg);
         return [];
       }
     },
