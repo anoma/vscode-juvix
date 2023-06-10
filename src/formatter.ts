@@ -3,11 +3,10 @@
  *--------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { JuvixConfig } from './config';
+import { config } from './config';
 import { logger } from './utils/debug';
 
 export function activate(_context: vscode.ExtensionContext) {
-  const config = new JuvixConfig();
 
   vscode.languages.registerDocumentFormattingEditProvider('Juvix', {
     provideDocumentFormattingEdits(
@@ -33,6 +32,9 @@ export function activate(_context: vscode.ExtensionContext) {
         input: document.getText(),
         encoding: 'utf8',
       });
+
+      logger.debug(`format: ${formatterCall}`);
+      logger.debug(`stdout: ${ls.stdout}`);
 
       // already formatted
       if (ls.status == 0) {
