@@ -113,6 +113,12 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
+        command: 'vamp-ir-check',
+        args: ['${file}'],
+        group: vscode.TaskGroup.Build,
+        reveal: vscode.TaskRevealKind.Always,
+      },
+      {
         command: 'run',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,

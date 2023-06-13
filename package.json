@@ -946,7 +946,8 @@
             "native",
             "c",
             "wasm",
-            "html"
+            "html",
+            "vampir"
           ],
           "scope": "machine-overridable",
           "description": "Compilation backend"

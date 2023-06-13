@@ -13,16 +13,16 @@ import { ConfigurationTarget } from 'vscode';
 
 export class JuvixConfig {
   readonly binaryName = new VsCodeSetting('juvix-mode.juvixBinName', {
-    serializer: serializerWithDefault('juvix')
+    serializer: serializerWithDefault('juvix'),
   });
 
   readonly binaryPath = new VsCodeSetting('juvix-mode.juvixBinPath', {
-    serializer: serializerWithDefault('')
+    serializer: serializerWithDefault(''),
   });
 
   public getJuvixExec(): string {
-    let binPath = this.binaryPath.get();
-    let binName = this.binaryName.get();
+    const binPath = this.binaryPath.get();
+    const binName = this.binaryName.get();
     // logger.debug(`binPath: ${binPath}`);
     // logger.debug(`binName: ${binName}`);
     return path.join(binPath, binName);
@@ -256,4 +256,4 @@ export interface TaggedList {
   [abbrev: string]: string;
 }
 
-export let config = new JuvixConfig();
+export const config = new JuvixConfig();

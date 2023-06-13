@@ -150,10 +150,10 @@ export async function VampIR(
   name: string,
   args: string[]
 ): Promise<vscode.Task> {
-  let input = args.join(' ').trim();
+  const input = args.join(' ').trim();
   const config = new JuvixConfig();
   const VampirExec = config.getVampirExec();
-  let exec = new vscode.ShellExecution(VampirExec + ` ${input}`);
+  const exec = new vscode.ShellExecution(VampirExec + ` ${input}`);
   return new vscode.Task(
     definition,
     vscode.TaskScope.Global,
