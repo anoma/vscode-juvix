@@ -15,7 +15,7 @@ def rem x y = snd (divRem x y);
 def if b x y = b * x + (1 - b) * y;
 
 def main var__0 = {
-  
+
   if (equal var__0 0) 1 0
 };
 
