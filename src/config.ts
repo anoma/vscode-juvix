@@ -190,7 +190,9 @@ export class JuvixConfig {
   readonly compilationOutput = new VsCodeSetting(
     'juvix-mode.compilationOutput'
   );
-
+  readonly vampirTarget: VsCodeSetting<string> = new VsCodeSetting(
+    'juvix-mode.vampirTarget'
+  );
   readonly reloadReplOnSave = new VsCodeSetting('juvix-mode.reloadReplOnSave', {
     serializer: serializerWithDefault(false),
   });
