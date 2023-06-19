@@ -184,9 +184,6 @@ export class JuvixConfig {
   readonly compilationTarget = new VsCodeSetting(
     'juvix-mode.compilationTarget'
   );
-  readonly compilationRuntime = new VsCodeSetting(
-    'juvix-mode.compilationRuntime'
-  );
   readonly compilationOutput = new VsCodeSetting(
     'juvix-mode.compilationOutput'
   );
@@ -199,15 +196,10 @@ export class JuvixConfig {
 
   public getCompilationFlags(): string {
     const target = this.compilationTarget.get();
-    const runtime = this.compilationRuntime.get();
     const flags = [];
     if (target) {
       flags.push('--target');
       flags.push(target);
-    }
-    if (runtime) {
-      flags.push('--runtime');
-      flags.push(runtime);
     }
     const outputFile = this.compilationOutput.get();
     if (outputFile) {

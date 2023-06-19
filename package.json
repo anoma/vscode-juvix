@@ -992,25 +992,14 @@
           "default": "",
           "enum": [
             "native",
-            "c",
-            "wasm",
-            "html",
-            "vampir"
+            "wasm32-wasi",
+            "geb",
+            "vampir",
+            "core",
+            "asm"
           ],
           "scope": "machine-overridable",
           "description": "Compilation backend"
-        },
-        "juvix-mode.compilationRuntime": {
-          "type": "string",
-          "default": "",
-          "enum": [
-            "",
-            "standalone",
-            "wasi-standalone",
-            "wasi-libc"
-          ],
-          "scope": "machine-overridable",
-          "description": "Runtime used for compilation"
         },
         "juvix-mode.compilationOutputFile": {
           "type": "string",
@@ -2857,16 +2846,10 @@
             "InternalPretty": "$juvix dev internal pretty $filename",
             "InternalArity": "$juvix dev internal arity $filename",
             "InternalTypecheck": "$juvix dev internal typecheck $filename",
-            "InternalCoreEval": "$juvix dev internal core-eval $filename",
-            "InternalCoreEvalShowDeBruijn": "$juvix dev internal core-eval --show-de-brujin $filename",
-            "InternalCoreEvalTransformsLifting": "$juvix dev internal core-eval --transforms lifting $filename",
-            "InternalCoreEvalTransformsMoveApps": "$juvix dev internal core-eval --transforms move-apps $filename",
-            "InternalCoreEvalTransformsRemoveTypeArgs": "$juvix dev internal core-eval --transforms remove-type-args $filename",
-            "InternalCoreEvalTransformsRemoveTopEtaExpand": "$juvix dev internal core-eval --transforms top-eta-expand $filename",
             "CoreEval": "$juvix dev core eval $filename",
             "CoreRead": "$juvix dev core read $filename",
-            "AsmRun": "$juvix dev asm run $filename",
             "GebEval": "$juvix dev geb eval $filename",
+            "AsmRun": "$juvix dev asm run $filename",
             "AsmValidate": "$juvix dev asm validate $filename",
             "AsmCompile": "$juvix dev asm compile $filename",
             "RuntimeCompile": "$juvix dev runtime compile $filename",
