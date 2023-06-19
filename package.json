@@ -597,29 +597,57 @@
         "icon": "$(check)"
       },
       {
-        "command": "juvix-mode.vampir-setup",
-        "title": "[dev] vampir-setup",
+        "command": "juvix-mode.vampir-setup-plonk",
+        "title": "[dev] vampir-setup-plonk",
         "category": "Juvix",
         "when": "editorLangId == VampIR && editorTextFocus",
         "icon": "$(gear)"
       },
       {
-        "command": "juvix-mode.vampir-compile",
-        "title": "[dev] vampir-compile",
+        "command": "juvix-mode.vampir-compile-plonk",
+        "title": "[dev] vampir-compile-plonk",
         "category": "Juvix",
         "when": "editorLangId == VampIR && editorTextFocus",
         "icon": "$(output)"
       },
       {
-        "command": "juvix-mode.vampir-prove",
-        "title": "[dev] vampir-prove",
+        "command": "juvix-mode.vampir-prove-plonk",
+        "title": "[dev] vampir-prove-plonk",
         "category": "Juvix",
         "when": "editorLangId == VampIR && editorTextFocus",
         "icon": "$(check)"
       },
       {
-        "command": "juvix-mode.vampir-verify",
-        "title": "[dev] vampir-verify",
+        "command": "juvix-mode.vampir-verify-plonk",
+        "title": "[dev] vampir-verify-plonk",
+        "category": "Juvix",
+        "when": "editorLangId == VampIR && editorTextFocus",
+        "icon": "$(check-all)"
+      },
+      {
+        "command": "juvix-mode.vampir-setup-halo2",
+        "title": "[dev] vampir-setup-halo2",
+        "category": "Juvix",
+        "when": "editorLangId == VampIR && editorTextFocus",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "juvix-mode.vampir-compile-halo2",
+        "title": "[dev] vampir-compile-halo2",
+        "category": "Juvix",
+        "when": "editorLangId == VampIR && editorTextFocus",
+        "icon": "$(output)"
+      },
+      {
+        "command": "juvix-mode.vampir-prove-halo2",
+        "title": "[dev] vampir-prove-halo2",
+        "category": "Juvix",
+        "when": "editorLangId == VampIR && editorTextFocus",
+        "icon": "$(check)"
+      },
+      {
+        "command": "juvix-mode.vampir-verify-halo2",
+        "title": "[dev] vampir-verify-halo2",
         "category": "Juvix",
         "when": "editorLangId == VampIR && editorTextFocus",
         "icon": "$(check-all)"
@@ -757,33 +785,53 @@
         },
         {
           "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-setup",
+          "command": "juvix-mode.vampir-setup-plonk",
           "group": "navigation@0"
         },
         {
           "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-compile",
+          "command": "juvix-mode.vampir-compile-plonk",
           "group": "navigation@1"
         },
         {
           "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-prove",
+          "command": "juvix-mode.vampir-prove-plonk",
           "group": "navigation@2"
         },
         {
           "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-verify",
+          "command": "juvix-mode.vampir-verify-plonk",
           "group": "navigation@3"
+        },
+        {
+          "when": "juvix-mode:ready && editorLangId == VampIR",
+          "command": "juvix-mode.vampir-setup-halo2",
+          "group": "navigation@4"
+        },
+        {
+          "when": "juvix-mode:ready && editorLangId == VampIR",
+          "command": "juvix-mode.vampir-compile-halo2",
+          "group": "navigation@5"
+        },
+        {
+          "when": "juvix-mode:ready && editorLangId == VampIR",
+          "command": "juvix-mode.vampir-prove-halo2",
+          "group": "navigation@6"
+        },
+        {
+          "when": "juvix-mode:ready && editorLangId == VampIR",
+          "command": "juvix-mode.vampir-verify-halo2",
+          "group": "navigation@6"
         },
         {
           "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.createOrShowJudoc",
-          "group": "navigation@4"
+          "group": "navigation@8"
         },
         {
           "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.createOrShowJudocOnlySource",
-          "group": "navigation@5"
+          "group": "navigation@9"
         }
       ],
       "editor/context": [
@@ -946,7 +994,8 @@
             "native",
             "c",
             "wasm",
-            "html"
+            "html",
+            "vampir"
           ],
           "scope": "machine-overridable",
           "description": "Compilation backend"
@@ -2825,6 +2874,16 @@
             "TerminationCalls": "$juvix dev termination calls -d $filename",
             "TerminationGraph": "$juvix dev termination graph $filename"
           }
+        },
+        "juvix-mode.vampirTarget": {
+          "type": "string",
+          "default": "halo2",
+          "enum": [
+            "halo2",
+            "plonk"
+          ],
+          "scope": "machine-overridable",
+          "description": "Compilation backend"
         }
       }
     }

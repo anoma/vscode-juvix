@@ -55,90 +55,97 @@ export interface VampIRDefinition extends vscode.TaskDefinition {
 export class VampIRProvider implements vscode.TaskProvider {
   async provideTasks(): Promise<vscode.Task[]> {
     const config = new JuvixConfig();
+    const targets = ['halo2', 'plonk'];
 
-    const defs = [
-      {
-        command: 'setup',
-        args: ['--unchecked', '-o', 'params.pp'],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
-      },
-      {
-        command: 'compile',
-        args: [
-          '-u',
-          'params.pp',
-          '--unchecked',
-          '-s',
-          '${file}',
-          '-o',
-          '${fileBasenameNoExtension}.plonk',
-        ],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
-      },
-      {
-        // prove -u params.pp --unchecked -c range.plonk -o range.proof
-        command: 'prove',
-        args: [
-          '-u',
-          'params.pp',
-          '--unchecked',
-          '-c',
-          '${fileBasenameNoExtension}.plonk',
-          '-o',
-          '${fileBasenameNoExtension}.proof',
-        ],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
-      },
-      {
-        //vamp-ir verify -u params.pp --unchecked -c range.plonk -p range.proof
-        command: 'verify',
-        args: [
-          '-u',
-          'params.pp',
-          '--unchecked',
-          '-c',
-          '${fileBasenameNoExtension}.plonk',
-          '-p',
-          '${fileBasenameNoExtension}.proof',
-        ],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
-      },
-    ];
+    const defs = (target: string) => {
+      return [
+        {
+          command: 'setup',
+          args: ['--unchecked', '-o', 'params.pp'],
+          group: vscode.TaskGroup.Build,
+          reveal: vscode.TaskRevealKind.Always,
+        },
+        {
+          command: 'compile',
+          args: (target === 'plonk'
+            ? ['-u', 'params.pp', '--unchecked']
+            : []
+          ).concat([
+            '-s',
+            '${file}',
+            '-o',
+            '${fileBasenameNoExtension}.'.concat(target),
+          ]),
+          group: vscode.TaskGroup.Build,
+          reveal: vscode.TaskRevealKind.Always,
+        },
+        {
+          // vamp-ir TARGET prove -u params.pp --unchecked -c range.plonk -o range.proof
+          command: 'prove',
+          args: (target === 'plonk'
+            ? ['-u', 'params.pp', '--unchecked']
+            : []
+          ).concat([
+            '-c',
+            '${fileBasenameNoExtension}.'.concat(target),
+            '-o',
+            '${fileBasenameNoExtension}.proof',
+          ]),
+          group: vscode.TaskGroup.Build,
+          reveal: vscode.TaskRevealKind.Always,
+        },
+        {
+          //vamp-ir TARGET verify -u params.pp --unchecked -c range.plonk -p range.proof
+          command: 'verify',
+          args: (target === 'plonk'
+            ? ['-u', 'params.pp', '--unchecked']
+            : []
+          ).concat([
+            '-c',
+            '${fileBasenameNoExtension}.'.concat(target),
+            '-p',
+            '${fileBasenameNoExtension}.proof',
+          ]),
+          group: vscode.TaskGroup.Build,
+          reveal: vscode.TaskRevealKind.Always,
+        },
+      ];
+    };
 
     const tasks: vscode.Task[] = [];
 
-    for (const def of defs) {
-      const vscodeTask = await VampIR(
-        { type: TASK_TYPE, command: def.command }, // definition
-        def.command, // name
-        [def.command].concat(def.args ?? []) // args
-      );
-      vscodeTask.group = def.group;
-      vscodeTask.problemMatchers = ['$rusterror'];
-      vscodeTask.presentationOptions = {
-        reveal: def.reveal,
-        showReuseMessage: false,
-        panel: vscode.TaskPanelKind.Shared,
-        focus: false,
-        echo: false,
-        clear: true,
-      };
-      vscodeTask.runOptions = {
-        reevaluateOnRerun: true,
-      };
-      tasks.push(vscodeTask);
+    for (const target of targets) {
+      for (const def of defs(target)) {
+        const vscodeTask = await VampIR(
+          { type: TASK_TYPE, command: def.command }, // definition
+          `${def.command}-${target}`, // name
+          [target, def.command].concat(def.args ?? []) // args
+        );
+        vscodeTask.group = def.group;
+        vscodeTask.problemMatchers = ['$rusterror'];
+        vscodeTask.presentationOptions = {
+          reveal: def.reveal,
+          showReuseMessage: false,
+          panel: vscode.TaskPanelKind.Shared,
+          focus: false,
+          echo: false,
+          clear: true,
+        };
+        vscodeTask.runOptions = {
+          reevaluateOnRerun: true,
+        };
+        tasks.push(vscodeTask);
+      }
     }
     return tasks;
   }
 
   async resolveTask(task: any): Promise<vscode.Task | undefined> {
+    const config = new JuvixConfig();
+    const target = config.vampirTarget.get();
     const definition = task.definition as VampIRDefinition;
     if (definition.type === TASK_TYPE && definition.command) {
-      const args = [definition.command].concat(definition.args ?? []);
+      const args = [target, definition.command].concat(definition.args ?? []);
       return await VampIR(definition, task.name, args);
     }
     return undefined;
@@ -150,10 +157,10 @@ export async function VampIR(
   name: string,
   args: string[]
 ): Promise<vscode.Task> {
-  let input = args.join(' ').trim();
+  const input = args.join(' ').trim();
   const config = new JuvixConfig();
   const VampirExec = config.getVampirExec();
-  let exec = new vscode.ShellExecution(VampirExec + ` ${input}`);
+  const exec = new vscode.ShellExecution(VampirExec + ` ${input}`);
   return new vscode.Task(
     definition,
     vscode.TaskScope.Global,
