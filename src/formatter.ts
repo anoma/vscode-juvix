@@ -7,7 +7,6 @@ import { config } from './config';
 import { logger } from './utils/debug';
 
 export function activate(_context: vscode.ExtensionContext) {
-
   vscode.languages.registerDocumentFormattingEditProvider('Juvix', {
     provideDocumentFormattingEdits(
       document: vscode.TextDocument
@@ -35,7 +34,9 @@ export function activate(_context: vscode.ExtensionContext) {
 
       if (ls.status == 0) {
         const stdout = ls.stdout;
-        return [vscode.TextEdit.replace(range, stdout)];
+        // in case of the empty return from the format command, do nothing
+        // this is the way to protect from unexpected behaviour of the `format` command
+        return stdout !== '' ? [vscode.TextEdit.replace(range, stdout)] : [];
       } else {
         const errMsg: string = ls.stderr.toString();
         logger.warn(errMsg);
