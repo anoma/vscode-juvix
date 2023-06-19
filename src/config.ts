@@ -258,4 +258,4 @@ export interface TaggedList {
   [abbrev: string]: string;
 }
 
-export const config = new JuvixConfig();
+export let config = new JuvixConfig();
