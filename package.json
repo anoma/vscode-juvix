@@ -34,7 +34,8 @@
     "onLanguage:JuvixCore",
     "onLanguage:JuvixGeb",
     "onLanguage:VampIR",
-    "onCommand:juvix-mode.installJuvixBinary"
+    "onCommand:juvix-mode.installJuvixBinary",
+    "onCommand:juvix-mode.installVampirBinary"
   ],
   "main": "./out/extension.js",
   "scripts": {
@@ -491,6 +492,11 @@
         "command": "juvix-mode.installJuvixBinary",
         "title": "Install Juvix Binary",
         "category": "Juvix"
+      },
+      {
+        "command": "juvix-mode.installVampirBinary",
+        "title": "Install VampIR Binary",
+        "category": "VampIR"
       },
       {
         "command": "juvix-mode.getBinaryVersion",
