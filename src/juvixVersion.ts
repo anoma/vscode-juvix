@@ -2,7 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 import { logger } from './utils/debug';
-import { config, JuvixConfig } from './config';
+import { config } from './config';
 import * as versioning from 'compare-versions';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -37,23 +37,20 @@ export async function juvixIsNotInstalled() {
   }
 }
 
-
 export function checkJuvixBinary(): string | undefined {
   const juvixExec = config.getJuvixExec();
-  logger.debug(juvixExec, "config.getJuvixExec()");
+  logger.debug(juvixExec, 'config.getJuvixExec()');
   try {
     const ls = spawnSync(juvixExec, ['--version']);
     if (ls.status !== 0) {
-      logger.debug('Juvix is not installed.', "checkJuvixBinary");
+      logger.debug('Juvix is not installed.', 'checkJuvixBinary');
       return;
     }
     return ls.stdout.toString().replace('version ', 'v').split('\n')[0];
   } catch (e) {
-    logger.debug('Juvix is not installed.', "checkJuvixBinary");
+    logger.debug('Juvix is not installed.', 'checkJuvixBinary');
   }
 }
-
-
 
 export function getInstalledNumericVersion(): string | undefined {
   const ls = spawnSync(config.getJuvixExec(), ['--numeric-version']);

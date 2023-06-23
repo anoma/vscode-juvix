@@ -250,4 +250,5 @@ export interface TaggedList {
   [abbrev: string]: string;
 }
 
+// eslint-disable-next-line prefer-const
 export let config = new JuvixConfig();
