@@ -1,3 +1,6 @@
+/*---------------------------------------------------------
+ * Copyright (C) Microsoft Corporation. All rights reserved.
+ *--------------------------------------------------------*/
 import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
 import { getModuleName } from './module';
@@ -70,12 +73,12 @@ export class CodelensProvider implements vscode.CodeLensProvider {
       this.codeLenses = [];
 
       const text = document.getText();
-      let firstLineRange = document.lineAt(0).range;
+      const firstLineRange = document.lineAt(0).range;
       /*
             Add a code lenses to show the Juvix version
             in the first line of the document.
             */
-      let juvixVersionCodeLenses = new vscode.CodeLens(firstLineRange, {
+      const juvixVersionCodeLenses = new vscode.CodeLens(firstLineRange, {
         title: 'Powered by ' + statusbar.juvixStatusBarItemVersion.text,
         command: '',
       });
@@ -91,12 +94,12 @@ export class CodelensProvider implements vscode.CodeLensProvider {
             and the slashes are replaced by dots.
             */
 
-      let regex = /module\s+([\w.]+);/;
-      let match = text.match(regex);
-      let moduleName: string | undefined = getModuleName(document);
+      const regex = /module\s+([\w.]+);/;
+      const match = text.match(regex);
+      const moduleName: string | undefined = getModuleName(document);
       if (moduleName && (text.length === 0 || match === null)) {
-        let moduleTopHeader: string = `module ${moduleName};`;
-        let insertModuleCodeLenses = new vscode.CodeLens(
+        const moduleTopHeader = `module ${moduleName};`;
+        const insertModuleCodeLenses = new vscode.CodeLens(
           new vscode.Range(
             new vscode.Position(0, 0),
             new vscode.Position(0, 0)

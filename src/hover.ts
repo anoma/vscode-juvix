@@ -8,7 +8,7 @@ import { logger } from './utils/debug';
 import { RawInterval, HoverProperty } from './interfaces';
 
 export let hoverProvider: vscode.HoverProvider;
-export let hoverMap = new Map<string, Map<number, HoverProperty[]>>();
+export const hoverMap = new Map<string, Map<number, HoverProperty[]>>();
 
 export async function activate(_context: vscode.ExtensionContext) {
   try {
@@ -46,10 +46,10 @@ export class JuvixHoverProvider implements vscode.HoverProvider {
         hoverProperty.interval.startCol <= col &&
         col <= hoverProperty.interval.endCol
       ) {
-        let enhancedText = new vscode.MarkdownString(hoverProperty.text);
+        const enhancedText = new vscode.MarkdownString(hoverProperty.text);
         enhancedText.isTrusted = true;
         enhancedText.supportHtml = true;
-        let hover = new vscode.Hover(
+        const hover = new vscode.Hover(
           enhancedText,
           new vscode.Range(
             new vscode.Position(
