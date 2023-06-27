@@ -17,28 +17,39 @@ import * as statusBar from './statusbar';
 import * as tasks from './tasks';
 import * as vampir from './vampir/tasks';
 import * as installer from './installer';
-import { checkForUpgrade, checkJuvixBinary, juvixIsNotInstalled } from './juvixVersion';
-import { logger } from './utils/debug'
+import {
+  checkForUpgrade,
+  checkJuvixBinary,
+  juvixIsNotInstalled,
+} from './juvixVersion';
+import { logger } from './utils/debug';
 import { config } from './config';
+import { checkVampirBinary, vampirIsNotInstalled } from './vampir';
 
 export async function activate(context: vscode.ExtensionContext) {
-  logger.debug("Activating Juvix Mode");
-  logger.debug("Initial config: " + config.getJuvixExec());
+  logger.debug('Activating Juvix Mode');
+  logger.debug('Initial config: ' + config.getJuvixExec());
   installer.activate(context);
 
-  let version = checkJuvixBinary();
-  vscode.commands.executeCommand('setContext', "juvix-mode:ready", false);
+  let juvixVersion = checkJuvixBinary();
+  vscode.commands.executeCommand('setContext', 'juvix-mode:ready', false);
 
-  if (!version) {
-    logger.debug("Juvix binary not found, installing...");
+  if (!juvixVersion) {
+    logger.debug('Juvix binary not found, installing...');
     juvixIsNotInstalled().then(() => {
-      version = checkJuvixBinary();
+      juvixVersion = checkJuvixBinary();
     });
   }
-  if (version !== undefined) {
-    logger.debug("Juvix version detected: " + version);
-    checkForUpgrade(version);
-    statusBar.activate(context, version);
+  if (juvixVersion !== undefined) {
+    logger.debug('Juvix version detected: ' + juvixVersion);
+    checkForUpgrade(juvixVersion);
+    statusBar.activate(context, juvixVersion);
+
+    const isVampirInstalled = checkVampirBinary();
+
+    if (!isVampirInstalled) {
+      vampirIsNotInstalled();
+    }
 
     const modules = [
       codelens,
@@ -52,9 +63,9 @@ export async function activate(context: vscode.ExtensionContext) {
       check,
       formatter,
       vampir,
-      dev
+      dev,
     ];
     modules.forEach(module => module.activate(context));
-    vscode.commands.executeCommand('setContext', "juvix-mode:ready", true);
+    vscode.commands.executeCommand('setContext', 'juvix-mode:ready', true);
   }
 }

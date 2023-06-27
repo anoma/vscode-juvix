@@ -14,22 +14,26 @@ const userHome = env['XDG_BIN_HOME'] || env.HOME || '~';
 const INSTALLBIN_PATH = path.join(userHome, '.local', 'bin');
 
 export class Installer {
+  readonly name: string;
   private terminal: vscode.Terminal;
   private disposables: vscode.Disposable[] = [];
 
-  readonly shellCmd =
-    "curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/anoma/juvix-installer/main/juvix-installer.sh | sh && exit 0";
+  readonly shellCmd: string;
 
-  constructor() {
+  constructor(
+    name: string,
+    shellCommand: string,
+    env: { [key: string]: string }
+  ) {
+    this.name = name;
     const options: vscode.TerminalOptions = {
-      name: 'Juvix binary installation',
+      name: `${name} binary installation`,
       isTransient: false,
       hideFromUser: true,
-      env: {
-        JUVIX_INSTALLER_ASSUME_YES: '1',
-      },
+      env: env,
     };
     this.terminal = vscode.window.createTerminal(options);
+    this.shellCmd = shellCommand;
   }
 
   public promiseCall(command: string): Promise<vscode.TerminalExitStatus> {
@@ -44,13 +48,15 @@ export class Installer {
               config.binaryPath.set(INSTALLBIN_PATH);
               vscode.window
                 .showInformationMessage(
-                  'Juvix binary installation complete.',
+                  `${this.name} binary installation complete.`,
                   'Reload window'
                 )
                 .then(selection => {
                   if (selection === 'Reload window') {
                     vscode.window.terminals.forEach(t => t.dispose());
-                    vscode.commands.executeCommand( 'workbench.action.reloadWindow' );
+                    vscode.commands.executeCommand(
+                      'workbench.action.reloadWindow'
+                    );
                   }
                 });
             } else reject('Terminal exited with undefined status');
@@ -61,9 +67,10 @@ export class Installer {
   }
 
   public async run() {
+    const name = this.name;
     if (process.platform === 'win32') {
       vscode.window.showInformationMessage(
-        'Juvix is not supported on Windows yet.'
+        `${name} is not supported on Windows yet.`
       );
       return;
     }
@@ -72,12 +79,12 @@ export class Installer {
       .withProgress(
         {
           location: vscode.ProgressLocation.Notification,
-          title: 'Installing Juvix',
+          title: `Installing ${name}`,
           cancellable: true,
         },
         async (_progress, token) => {
           token.onCancellationRequested(() => {
-            logger.trace('User canceled the Juvix binary installation');
+            logger.trace(`User canceled the ${name} binary installation`);
             this.terminal.dispose();
             return exit(1);
           });
@@ -85,10 +92,10 @@ export class Installer {
         }
       )
       .then(exitStatus => {
-        logger.trace('Juvix exit status: ' + exitStatus.code);
-        logger.trace('Juvix exit signal: ' + exitStatus.reason);
+        logger.trace(`${name} exit status: ${exitStatus.code}`);
+        logger.trace(`${name} exit signal: ${exitStatus.reason}`);
         if (exitStatus === undefined) {
-          vscode.window.showErrorMessage('Juvix binary installation failed.');
+          vscode.window.showErrorMessage(`${name} binary installation failed.`);
           this.terminal.show();
         }
       });
@@ -100,7 +107,25 @@ export class Installer {
 }
 
 export async function installJuvix() {
-  const installer = new Installer();
+  const installer = new Installer(
+    'Juvix',
+    "curl --proto '=https' --tlsv1.2 -sSfL https://get.juvix.org | sh && exit 0",
+    {
+      JUVIX_INSTALLER_ASSUME_YES: '1',
+    }
+  );
+  installer.run();
+  installer.dispose();
+}
+
+export async function installVampir() {
+  const installer = new Installer(
+    'Vamp-IR',
+    "curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/anoma/juvix-installer/vamp-ir-installer/vamp-ir-installer.sh | sh && exit 0",
+    {
+      VAMPIR_INSTALLER_ASSUME_YES: '1',
+    }
+  );
   installer.run();
   installer.dispose();
 }
@@ -109,6 +134,9 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('juvix-mode.installJuvixBinary', () => {
       installJuvix();
+    }),
+    vscode.commands.registerCommand('juvix-mode.installVampirBinary', () => {
+      installVampir();
     })
   );
 }
