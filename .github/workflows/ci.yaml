@@ -34,9 +34,10 @@ jobs:
           python-version: '3.11'
       - uses: pre-commit/action@v3.0.0
 
-  build-lint:
+  build-test-lint:
     name: Node ${{ matrix.node }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    needs: setup-xvfb
     timeout-minutes: 10
     strategy:
       fail-fast: true
@@ -61,6 +62,14 @@ jobs:
         run: npm run lint
       - name: Build Code
         run: npm run compile
+      - name: Build tests
+        run: npm run compile-tests
+      - name: Run Tests Linux
+        run: xvfb-run -a -s "-screen 0 1280x1024x24" npm run test
+        if: runner.os == 'Linux'
+      - name: Run tests
+        run: npm run test
+        if: runner.os != 'Linux'
       - name: Package Extension
         id: packageExtension
         uses: HaaLeo/publish-vscode-extension@v1
@@ -73,10 +82,22 @@ jobs:
           name: ${{ matrix.os }}
           path: ${{ steps.packageExtension.outputs.vsixPath }}
 
+  setup-xvfb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install xvfb
+
+      - name: Start Xvfb
+        run: Xvfb :99 -screen 0 1280x1024x24 &
+
   publish:
     name: Publish Github Action
     needs:
-      - build-lint
+      - build-test-lint
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     timeout-minutes: 10

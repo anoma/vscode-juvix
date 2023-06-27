@@ -9,7 +9,7 @@ import { GotoProperty } from './interfaces';
 import { isJuvixFile } from './utils/base';
 
 export let definitionProvider: vscode.DefinitionProvider;
-export let locationMap = new Map<string, Map<number, GotoProperty[]>>();
+export const locationMap = new Map<string, Map<number, GotoProperty[]>>();
 
 export async function activate(context: vscode.ExtensionContext) {
   try {
