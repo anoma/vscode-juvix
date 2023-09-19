@@ -80,7 +80,7 @@
     "keyword": {
       "patterns": [
         {
-          "match": "\\b(let|in|case|type|module|import|open|using|hiding|public|as|terminating|positive|Type|builtin|syntax)\\b",
+          "match": "\\b(let|in|case|of|type|trait|instance|module|import|open|using|hiding|public|as|terminating|positive|Type|builtin|syntax)\\b",
           "name": "keyword"
         },
         {

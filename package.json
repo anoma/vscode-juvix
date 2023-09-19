@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.1.49",
+  "version": "0.1.50",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
@@ -103,6 +103,13 @@
               }
             },
             {
+              "scope": "pragma",
+              "settings": {
+                "foreground": "#7e7d7d",
+                "fontStyle": "italic"
+              }
+            },
+            {
               "scope": "axiom",
               "settings": {
                 "foreground": "#ad1313"
@@ -177,6 +184,13 @@
               "scope": "comments",
               "settings": {
                 "foreground": "#646464",
+                "fontStyle": "italic"
+              }
+            },
+            {
+              "scope": "pragma",
+              "settings": {
+                "foreground": "#a9a9a9",
                 "fontStyle": "italic"
               }
             },
@@ -264,6 +278,9 @@
               "foreground": "#a8a8a8",
               "fontStyle": "italic"
             },
+            "pragma": {
+              "foreground": "#717070"
+            },
             "constructor": {
               "foreground": "#8d8dff"
             },
@@ -302,6 +319,9 @@
             "comment": {
               "foreground": "#a8a8a8",
               "fontStyle": "italic"
+            },
+            "pragma": {
+              "foreground": "#aaa9a9"
             },
             "constructor": {
               "foreground": "#8d8dff"

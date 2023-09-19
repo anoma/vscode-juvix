@@ -54,7 +54,6 @@ export interface VampIRDefinition extends vscode.TaskDefinition {
 
 export class VampIRProvider implements vscode.TaskProvider {
   async provideTasks(): Promise<vscode.Task[]> {
-    const config = new JuvixConfig();
     const targets = ['halo2', 'plonk'];
 
     const defs = (target: string) => {
