@@ -50,7 +50,7 @@
     "lint": "eslint src --ext ts --fix",
     "test": "node ./out/test/runTest.js",
     "upgrade-dependencies": "ncu -u",
-    "fix": "prettier --write . && eslint -c .eslintrc.js --ext ts ./src  --fix"
+    "fix": "prettier --write . && eslint -c .eslintrc.js --ext ts ./src --fix"
   },
   "prettier": {
     "printWidth": 80,
@@ -336,20 +336,16 @@
         }
       }
     },
-    "snippets": [
-      {
-        "language": "Juvix",
-        "path": "./snippets/Juvix.json"
-      }
-    ],
     "languages": [
       {
         "id": "Juvix",
         "extensions": [
-          ".juvix"
+          ".juvix",
+          ".juvix.md"
         ],
         "aliases": [
-          "Juvix"
+          "Juvix",
+          "juvix"
         ],
         "configuration": "./language-configuration.json"
       },
@@ -374,7 +370,8 @@
       {
         "id": "JuvixGeb",
         "aliases": [
-          "JuvixGeb"
+          "JuvixGeb",
+          "geb"
         ],
         "extensions": [
           ".geb"
@@ -385,13 +382,7 @@
         "id": "VampIR",
         "aliases": [
           "VampIR",
-          "vampIR",
-          "vampir",
-          "Vampir",
-          "vamp-ir",
-          "Vamp-ir",
-          "Vamp-IR",
-          "VAMP-IR"
+          "vampir"
         ],
         "extensions": [
           ".vampir",
@@ -467,18 +458,6 @@
           },
           {
             "regexp": "(.*)",
-            "message": 1
-          },
-          {
-            "regexp": "(.*)",
-            "message": 1
-          },
-          {
-            "regexp": "(.*)",
-            "message": 1
-          },
-          {
-            "regexp": "(.*)",
             "message": 1,
             "loop": true
           }
@@ -488,172 +467,202 @@
     "commands": [
       {
         "command": "juvix-mode.installJuvixBinary",
-        "title": "Install Juvix Binary",
+        "title": "[Juvix] Install Juvix Binary",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.installVampirBinary",
-        "title": "Install VampIR Binary",
-        "category": "VampIR"
+        "title": "[Juvix] Install VampIR Binary",
+        "category": "Juvix"
       },
       {
         "command": "juvix-mode.getBinaryVersion",
-        "title": "about",
+        "title": "[Juvix] Get Binary Version",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.doctor",
-        "title": "doctor",
+        "title": "[Juvix] Run Doctor Command",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.typecheck",
-        "title": "typecheck",
+        "title": "[Juvix] Typecheck",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.typecheck-silent",
-        "title": "typecheck-silent",
+        "title": "[Juvix] Typecheck Silent",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.compile",
-        "title": "compile",
+        "title": "[Juvix] Compile",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.run",
-        "title": "run",
+        "title": "[Juvix] Run",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "command": "juvix-mode.openRepl",
-        "title": "Open REPL",
+        "title": "[Juvix] Open REPL",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.loadFileRepl",
-        "title": "Load file in REPL",
+        "title": "[Juvix] Load File in REPL",
         "category": "Juvix",
         "icon": "$(open-preview)"
       },
       {
+        "command": "juvix-mode.enableCodeLens",
+        "title": "[Juvix] Enable CodeLens",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
+        "command": "juvix-mode.disableCodeLens",
+        "title": "[Juvix] Disable CodeLens",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
+        "command": "juvix-mode.cleanDependencies",
+        "title": "[Juvix] Clean Package Dependencies",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
+        "command": "juvix-mode.updateDependencies",
+        "title": "[Juvix] Update Package Dependencies",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
+        "command": "juvix-mode.generateIsabelle",
+        "title": "[Juvix] Generate Isabelle",
+        "category": "Juvix",
+        "when": "editorLangId == Juvix && editorTextFocus"
+      },
+      {
         "command": "juvix-mode.createOrShowJudoc",
-        "title": "Html preview",
+        "title": "[Juvix] HTML Preview",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(book)"
       },
       {
         "command": "juvix-mode.createOrShowJudocOnlySource",
-        "title": "Html preview [only source]",
+        "title": "[Juvix] HTML Preview [Only Source]",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(file-code)"
       },
       {
         "command": "juvix-mode.dev-parse",
-        "title": "[dev] parse",
+        "title": "[Juvix] Internal: Parse",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.core-eval",
-        "title": "[dev] core-eval",
+        "title": "[Juvix] Internal: Core Eval",
         "category": "Juvix",
-        "when": "editorLangId == JuvixCore && editorTextFocus",
+        "when": "editorLangId == Juvixcore && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "command": "juvix-mode.core-compile",
-        "title": "[dev] core-compile",
+        "title": "[Juvix] Internal: Core Compile",
         "category": "Juvix",
-        "when": "editorLangId == JuvixCore && editorTextFocus",
+        "when": "editorLangId == Juvixcore && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.geb-eval",
-        "title": "[dev] geb-eval",
+        "title": "[Juvix] Internal: Geb Eval",
         "category": "Juvix",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
+        "when": "editorLangId == Juvixgeb && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "command": "juvix-mode.geb-compile",
-        "title": "[dev] geb-compile",
+        "title": "[Juvix] Internal: Geb Compile",
         "category": "Juvix",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
+        "when": "editorLangId == Juvixgeb && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.geb-check",
-        "title": "[dev] geb-check",
+        "title": "[Juvix] Internal: Geb Check",
         "category": "Juvix",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
+        "when": "editorLangId == Juvixgeb && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.vampir-setup-plonk",
-        "title": "[dev] vampir-setup-plonk",
+        "title": "[Juvix] Internal: VampIR Setup Plonk",
         "category": "Juvix",
-        "when": "editorLangId == VampIR && editorTextFocus",
+        "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(gear)"
       },
       {
         "command": "juvix-mode.vampir-compile-plonk",
-        "title": "[dev] vampir-compile-plonk",
+        "title": "[Juvix] Internal: VampIR Compile Plonk",
         "category": "Juvix",
-        "when": "editorLangId == VampIR && editorTextFocus",
+        "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.vampir-prove-plonk",
-        "title": "[dev] vampir-prove-plonk",
+        "title": "[Juvix] Internal: VampIR Prove Plonk",
         "category": "Juvix",
-        "when": "editorLangId == VampIR && editorTextFocus",
+        "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.vampir-verify-plonk",
-        "title": "[dev] vampir-verify-plonk",
+        "title": "[Juvix] Internal: VampIR Verify Plonk",
         "category": "Juvix",
-        "when": "editorLangId == VampIR && editorTextFocus",
+        "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(check-all)"
       },
       {
         "command": "juvix-mode.vampir-setup-halo2",
-        "title": "[dev] vampir-setup-halo2",
+        "title": "[Juvix] Internal: VampIR Setup Halo2",
         "category": "Juvix",
-        "when": "editorLangId == VampIR && editorTextFocus",
+        "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(gear)"
       },
       {
         "command": "juvix-mode.vampir-compile-halo2",
-        "title": "[dev] vampir-compile-halo2",
+        "title": "[Juvix] Internal: VampIR Compile Halo2",
         "category": "Juvix",
-        "when": "editorLangId == VampIR && editorTextFocus",
+        "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.vampir-prove-halo2",
-        "title": "[dev] vampir-prove-halo2",
+        "title": "[Juvix] Internal: VampIR Prove Halo2",
         "category": "Juvix",
-        "when": "editorLangId == VampIR && editorTextFocus",
+        "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.vampir-verify-halo2",
-        "title": "[dev] vampir-verify-halo2",
+        "title": "[Juvix] Internal: VampIR Verify Halo2",
         "category": "Juvix",
-        "when": "editorLangId == VampIR && editorTextFocus",
+        "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(check-all)"
       }
     ],
@@ -661,82 +670,60 @@
       {
         "key": "shift+alt+d",
         "command": "juvix-mode.doctor",
-        "args": "Juvix: Doctor",
         "when": "editorLangId == Juvix"
       },
       {
         "key": "shift+alt+t",
         "command": "juvix-mode.typecheck",
-        "args": "Juvix: Typecheck",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "key": "shift+alt+c",
         "command": "juvix-mode.compile",
-        "args": "Juvix: Compile",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "key": "shift+alt+x",
         "command": "juvix-mode.run",
-        "args": "Juvix: run",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.loadFileRepl",
-        "args": "Juvix: repl",
         "when": "(editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb)  && editorTextFocus"
       },
       {
         "key": "shift+alt+c",
         "command": "juvix-mode.core-compile",
-        "args": "Juvix: [dev] core-compile",
         "when": "editorLangId == JuvixCore && editorTextFocus"
       },
       {
         "key": "shift+alt+x",
         "command": "juvix-mode.core-eval",
-        "args": "Juvix: [dev] core-eval",
         "when": "editorLangId == JuvixCore && editorTextFocus"
       },
       {
         "key": "shift+alt+x",
         "command": "juvix-mode.geb-eval",
-        "args": "Juvix: [dev] geb-eval",
         "when": "editorLangId == JuvixGeb && editorTextFocus"
       },
       {
         "key": "shift+alt+t",
         "command": "juvix-mode.geb-check",
-        "args": "Juvix: [dev] geb-check",
         "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "key": "shift+alt+c",
         "command": "juvix-mode.geb-compile",
-        "args": "Juvix: [dev] geb-compile",
         "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(debug-start)"
-      },
-      {
-        "command": "juvix-mode.enableCodeLens",
-        "title": "Enable CodeLens",
-        "category": "Juvix",
-        "when": "editorLangId == juvix && editorTextFocus"
-      },
-      {
-        "command": "juvix-mode.disableCodeLens",
-        "title": "Disable CodeLens",
-        "category": "Juvix",
-        "when": "editorLangId == juvix && editorTextFocus"
       }
     ],
     "submenus": [
       {
         "id": "juvix-submenu",
-        "label": "Juvix Tasks",
+        "label": "Juvix Commands",
         "when": "editorLangId == Juvix"
       }
     ],
@@ -761,6 +748,16 @@
           "when": "juvix-mode:ready && editorLangId == Juvix",
           "command": "juvix-mode.run",
           "group": "navigation@3"
+        },
+        {
+          "when": "juvix-mode:ready && editorLangId == Juvix",
+          "command": "juvix-mode.createOrShowJudoc",
+          "group": "navigation@8"
+        },
+        {
+          "when": "juvix-mode:ready && editorLangId == Juvix",
+          "command": "juvix-mode.createOrShowJudocOnlySource",
+          "group": "navigation@9"
         },
         {
           "when": "juvix-mode:ready && editorLangId == JuvixCore",
@@ -826,16 +823,6 @@
           "when": "juvix-mode:ready && editorLangId == VampIR",
           "command": "juvix-mode.vampir-verify-halo2",
           "group": "navigation@6"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == Juvix",
-          "command": "juvix-mode.createOrShowJudoc",
-          "group": "navigation@8"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == Juvix",
-          "command": "juvix-mode.createOrShowJudocOnlySource",
-          "group": "navigation@9"
         }
       ],
       "editor/context": [
@@ -875,13 +862,13 @@
           "type": "string",
           "default": "juvix",
           "scope": "machine-overridable",
-          "description": "Name of the executable of Juvix. (e.g. juvix-v0.6.0)"
+          "description": "Name of the executable of Juvix. (e.g. juvix-v0.6.3)"
         },
         "juvix-mode.juvixBinPath": {
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "description": "Absolute path where the Juvix binary is located (e.g. /usr/local/bin/)"
+          "description": "Absolute root path where the Juvix binary is located (e.g. /usr/local/bin/)"
         },
         "juvix-mode.vampirBinName": {
           "type": "string",
@@ -928,7 +915,7 @@
         },
         "juvix-mode.reloadReplOnSave": {
           "type": "boolean",
-          "default": "false",
+          "default": false,
           "description": "Reload REPL on save"
         },
         "juvix-mode.codeLens": {
@@ -943,48 +930,46 @@
           "properties": {
             "internalBuildDir": {
               "type": "string",
-              "description": "Directory for compiler internal output. Empty string will make the compiler use a temporary directory."
+              "default": ".juvix-build",
+              "description": "Directory for compiler internal output. An empty string will make the compiler use a temporary directory."
             },
             "judocDir": {
               "type": "string",
-              "description": "Directory for html output. Empty string will make the compiler use a temporary directory."
+              "default": "html",
+              "description": "Directory for HTML output. An empty string will make the compiler use a temporary directory."
             },
             "noColors": {
               "type": "boolean",
-              "description": "Disable ANSI formatting"
+              "default": false,
+              "description": "Disable ANSI formatting."
             },
             "showNameIds": {
               "type": "boolean",
-              "description": "Show the unique number of each identifier when pretty printing"
+              "default": false,
+              "description": "Show the unique number of each identifier when pretty printing."
             },
             "onlyErrors": {
               "type": "boolean",
-              "description": "Only print errors in a uniform format"
+              "default": false,
+              "description": "Only print errors in a uniform format."
             },
             "noTermination": {
               "type": "boolean",
-              "description": "Disable termination checking"
+              "default": false,
+              "description": "Disable termination checking."
             },
             "noPositivity": {
               "type": "boolean",
-              "description": "Disable positivity checking for inductive types"
+              "default": false,
+              "description": "Disable positivity checking for inductive types."
             },
             "noStdlib": {
               "type": "boolean",
-              "description": "Do not use the standard library"
+              "default": false,
+              "description": "Do not use the standard library."
             }
           },
-          "additionalProperties": false,
-          "default": {
-            "internalBuildDir": ".juvix-build",
-            "judocDir": "html",
-            "noColors": false,
-            "showNameIds": false,
-            "onlyErrors": false,
-            "noTermination": false,
-            "noPositivity": false,
-            "noStdlib": false
-          }
+          "additionalProperties": false
         },
         "juvix-mode.enableSemanticSyntax": {
           "default": true,
@@ -993,21 +978,44 @@
         },
         "juvix-mode.compilationTarget": {
           "type": "string",
-          "default": "",
+          "default": "native",
           "enum": [
-            "native",
-            "wasm32-wasi",
-            "geb",
             "vampir",
-            "core",
-            "asm"
+            "anoma",
+            "cairo",
+            "geb",
+            "wasi",
+            "native",
+            "risc0-rust"
           ],
           "scope": "machine-overridable",
-          "description": "Compilation backend"
+          "description": "Specifies the compilation backend to use."
         },
-        "juvix-mode.compilationOutputFile": {
+        "juvix-mode.compilationOutput": {
           "type": "string",
           "scope": "machine-overridable"
+        },
+        "juvix-mode.input.languages": {
+          "type": "array",
+          "default": [
+            "Juvix",
+            "JuvixMarkdown"
+          ],
+          "markdownDescription": "Enable Unicode input in other file types.",
+          "items": {
+            "type": "string",
+            "description": "the name of a language, e.g. 'haskell', 'markdown'"
+          }
+        },
+        "juvix-mode.input.leader": {
+          "type": "string",
+          "default": "\\",
+          "markdownDescription": "Leader key to trigger input mode."
+        },
+        "juvix-mode.input.eagerReplacementEnabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable eager replacement of abbreviations that uniquely identify a symbol."
         },
         "juvix-mode.input.enabled": {
           "type": "boolean",
@@ -2811,66 +2819,6 @@
             "norm": "‖$CURSOR‖"
           },
           "markdownDescription": "Add additional input Unicode translations. Example: `{\"foo\": \"☺\"}` will correct `\\foo` to `☺`."
-        },
-        "juvix-mode.input.languages": {
-          "type": "array",
-          "default": [
-            "Juvix"
-          ],
-          "markdownDescription": "Enable Unicode input in other file types.",
-          "items": {
-            "type": "string",
-            "description": "the name of a language, e.g. 'haskell', 'markdown'"
-          }
-        },
-        "juvix-mode.input.leader": {
-          "type": "string",
-          "default": "\\",
-          "markdownDescription": "Leader key to trigger input mode."
-        },
-        "juvix-mode.input.eagerReplacementEnabled": {
-          "type": "boolean",
-          "default": false,
-          "markdownDescription": "Enable eager replacement of abbreviations that uniquely identify a symbol."
-        },
-        "juvix-mode.enableDevTasks": {
-          "type": "boolean",
-          "default": false,
-          "markdownDescription": "Create on save views for debugging purposes."
-        },
-        "juvix-mode.devTasks": {
-          "type": "object",
-          "items": {
-            "description": "Internal commands that run on save. Juvix executable is passed as $juvix, the filename as $filename. "
-          },
-          "default": {
-            "CatFile": "cat $filename",
-            "Parsed": "$juvix dev parse $filename",
-            "Scoped": "$juvix dev scope $filename",
-            "InternalPretty": "$juvix dev internal pretty $filename",
-            "InternalArity": "$juvix dev internal arity $filename",
-            "InternalTypecheck": "$juvix dev internal typecheck $filename",
-            "CoreEval": "$juvix dev core eval $filename",
-            "CoreRead": "$juvix dev core read $filename",
-            "GebEval": "$juvix dev geb eval $filename",
-            "AsmRun": "$juvix dev asm run $filename",
-            "AsmValidate": "$juvix dev asm validate $filename",
-            "AsmCompile": "$juvix dev asm compile $filename",
-            "RuntimeCompile": "$juvix dev runtime compile $filename",
-            "Root": "$juvix dev root",
-            "TerminationCalls": "$juvix dev termination calls -d $filename",
-            "TerminationGraph": "$juvix dev termination graph $filename"
-          }
-        },
-        "juvix-mode.vampirTarget": {
-          "type": "string",
-          "default": "halo2",
-          "enum": [
-            "halo2",
-            "plonk"
-          ],
-          "scope": "machine-overridable",
-          "description": "Compilation backend"
         }
       }
     }

@@ -156,15 +156,6 @@ export class JuvixConfig {
     }
   );
 
-  // Dev
-  readonly enableDevTasks = new VsCodeSetting('juvix-mode.enableDevTasks', {
-    serializer: serializerWithDefault(false),
-  });
-
-  readonly devTasks = new VsCodeSetting('juvix-mode.devTasks', {
-    serializer: serializerWithDefault<TaggedList>({}),
-  });
-
   public getGlobalFlags(): string {
     const flags = [];
     if (this.noColors.get()) flags.push('--no-colors');

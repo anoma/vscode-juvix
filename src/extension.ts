@@ -6,7 +6,6 @@ import * as vscode from 'vscode';
 import * as check from './check';
 import * as codelens from './codelens';
 import * as goToDefinition from './definitions';
-import * as dev from './dev';
 import * as formatter from './formatter';
 import * as syntaxHighlighter from './highlighting';
 import * as hoverInfo from './hover';
@@ -62,8 +61,7 @@ export async function activate(context: vscode.ExtensionContext) {
       judoc,
       check,
       formatter,
-      vampir,
-      dev,
+      vampir
     ];
     modules.forEach(module => module.activate(context));
     vscode.commands.executeCommand('setContext', 'juvix-mode:ready', true);
