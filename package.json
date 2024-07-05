@@ -755,11 +755,6 @@
           "group": "navigation@8"
         },
         {
-          "when": "juvix-mode:ready && editorLangId == Juvix",
-          "command": "juvix-mode.createOrShowJudocOnlySource",
-          "group": "navigation@9"
-        },
-        {
           "when": "juvix-mode:ready && editorLangId == JuvixCore",
           "command": "juvix-mode.core-compile",
           "group": "navigation@2"
@@ -848,8 +843,7 @@
         {
           "command": "juvix-mode.doctor",
           "group": "navigation@1.31"
-        },
-        {
+        },        {
           "command": "juvix-mode.createOrShowJudoc",
           "group": "navigation@1.31"
         }
@@ -894,16 +888,6 @@
           "scope": "machine-overridable",
           "description": "Absolute path to the Geb executable. (e.g. /usr/local/bin/)"
         },
-        "juvix-mode.revealPanel": {
-          "type": "string",
-          "default": "silent",
-          "enum": [
-            "always",
-            "silent",
-            "never"
-          ],
-          "description": "Reveal panel for typechecking/compilation output"
-        },
         "juvix-mode.typecheckOn": {
           "type": "string",
           "default": "none",
@@ -913,68 +897,11 @@
             "none"
           ]
         },
-        "juvix-mode.reloadReplOnSave": {
-          "type": "boolean",
-          "default": false,
-          "description": "Reload REPL on save"
-        },
-        "juvix-mode.codeLens": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable code lens"
-        },
-        "juvix-mode.opts": {
-          "type": "object",
-          "order": 1,
-          "description": "Common options for the Juvix CLI.",
-          "properties": {
-            "internalBuildDir": {
-              "type": "string",
-              "default": ".juvix-build",
-              "description": "Directory for compiler internal output. An empty string will make the compiler use a temporary directory."
-            },
-            "judocDir": {
-              "type": "string",
-              "default": "html",
-              "description": "Directory for HTML output. An empty string will make the compiler use a temporary directory."
-            },
-            "noColors": {
-              "type": "boolean",
-              "default": false,
-              "description": "Disable ANSI formatting."
-            },
-            "showNameIds": {
-              "type": "boolean",
-              "default": false,
-              "description": "Show the unique number of each identifier when pretty printing."
-            },
-            "onlyErrors": {
-              "type": "boolean",
-              "default": false,
-              "description": "Only print errors in a uniform format."
-            },
-            "noTermination": {
-              "type": "boolean",
-              "default": false,
-              "description": "Disable termination checking."
-            },
-            "noPositivity": {
-              "type": "boolean",
-              "default": false,
-              "description": "Disable positivity checking for inductive types."
-            },
-            "noStdlib": {
-              "type": "boolean",
-              "default": false,
-              "description": "Do not use the standard library."
-            }
-          },
-          "additionalProperties": false
-        },
-        "juvix-mode.enableSemanticSyntax": {
-          "default": true,
-          "type": "boolean",
-          "description": "Use semantic information for highlighting (recommended)"
+        "juvix-mode.typecheckExtraArgs": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "Extra arguments to pass to the typechecker."
         },
         "juvix-mode.compilationTarget": {
           "type": "string",
@@ -991,20 +918,90 @@
           "scope": "machine-overridable",
           "description": "Specifies the compilation backend to use."
         },
+        "juvix-mode.compilationExtraArgs": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "Extra arguments to pass to the compiler subcommand. This input goes after the subcommand and before the file name."
+        },
         "juvix-mode.compilationOutput": {
           "type": "string",
           "scope": "machine-overridable"
         },
+        "juvix-mode.internalBuildDir": {
+          "type": "string",
+          "default": ".juvix-build",
+          "description": "Directory for compiler internal output. An empty string will make the compiler use a temporary directory."
+        },
+        "juvix-mode.judocDir": {
+          "type": "string",
+          "default": "html",
+          "description": "Directory for HTML output. An empty string will make the compiler use a temporary directory."
+        },
+        "juvix-mode.revealPanel": {
+          "type": "string",
+          "default": "silent",
+          "enum": [
+            "always",
+            "silent",
+            "never"
+          ],
+          "description": "Reveal panel for typechecking/compilation output"
+        },
+        "juvix-mode.onlyErrors": {
+          "type": "boolean",
+          "default": false,
+          "description": "Only print errors in a uniform format."
+        },
+        "juvix-mode.noColors": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable ANSI formatting."
+        },
+        "juvix-mode.showNameIds": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show the unique number of each identifier when pretty printing."
+        },
+        "juvix-mode.noTermination": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable termination checking."
+        },
+        "juvix-mode.noPositivity": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable positivity checking for inductive types."
+        },
+        "juvix-mode.noStdlib": {
+          "type": "boolean",
+          "default": false,
+          "description": "Do not use the standard library."
+        },
+        "juvix-mode.enableSemanticSyntax": {
+          "default": true,
+          "type": "boolean",
+          "description": "Use semantic information for highlighting (recommended)"
+        },
+        "juvix-mode.codeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CodeLens, which shows type information in the editor."
+        },
+        "juvix-mode.reloadReplOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Reload REPL on save"
+        },
         "juvix-mode.input.languages": {
           "type": "array",
           "default": [
-            "Juvix",
-            "JuvixMarkdown"
+            "Juvix"
           ],
           "markdownDescription": "Enable Unicode input in other file types.",
           "items": {
             "type": "string",
-            "description": "the name of a language, e.g. 'haskell', 'markdown'"
+            "description": "The name of a language, e.g. 'haskell', 'markdown'"
           }
         },
         "juvix-mode.input.leader": {
