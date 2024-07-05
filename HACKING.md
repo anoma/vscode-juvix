@@ -53,7 +53,7 @@ git tag vX.X.X
 ## Publishing
 
 The following steps assume that you have a publisher account.
-Conntact the Juvix team to get access to the publisher account.
+Contact the Juvix team to get access to the publisher account.
 Assuming you have access to the publisher account, you can publish the extension by running the following commands.
 
 ```
