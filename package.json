@@ -501,14 +501,14 @@
       },
       {
         "command": "juvix-mode.typecheck",
-        "title": "Typecheck",
+        "title": "Typecheck current file",
         "category": "Juvix",
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.typecheck-silent",
-        "title": "Silent Typecheck",
+        "title": "Silent typecheck current file",
         "category": "Juvix",
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(check)"

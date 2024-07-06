@@ -20,6 +20,14 @@ export async function activate(context: vscode.ExtensionContext) {
         definitionProvider
       )
     );
+
+    const juvixMarkdownDefinitionProvider = new JuvixDefinitionProvider();
+    context.subscriptions.push(
+      vscode.languages.registerDefinitionProvider(
+        { language: 'JuvixMarkdown', scheme: 'file' },
+        juvixMarkdownDefinitionProvider
+      )
+    );
   } catch (error) {
     logger.error('No definition provider:' + error, 'definitions.ts');
   }

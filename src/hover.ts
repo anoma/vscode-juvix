@@ -17,6 +17,12 @@ export async function activate(_context: vscode.ExtensionContext) {
       { language: 'Juvix', scheme: 'file' },
       hoverProvider
     );
+
+    const juvixMarkdownHoverProvider = new JuvixHoverProvider();
+    vscode.languages.registerHoverProvider(
+      { language: 'JuvixMarkdown', scheme: 'file' },
+      juvixMarkdownHoverProvider
+    );
   } catch (error) {
     logger.error('No hover provider' + error, 'hover.ts');
   }
