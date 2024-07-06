@@ -224,7 +224,7 @@ export class JuvixConfig {
   });
 
   public getTypeckeckFlags(): string {
-    let flags = []
+    const flags = []
     const extraArgs = this.typecheckExtraArgs.get();
     if (extraArgs){
       for (const arg of extraArgs.split(' ')){
@@ -236,7 +236,7 @@ export class JuvixConfig {
   }
 
   public getCompilationFlags(): string {
-    let flags = []
+    const flags = []
     const target = this.compilationTarget.get();
     if (target)
       flags.push(target);

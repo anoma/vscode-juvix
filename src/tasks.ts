@@ -219,12 +219,13 @@ export async function JuvixTask(
     case 'core-eval':
       exec = new vscode.ShellExecution(JuvixExec + ` dev core eval ${fl}`);
       break;
-    case 'geb-compile':
+    case 'geb-compile': {
       const gebCompile =
         config.getGebExec() +
         ` -i ${fl}.lisp -e "${fl}::*entry*" -l -v -o ${fl}.pir`;
       exec = new vscode.ShellExecution(gebCompile);
       break;
+    }
     case 'geb-eval':
       exec = new vscode.ShellExecution(JuvixExec + ` dev geb eval ${fl}`);
       break;

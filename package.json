@@ -47,7 +47,7 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "pretty": "npx prettier --write .",
-    "lint": "eslint src --ext ts --fix",
+    "lint": "eslint src --fix",
     "test": "node ./out/test/runTest.js",
     "upgrade-dependencies": "ncu -u",
     "fix": "prettier --write . && eslint -c .eslintrc.js --ext ts ./src --fix"
@@ -2862,19 +2862,24 @@
   },
   "dependencies": {
     "compare-versions": "^6.1.0",
-    "eslint": "^9.6.0",
     "mobx": "^6.13.0",
     "run": "^1.5.0",
-    "temp": "^0.9.4"
+    "temp": "^0.9.4",
+    "globals": "^15.8.0",
+    "typescript-eslint": "^7.15.0",
+    "@eslint/js": "^9.6.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.6.0",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.7",
     "@types/node": "^20.14.9",
     "@types/vscode": "^1.74.0",
     "@vscode/test-electron": "^2.4.0",
     "@vscode/vsce": "^2.29.0",
+    "eslint": "^9.6.0",
     "glob": "^10.4.2",
+    "globals": "^15.8.0",
     "mocha": "^10.6.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.3.2",
@@ -2882,6 +2887,7 @@
     "rimraf": "^5.0.7",
     "ts-loader": "^9.5.1",
     "typescript": "^5.5.3",
+    "typescript-eslint": "^7.15.0",
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
   }

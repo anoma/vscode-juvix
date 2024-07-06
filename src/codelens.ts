@@ -106,8 +106,8 @@ export class JuvixCodelensProvider implements vscode.CodeLensProvider {
       const regex = /module\s+([\w.]+);/;
       const match = text.match(regex);
       const moduleName: string | undefined = getModuleName(document);
-      var insertPosition: vscode.Position = new vscode.Position(0, 0);
-      var juvixBlockText: string = '';
+      let insertPosition: vscode.Position = new vscode.Position(0, 0);
+      let juvixBlockText: string = '';
 
       if (moduleName && (text.length === 0 || match === null)) {
         const moduleTopHeader = `module ${moduleName};`;
