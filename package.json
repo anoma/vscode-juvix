@@ -859,7 +859,7 @@
           "group": "navigation@1.31"
         },
         {
-          "command" : "juvix-mode.clean",
+          "command": "juvix-mode.clean",
           "group": "navigation@1.31"
         },
         {
@@ -973,7 +973,7 @@
           "default": "html",
           "description": "Directory for HTML output. An empty string will make the compiler use a temporary directory."
         },
-        "juvix-mode.globalClean" : {
+        "juvix-mode.globalClean": {
           "type": "boolean",
           "default": false,
           "description": "Delete all build artifacts in the workspace."
@@ -2862,6 +2862,7 @@
   },
   "dependencies": {
     "compare-versions": "^6.1.0",
+    "eslint": "^9.6.0",
     "mobx": "^6.13.0",
     "run": "^1.5.0",
     "temp": "^0.9.4"
