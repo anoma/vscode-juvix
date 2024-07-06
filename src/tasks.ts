@@ -194,7 +194,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
 
 export async function JuvixTask(
   definition: JuvixTaskDefinition,
-  name: string, 
+  name: string,
   args: string[]
 ): Promise<vscode.Task> {
   const input = args.join(' ').trim();

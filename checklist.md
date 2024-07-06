@@ -1,6 +1,7 @@
 ## Checklist
 
 - **Commands/tasks for:**
+
   - [x] typecheck (ctrl+c ctrl+l)
   - [x] compile (ctrl+c ctrl+c)
   - [x] run (ctrl+c ctrl+r)
@@ -16,6 +17,7 @@
     - [x] run
 
 - **Problem matchers provider:**
+
   - [x] compiler errors
 
 - **IDE Features:**

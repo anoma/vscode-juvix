@@ -14,9 +14,9 @@ This VS Code extension provides support for [Juvix Lang](https://github.com/anom
 1. Search for "Juvix" in the VSCode marketplace and install it.
 2. Alternatively, launch VS Code Quick Open (<kbd>Ctrl</kbd>+<kbd>P</kbd>), paste the following command, and press Enter:
 
-    ```
-    ext install heliax.juvix-mode
-    ```
+   ```
+   ext install heliax.juvix-mode
+   ```
 
 ### Manual Installation
 
@@ -64,8 +64,8 @@ This extension provides semantic syntax highlighting for Juvix files and multipl
 
 Use <kbd>Ctrl</kbd>+<kbd>P</kbd> to open the Command Palette and type `Juvix`. Available commands include:
 
-| Command   |         Keymap         |
-| :-------- | :--------------------: |
+| Command   |                    Keymap                    |
+| :-------- | :------------------------------------------: |
 | typecheck | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> |
 | compile   | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>C</kbd> |
 | run       | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>X</kbd> |
@@ -76,9 +76,10 @@ Use <kbd>Ctrl</kbd>+<kbd>P</kbd> to open the Command Palette and type `Juvix`. A
 Configure this extension via the VSCode settings UI.
 
 1. Open the VSCode settings menu:
+
    - Navigate to **File** > **Preferences** > **Settings**.
    - Or quickly open the settings using <kbd>Ctrl</kbd>+<kbd>,</kbd> (Windows/Linux) or <kbd>Cmd</kbd>+<kbd>,</kbd> (macOS).
-   
+
 2. In the search bar, type `Juvix` to filter relevant settings.
 
 3. Adjust the various options provided to fine-tune your development experience according to your needs.
@@ -91,7 +92,6 @@ Some common settings you can tweak include:
 - And more ...
 
 Make sure to reload the window if prompted for some changes to take effect.
-
 
 ## Features
 
@@ -109,6 +109,5 @@ Make sure to reload the window if prompted for some changes to take effect.
   - **VampIR**: syntax highlighting, setup, compile, verify, prove commands.
 - **Unicode Input Support**: Enter symbols like λ, Π, Σ using shortcuts (`\` + "alpha" + `space`).
 - **User Configuration Options**, some requiring a window reload.
-
 
 Enjoy coding with Juvix in VSCode!

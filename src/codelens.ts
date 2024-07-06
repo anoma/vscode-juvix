@@ -111,7 +111,7 @@ export class JuvixCodelensProvider implements vscode.CodeLensProvider {
 
       if (moduleName && (text.length === 0 || match === null)) {
         const moduleTopHeader = `module ${moduleName};`;
-      
+
         if (isPureJuvixFile(document)) {
           insertPosition = new vscode.Position(0, 0);
           juvixBlockText = `${moduleTopHeader}\n\n`;
@@ -124,7 +124,7 @@ export class JuvixCodelensProvider implements vscode.CodeLensProvider {
           }
           juvixBlockText = `\`\`\`juvix\n${moduleTopHeader}\n\`\`\`\n\n`;
         }
-      
+
         const insertModuleCodeLenses = new vscode.CodeLens(
           new vscode.Range(insertPosition, insertPosition),
           {
@@ -137,10 +137,10 @@ export class JuvixCodelensProvider implements vscode.CodeLensProvider {
             ],
           }
         );
-      
+
         this.codeLenses = [insertModuleCodeLenses, ...this.codeLenses];
       }
-      
+
 
       return this.codeLenses;
     }
