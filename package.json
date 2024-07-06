@@ -2862,22 +2862,22 @@
   },
   "dependencies": {
     "compare-versions": "^6.1.0",
+    "globals": "^15.8.0",
     "mobx": "^6.13.0",
     "run": "^1.5.0",
     "temp": "^0.9.4",
-    "globals": "^15.8.0",
-    "typescript-eslint": "^7.15.0",
-    "@eslint/js": "^9.6.0"
+    "eslint": "^8.57.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.6.0",
+    "@eslint/js": "^8.57.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.7",
     "@types/node": "^20.14.9",
     "@types/vscode": "^1.74.0",
     "@vscode/test-electron": "^2.4.0",
     "@vscode/vsce": "^2.29.0",
-    "eslint": "^9.6.0",
+    "eslint": "^8.57.0",
     "glob": "^10.4.2",
     "globals": "^15.8.0",
     "mocha": "^10.6.0",
