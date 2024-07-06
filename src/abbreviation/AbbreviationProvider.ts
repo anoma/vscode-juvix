@@ -27,7 +27,7 @@ export class AbbreviationProvider implements Disposable {
     this.disposables.push(
       autorunDisposable(() => {
         // For the livetime of this component, cache the computed's
-        this.symbolsByAbbreviation;
+        const _ = this.symbolsByAbbreviation;
         // clear cache on change
         this.cache = {};
       })
@@ -54,7 +54,7 @@ export class AbbreviationProvider implements Disposable {
 
   findSymbolsIn(symbolPlusUnknown: string): string[] {
     const result = new Set<string>();
-    for (const [_abbr, sym] of Object.entries(this.symbolsByAbbreviation)) {
+    for (const [abbr, sym] of Object.entries(this.symbolsByAbbreviation)) {
       if (symbolPlusUnknown.startsWith(sym)) {
         result.add(sym);
       }

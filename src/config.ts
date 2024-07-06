@@ -154,9 +154,9 @@ export class JuvixConfig {
               return ''; // Add a return statement here
           }
       };
-  
+
       const buildDir = this.internalBuildDir.get();
-  
+
       if (buildDir) {
           const juvixBuildDir = buildDir.toString();
           try {
@@ -207,7 +207,7 @@ export class JuvixConfig {
       if (this.noTermination.get()) flags.push('--no-termination');
       if (this.noPositivity.get()) flags.push('--no-positivity');
       if (this.noStdlib.get()) flags.push('--no-stdlib');
-  
+
       const buildDir = this.getInternalBuildDir();
       if (buildDir) {
           flags.push('--internal-build-dir');

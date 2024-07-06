@@ -62,8 +62,6 @@ jobs:
         run: npm run lint
       - name: Build Code
         run: npm run compile
-      - name: Build tests
-        run: npm run compile-tests
       - name: Run Tests Linux
         run: xvfb-run -a -s "-screen 0 1280x1024x24" npm run test
         if: runner.os == 'Linux'

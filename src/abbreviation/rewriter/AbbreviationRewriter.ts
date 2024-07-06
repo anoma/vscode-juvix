@@ -1,6 +1,8 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import * as debug from '../../utils/debug';
+import * as vscode from 'vscode';
 
 import {
   commands,
@@ -24,6 +26,7 @@ import { TrackedAbbreviation } from './TrackedAbbreviation';
  * Tracks abbreviations in a given text editor and replaces them when dynamically.
  */
 
+const changesCounter = 0;
 
 export class AbbreviationRewriter {
   private readonly disposables = new Array<Disposable>();
@@ -43,9 +46,9 @@ export class AbbreviationRewriter {
     private readonly config: AbbreviationConfig,
     private readonly abbreviationProvider: AbbreviationProvider,
     private readonly textEditor: TextEditor,
-    readonly sstderrOutputChannel: OutputChannel
+    private readonly stderrOutputChannel: OutputChannel
   ) {
-    this.stderrOutput = sstderrOutputChannel;
+    this.stderrOutput = stderrOutputChannel;
     this.disposables.push(this.decorationType);
 
     this.disposables.push(
