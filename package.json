@@ -467,200 +467,200 @@
     "commands": [
       {
         "command": "juvix-mode.installJuvixBinary",
-        "title": "[Juvix] Install Juvix Binary",
+        "title": "Install Juvix Binary",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.installVampirBinary",
-        "title": "[Juvix] Install VampIR Binary",
+        "title": "Install VampIR Binary",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.getBinaryVersion",
-        "title": "[Juvix] Get Binary Version",
+        "title": "Get Binary Version",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.doctor",
-        "title": "[Juvix] Run Doctor Command",
+        "title": "Run Doctor Command",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.typecheck",
-        "title": "[Juvix] Typecheck",
+        "title": "Typecheck",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.typecheck-silent",
-        "title": "[Juvix] Typecheck Silent",
+        "title": "Silent Typecheck",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.compile",
-        "title": "[Juvix] Compile",
+        "title": "Compile current file",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.run",
-        "title": "[Juvix] Run",
+        "title": "Evaluate current file",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "command": "juvix-mode.openRepl",
-        "title": "[Juvix] Open REPL",
+        "title": "Open REPL",
         "category": "Juvix"
       },
       {
         "command": "juvix-mode.loadFileRepl",
-        "title": "[Juvix] Load File in REPL",
+        "title": "Load current open file in REPL",
         "category": "Juvix",
         "icon": "$(open-preview)"
       },
       {
         "command": "juvix-mode.enableCodeLens",
-        "title": "[Juvix] Enable CodeLens",
+        "title": "Enable CodeLens",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.disableCodeLens",
-        "title": "[Juvix] Disable CodeLens",
+        "title": "Disable CodeLens",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.cleanDependencies",
-        "title": "[Juvix] Clean Package Dependencies",
+        "title": "Clean package dependencies",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.updateDependencies",
-        "title": "[Juvix] Update Package Dependencies",
+        "title": "Update package dependencies",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.generateIsabelle",
-        "title": "[Juvix] Generate Isabelle",
+        "title": "Generate Isabelle theory for current file",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.createOrShowJudoc",
-        "title": "[Juvix] HTML Preview",
+        "title": "HTML preview of current file",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(book)"
       },
       {
         "command": "juvix-mode.createOrShowJudocOnlySource",
-        "title": "[Juvix] HTML Preview [Only Source]",
+        "title": "HTML Preview [Only Source]",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus",
         "icon": "$(file-code)"
       },
       {
         "command": "juvix-mode.dev-parse",
-        "title": "[Juvix] Internal: Parse",
+        "title": "Internal: Parse",
         "category": "Juvix",
         "when": "editorLangId == Juvix && editorTextFocus"
       },
       {
         "command": "juvix-mode.core-eval",
-        "title": "[Juvix] Internal: Core Eval",
+        "title": "Internal: evaluate current Juvix Core file",
         "category": "Juvix",
         "when": "editorLangId == Juvixcore && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "command": "juvix-mode.core-compile",
-        "title": "[Juvix] Internal: Core Compile",
+        "title": "Internal: compile current Juvix Core file",
         "category": "Juvix",
         "when": "editorLangId == Juvixcore && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.geb-eval",
-        "title": "[Juvix] Internal: Geb Eval",
+        "title": "Internal: evaluate current Geb file",
         "category": "Juvix",
         "when": "editorLangId == Juvixgeb && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "command": "juvix-mode.geb-compile",
-        "title": "[Juvix] Internal: Geb Compile",
+        "title": "Internal: compile current Geb file",
         "category": "Juvix",
         "when": "editorLangId == Juvixgeb && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.geb-check",
-        "title": "[Juvix] Internal: Geb Check",
+        "title": "Internal: typecheck current Geb file",
         "category": "Juvix",
         "when": "editorLangId == Juvixgeb && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.vampir-setup-plonk",
-        "title": "[Juvix] Internal: VampIR Setup Plonk",
+        "title": "Internal: VampIR Setup Plonk",
         "category": "Juvix",
         "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(gear)"
       },
       {
         "command": "juvix-mode.vampir-compile-plonk",
-        "title": "[Juvix] Internal: VampIR Compile Plonk",
+        "title": "Internal: VampIR Compile Plonk",
         "category": "Juvix",
         "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.vampir-prove-plonk",
-        "title": "[Juvix] Internal: VampIR Prove Plonk",
+        "title": "Internal: VampIR Prove Plonk",
         "category": "Juvix",
         "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.vampir-verify-plonk",
-        "title": "[Juvix] Internal: VampIR Verify Plonk",
+        "title": "Internal: VampIR Verify Plonk",
         "category": "Juvix",
         "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(check-all)"
       },
       {
         "command": "juvix-mode.vampir-setup-halo2",
-        "title": "[Juvix] Internal: VampIR Setup Halo2",
+        "title": "Internal: VampIR Setup Halo2",
         "category": "Juvix",
         "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(gear)"
       },
       {
         "command": "juvix-mode.vampir-compile-halo2",
-        "title": "[Juvix] Internal: VampIR Compile Halo2",
+        "title": "Internal: VampIR Compile Halo2",
         "category": "Juvix",
         "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.vampir-prove-halo2",
-        "title": "[Juvix] Internal: VampIR Prove Halo2",
+        "title": "Internal: VampIR Prove Halo2",
         "category": "Juvix",
         "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.vampir-verify-halo2",
-        "title": "[Juvix] Internal: VampIR Verify Halo2",
+        "title": "Internal: VampIR Verify Halo2",
         "category": "Juvix",
         "when": "editorLangId == vampir && editorTextFocus",
         "icon": "$(check-all)"
