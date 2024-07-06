@@ -49,13 +49,17 @@ export function checkJuvixBinary(): string | undefined {
     return ls.stdout.toString().replace('version ', 'v').split('\n')[0];
   } catch (e) {
     logger.debug('Juvix is not installed.', 'checkJuvixBinary');
+    return undefined; // Add a return statement here
   }
 }
 
 export function getInstalledNumericVersion(): string | undefined {
   const ls = spawnSync(config.getJuvixExec(), ['--numeric-version']);
   if (ls.status == 0) return ls.stdout.toString().split('\n')[0];
-  else juvixIsNotInstalled();
+  else {
+    juvixIsNotInstalled();
+    return undefined;
+  }
 }
 
 export const supportedVersion: string = fs
@@ -85,6 +89,7 @@ export async function checkForUpgrade(version: string) {
           logger.warn(
             'Please upgrade Juvix to the latest version. Visit https://docs.juvix.org/latest/howto/installing/ for instructions.'
           );
+          return undefined; // Add a return statement here
         }
       });
   }

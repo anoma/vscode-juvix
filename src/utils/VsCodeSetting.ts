@@ -109,7 +109,7 @@ class VsCodeSettingResource {
   );
 
   constructor(
-    private readonly id: string,
+    public readonly id: string,
     private readonly scope: Uri | undefined,
     private readonly target: ConfigurationTarget | undefined
   ) {}
@@ -138,11 +138,13 @@ class VsCodeSettingResource {
    * This improves change detection.
    */
   private readonly stringifiedSettingValue = computed(
-    () => JSON.stringify(this.resource.current()),
+    () => {
+      JSON.stringify(this.resource.current()),
     {
       name: `VsCodeSettingResource[${this.id}].value`,
       context: this,
     }
+  }
   );
 
   get value(): unknown {

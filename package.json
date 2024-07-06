@@ -43,7 +43,6 @@
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "pretty": "npx prettier --write .",
@@ -2862,11 +2861,12 @@
   },
   "dependencies": {
     "compare-versions": "^6.1.0",
+    "eslint": "^8.57.0",
     "globals": "^15.8.0",
     "mobx": "^6.13.0",
     "run": "^1.5.0",
     "temp": "^0.9.4",
-    "eslint": "^8.57.0"
+    "typescript": "^5.5.3"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",

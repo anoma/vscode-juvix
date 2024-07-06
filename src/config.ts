@@ -140,39 +140,40 @@ export class JuvixConfig {
   });
 
   public getInternalBuildDir(): string | undefined {
-    const useTmpDir = () => {
-      const tmpPath = path.join(tmpdir(), '.juvix-build');
-      try {
-        const tmp = fs.mkdtempSync(tmpPath);
-        const juvixBuildDir = tmp.toString();
-        return juvixBuildDir;
-      } catch (e) {
-        logger.error(
-          `Error creating temporary directory ${tmpPath}: ${e}`,
-          'config.ts'
-        );
+      const useTmpDir = () => {
+          const tmpPath = path.join(tmpdir(), '.juvix-build');
+          try {
+              const tmp = fs.mkdtempSync(tmpPath);
+              const juvixBuildDir = tmp.toString();
+              return juvixBuildDir;
+          } catch (e) {
+              logger.error(
+                  `Error creating temporary directory ${tmpPath}: ${e}`,
+                  'config.ts'
+              );
+              return ''; // Add a return statement here
+          }
+      };
+  
+      const buildDir = this.internalBuildDir.get();
+  
+      if (buildDir) {
+          const juvixBuildDir = buildDir.toString();
+          try {
+              if (fs.existsSync(juvixBuildDir)) {
+                  return juvixBuildDir;
+              } else {
+                  const tmpJuvixDir = useTmpDir();
+                  return tmpJuvixDir;
+              }
+          } catch (e) {
+              logger.error(`An error occurred: ${e}`, 'config.ts');
+              const tmpJuvixBuildDir = useTmpDir();
+              return tmpJuvixBuildDir;
+          }
       }
-    };
-
-    const buildDir = this.internalBuildDir.get();
-
-    if (buildDir) {
-      const juvixBuildDir = buildDir.toString();
-      try {
-        if (fs.existsSync(juvixBuildDir)) {
-          return juvixBuildDir;
-        } else {
-          const tmpJuvixDir = useTmpDir();
-          return tmpJuvixDir;
-        }
-      } catch (e) {
-        logger.error(`An error occurred: ${e}`, 'config.ts');
-        const tmpJuvixBuildDir = useTmpDir();
-        return tmpJuvixBuildDir;
-      }
-    }
-    const tmpJuvixBuildDir = useTmpDir();
-    return tmpJuvixBuildDir;
+      const tmpJuvixBuildDir = useTmpDir();
+      return tmpJuvixBuildDir;
   }
 
   public getJudocdDir(): string {
@@ -199,20 +200,20 @@ export class JuvixConfig {
   );
 
   public getGlobalFlags(): string {
-    const flags = [];
-    if (this.noColors.get()) flags.push('--no-colors');
-    if (this.showNameIds.get()) flags.push('--show-name-ids');
-    if (this.onlyErrors.get()) flags.push('--only-errors');
-    if (this.noTermination.get()) flags.push('--no-termination');
-    if (this.noPositivity.get()) flags.push('--no-positivity');
-    if (this.noStdlib.get()) flags.push('--no-stdlib');
-
-    const buildDir = this.getInternalBuildDir();
-    if (buildDir) {
-      flags.push('--internal-build-dir');
-      flags.push(buildDir);
-    }
-    return flags.join(' ').trim();
+      const flags: string[] = [];
+      if (this.noColors.get()) flags.push('--no-colors');
+      if (this.showNameIds.get()) flags.push('--show-name-ids');
+      if (this.onlyErrors.get()) flags.push('--only-errors');
+      if (this.noTermination.get()) flags.push('--no-termination');
+      if (this.noPositivity.get()) flags.push('--no-positivity');
+      if (this.noStdlib.get()) flags.push('--no-stdlib');
+  
+      const buildDir = this.getInternalBuildDir();
+      if (buildDir) {
+          flags.push('--internal-build-dir');
+          flags.push(buildDir);
+      }
+      return flags.join(' ').trim();
   }
 
 
@@ -224,20 +225,20 @@ export class JuvixConfig {
   });
 
   public getTypeckeckFlags(): string {
-    const flags = []
-    const extraArgs = this.typecheckExtraArgs.get();
-    if (extraArgs){
-      for (const arg of extraArgs.split(' ')){
-        flags.push(arg);
+      const flags: string[] = []; // Explicitly define the type of the flags array
+      const extraArgs = this.typecheckExtraArgs.get();
+      if (extraArgs){
+        for (const arg of extraArgs.split(' ')){
+          flags.push(arg);
+        }
       }
-    }
-    const typecheckFlags = flags.join(' ').trim();
-    return typecheckFlags;
+      const typecheckFlags = flags.join(' ').trim();
+      return typecheckFlags;
   }
 
   public getCompilationFlags(): string {
-    const flags = []
-    const target = this.compilationTarget.get();
+    const flags: string[] = [];
+    const target: string | undefined = this.compilationTarget.get();
     if (target)
       flags.push(target);
     const extraArgs = this.compilationExtraArgs.get();

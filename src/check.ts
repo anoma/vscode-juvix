@@ -42,6 +42,7 @@ export async function activate(context: vscode.ExtensionContext) {
         return ls.stdout;
       }
     }
+    return '';
   };
 
   context.subscriptions.push(

@@ -72,5 +72,6 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
         );
         return definitionFound;
       }
+    return undefined;
   }
 }

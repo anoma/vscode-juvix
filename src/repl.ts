@@ -22,7 +22,7 @@ export class JuvixRepl {
   public terminal: vscode.Terminal;
   public disposables: vscode.Disposable[] = [];
   public config: JuvixConfig;
-  private ready = false;
+  public ready = false;
   private reloadNextTime = false;
 
   @observable
@@ -100,6 +100,7 @@ export class JuvixRepl {
     }
     const ready: Promise<vscode.TerminalExitStatus> =
       this.promiseCall(shellCmd);
+
     ready.then(status => {
       if (status.code == 0) {
         this.terminal.show();
