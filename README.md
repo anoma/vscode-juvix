@@ -5,19 +5,22 @@ This VS Code extension provides support for [Juvix Lang](https://github.com/anom
 <p align="center">
   <img src="https://github.com/anoma/vscode-juvix/raw/main/assets/juvix-vscode-extension.png" >
 </p>
+# Juvix VSCode Extension
 
-## Quick start
+## Quick Start
 
-Find "Juvix" in the VSCode marketplace and install it. Otherwise, launch VS Code
-Quick Open (<kbd>Ctrl</kbd><kbd>P</kbd>), and paste the following command
-followed by pressing enter.
+### Installation via Marketplace
 
-```
-ext install heliax.juvix-mode
-```
+1. Search for "Juvix" in the VSCode marketplace and install it.
+2. Alternatively, launch VS Code Quick Open (<kbd>Ctrl</kbd>+<kbd>P</kbd>), paste the following command, and press Enter:
 
-If you, for some reason, want to install the extension manually,
-you can do it by running the following commands.
+    ```
+    ext install heliax.juvix-mode
+    ```
+
+### Manual Installation
+
+If you prefer to install the extension manually, run the following commands:
 
 ```bash
 git clone https://github.com/anoma/vscode-juvix
@@ -27,27 +30,27 @@ npx vsce package
 code --install-extension juvix-X.X.X.vsix
 ```
 
-If you don't have `vsce` or `npx` installed, you can install it by running the following:
+To install `vsce` or `npx`, use:
 
 ```bash
 npm install -g vsce
 npm install -g npx
 ```
 
-## Pre-requisites
+## Prerequisites
 
-To be able to use the extension, you need to have the latest binary of Juvix
-installed. You can find detailed installation instructions
-[here](https://docs.juvix.org/#installation). If you are using MacOS, you can
-install Juvix using Homebrew.
+Ensure you have the latest binary of Juvix installed. Detailed installation instructions are available [here](https://docs.juvix.org/#installation).
+
+However, the extension also offers an easy way to install the binary for your system. Search for the command "Juvix: Install Juvix Binary" if the pop-up message does not suggest the installation when you open a Juvix file.
+
+For macOS users, install Juvix using Homebrew:
 
 ```bash
 brew tap anoma/juvix
 brew install juvix
 ```
 
-Once you have Juvix installed, you can check the version by running the
-following command.
+Verify your Juvix installation with:
 
 ```bash
 juvix --version
@@ -55,38 +58,57 @@ juvix --version
 
 ## Usage
 
-The extension provides semantic syntax highlighting for Juvix files. It also
-provides a command palette with the following commands. You must edit Juvix
-files within a workspace folder. Otherwise, the extension will not work
-properly.
+This extension provides semantic syntax highlighting for Juvix files and multiple commands accessible through the Command Palette. Note that you need to edit Juvix files within a workspace folder for the extension to function correctly.
+
+### Command Palette
+
+Use <kbd>Ctrl</kbd>+<kbd>P</kbd> to open the Command Palette and type `Juvix`. Available commands include:
 
 | Command   |         Keymap         |
 | :-------- | :--------------------: |
-| typecheck | <kbd>Shift+Alt+T</kbd> |
-| compile   | <kbd>Shift+Alt+C</kbd> |
-| run       | <kbd>Shift+Alt+X</kbd> |
-| doctor    | <kbd>Shift+Alt+D</kbd> |
-
-However, we recommend using the Command Palette (<kbd>Ctrl</kbd><kbd>P</kbd>) to
-see which other commands are available by typing `Juvix` and selecting the command you want to run.
+| typecheck | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> |
+| compile   | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>C</kbd> |
+| run       | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>X</kbd> |
+| doctor    | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>D</kbd> |
 
 ## Configuration
 
-This extension provides configurations using the VSCode's configuration UI
-settings.
+Configure this extension via the VSCode settings UI.
+
+1. Open the VSCode settings menu:
+   - Navigate to **File** > **Preferences** > **Settings**.
+   - Or quickly open the settings using <kbd>Ctrl</kbd>+<kbd>,</kbd> (Windows/Linux) or <kbd>Cmd</kbd>+<kbd>,</kbd> (macOS).
+   
+2. In the search bar, type `Juvix` to filter relevant settings.
+
+3. Adjust the various options provided to fine-tune your development experience according to your needs.
+
+Some common settings you can tweak include:
+
+- Typecking extra arguments
+- Compilation targets and extra arguments to pass to the compiler
+- REPL and Execution Preferences: Customize how the REPL operates and how code execution is handled.
+- And more ...
+
+Make sure to reload the window if prompted for some changes to take effect.
+
 
 ## Features
 
-- Juvix type-checking, compilation and execution.
-- Support for Juvix's REPL.
-- Juvix Documentation viewer (Judoc).
-- Juvix Formatting.
-- Juvix Semantic syntax highlighting.
-- Juvix theme with support for light and dark themes.
-- Support for Juvix intermmediate representations (IR):
-  - JuvixCore: syntax highlighting, REPL, and execution.
-  - JuvixAsm: syntax highlighting.
-  - JuvixGeb: syntax highlighting, REPL, and execution.
-  - VampIR: syntax highlighting, commands: setup, compile, verify, and prove.
-- Support for Unicode input (e.g. λ, Π, Σ, etc.) pressing e.g. `\` + "alpha" + `space`.
-- Support for user configuration options (requires reloading the window in some cases).
+- **Type-checking, Compilation, and Execution** of Juvix code.
+- **REPL Support** for interactive programming.
+- **Documentation Viewer** (Judoc) for Juvix.
+- **Code Formatting** tailored for Juvix.
+- **Support for Literate Programming** with Juvix Markdown files (.juvix.md).
+- **Semantic Syntax Highlighting** for improved readability.
+- Themed editor support with both light and dark options.
+- Intermediate Representations (IR) support:
+  - **JuvixCore**: syntax highlighting, REPL, execution.
+  - **JuvixAsm**: syntax highlighting.
+  - **JuvixGeb**: syntax highlighting, REPL, execution.
+  - **VampIR**: syntax highlighting, setup, compile, verify, prove commands.
+- **Unicode Input Support**: Enter symbols like λ, Π, Σ using shortcuts (`\` + "alpha" + `space`).
+- **User Configuration Options**, some requiring a window reload.
+
+
+Enjoy coding with Juvix in VSCode!
