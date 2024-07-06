@@ -1,5 +1,5 @@
 # Adapted from https://github.com/HaaLeo/vscode-timing/.github/workflows/cicd.yml
-name: Build, Lint, and Deploy
+name: CI
 
 on:
   push:

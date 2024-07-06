@@ -20,8 +20,7 @@
     "vscode": "^1.74.0"
   },
   "categories": [
-    "Programming Languages",
-    "Snippets"
+    "Programming Languages"
   ],
   "keywords": [
     "juvix",
@@ -32,6 +31,7 @@
     "onLanguage:Juvix",
     "onLanguage:JuvixAsm",
     "onLanguage:JuvixCore",
+    "onLanguage:JuvixMarkdown",
     "onLanguage:JuvixGeb",
     "onLanguage:VampIR",
     "onCommand:juvix-mode.installJuvixBinary",
@@ -340,14 +340,23 @@
       {
         "id": "Juvix",
         "extensions": [
-          ".juvix",
-          ".juvix.md"
+          ".juvix"
         ],
         "aliases": [
           "Juvix",
           "juvix"
         ],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "JuvixMarkdown",
+        "extensions": [
+          ".juvix.md"
+        ],
+        "aliases": [
+          "JuvixMarkdown"
+        ],
+        "configuration": "./language-configuration-juvix-md.json"
       },
       {
         "id": "JuvixAsm",
@@ -398,6 +407,11 @@
         "path": "./syntaxes/Juvix.json"
       },
       {
+        "language": "JuvixMarkdown",
+        "scopeName": "text.juvix.markdown",
+        "path": "./syntaxes/JuvixMarkdown.json"
+      },
+      {
         "language": "JuvixCore",
         "scopeName": "source.JuvixCore",
         "path": "./syntaxes/JuvixCore.tmLanguage.json"
@@ -421,7 +435,7 @@
     "semanticTokenScopes": [],
     "taskDefinitions": [
       {
-        "when": "editorLangId == Juvix",
+        "when": "editorLangId == Juvix || editorLangId == JuvixMarkdown",
         "type": "Juvix",
         "required": [
           "command"
@@ -489,28 +503,28 @@
         "command": "juvix-mode.typecheck",
         "title": "Typecheck",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.typecheck-silent",
         "title": "Silent Typecheck",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(check)"
       },
       {
         "command": "juvix-mode.compile",
         "title": "Compile current file",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(output)"
       },
       {
         "command": "juvix-mode.run",
         "title": "Evaluate current file",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
@@ -528,51 +542,51 @@
         "command": "juvix-mode.enableCodeLens",
         "title": "Enable CodeLens",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
         "command": "juvix-mode.disableCodeLens",
         "title": "Disable CodeLens",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
         "command": "juvix-mode.cleanDependencies",
         "title": "Clean package dependencies",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
         "command": "juvix-mode.updateDependencies",
         "title": "Update package dependencies",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
         "command": "juvix-mode.generateIsabelle",
         "title": "Generate Isabelle theory for current file",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
         "command": "juvix-mode.createOrShowJudoc",
         "title": "HTML preview of current file",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(book)"
       },
       {
         "command": "juvix-mode.createOrShowJudocOnlySource",
         "title": "HTML Preview [Only Source]",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(file-code)"
       },
       {
         "command": "juvix-mode.dev-parse",
         "title": "Internal: Parse",
         "category": "Juvix",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
         "command": "juvix-mode.core-eval",
@@ -670,23 +684,23 @@
       {
         "key": "shift+alt+d",
         "command": "juvix-mode.doctor",
-        "when": "editorLangId == Juvix"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown)"
       },
       {
         "key": "shift+alt+t",
         "command": "juvix-mode.typecheck",
-        "when": "editorLangId == Juvix && editorTextFocus",
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
         "icon": "$(debug-start)"
       },
       {
         "key": "shift+alt+c",
         "command": "juvix-mode.compile",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
         "key": "shift+alt+x",
         "command": "juvix-mode.run",
-        "when": "editorLangId == Juvix && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
         "command": "juvix-mode.loadFileRepl",
@@ -724,33 +738,33 @@
       {
         "id": "juvix-submenu",
         "label": "Juvix Commands",
-        "when": "editorLangId == Juvix"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown)"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb)",
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown || editorLangId == JuvixCore || editorLangId == JuvixGeb)",
           "command": "juvix-mode.loadFileRepl",
           "group": "navigation@0"
         },
         {
-          "when": "juvix-mode:ready && editorLangId == Juvix",
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown)",
           "command": "juvix-mode.typecheck",
           "group": "navigation@1"
         },
         {
-          "when": "juvix-mode:ready && editorLangId == Juvix",
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown)",
           "command": "juvix-mode.compile",
           "group": "navigation@2"
         },
         {
-          "when": "juvix-mode:ready && editorLangId == Juvix",
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown)",
           "command": "juvix-mode.run",
           "group": "navigation@3"
         },
         {
-          "when": "juvix-mode:ready && editorLangId == Juvix",
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown)",
           "command": "juvix-mode.createOrShowJudoc",
           "group": "navigation@8"
         },
@@ -824,7 +838,7 @@
         {
           "submenu": "juvix-submenu",
           "group": "navigation",
-          "when": "juvix-mode:ready && editorLangId == Juvix"
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown)"
         }
       ],
       "juvix-submenu": [
@@ -843,7 +857,8 @@
         {
           "command": "juvix-mode.doctor",
           "group": "navigation@1.31"
-        },        {
+        },
+        {
           "command": "juvix-mode.createOrShowJudoc",
           "group": "navigation@1.31"
         }

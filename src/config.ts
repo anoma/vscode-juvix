@@ -33,7 +33,7 @@ export class JuvixConfig {
     this.binaryName.set(path.basename(juvixExec));
   }
 
-  // geb settings
+  // VampIR settings
   readonly vampirBinaryName = new VsCodeSetting('juvix-mode.vampirBinName', {
     serializer: serializerWithDefault('vamp-ir'),
     target: ConfigurationTarget.Global,
@@ -68,32 +68,32 @@ export class JuvixConfig {
     target: ConfigurationTarget.Global,
   });
 
-  readonly noColors = new VsCodeSetting('juvix-mode.opts.noColors', {
+  readonly noColors = new VsCodeSetting('juvix-mode.noColors', {
     target: ConfigurationTarget.Global,
   });
 
-  readonly showNameIds = new VsCodeSetting('juvix-mode.opts.showNameIds', {
+  readonly showNameIds = new VsCodeSetting('juvix-mode.showNameIds', {
     target: ConfigurationTarget.Global,
   });
-  readonly onlyErrors = new VsCodeSetting('juvix-mode.opts.onlyErrors', {
+  readonly onlyErrors = new VsCodeSetting('juvix-mode.onlyErrors', {
     target: ConfigurationTarget.Global,
   });
-  readonly noTermination = new VsCodeSetting('juvix-mode.opts.noTermination', {
+  readonly noTermination = new VsCodeSetting('juvix-mode.noTermination', {
     target: ConfigurationTarget.Global,
   });
-  readonly noPositivity = new VsCodeSetting('juvix-mode.opts.noPositivity', {
+  readonly noPositivity = new VsCodeSetting('juvix-mode.noPositivity', {
     target: ConfigurationTarget.Global,
   });
-  readonly noStdlib = new VsCodeSetting('juvix-mode.opts.noStdlib', {
+  readonly noStdlib = new VsCodeSetting('juvix-mode.noStdlib', {
     target: ConfigurationTarget.Global,
   });
   readonly internalBuildDir = new VsCodeSetting(
-    'juvix-mode.opts.internalBuildDir',
+    'juvix-mode.internalBuildDir',
     {
       target: ConfigurationTarget.Global,
     }
   );
-  readonly judocDir = new VsCodeSetting('juvix-mode.opts.judocDir', {
+  readonly judocDir = new VsCodeSetting('juvix-mode.judocDir', {
     target: ConfigurationTarget.Global,
   });
 
@@ -164,6 +164,7 @@ export class JuvixConfig {
     if (this.noTermination.get()) flags.push('--no-termination');
     if (this.noPositivity.get()) flags.push('--no-positivity');
     if (this.noStdlib.get()) flags.push('--no-stdlib');
+    
     const buildDir = this.getInternalBuildDir();
     if (buildDir) {
       flags.push('--internal-build-dir');

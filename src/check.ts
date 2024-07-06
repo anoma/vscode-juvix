@@ -25,7 +25,6 @@ export async function activate(context: vscode.ExtensionContext) {
         const typecheckerCall = [
           config.getJuvixExec(),
           config.getGlobalFlags(),
-          '--only-errors',
           'typecheck',
           filePath,
         ].join(' ');
