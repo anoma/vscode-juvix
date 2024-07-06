@@ -13,7 +13,7 @@ import * as inputMethod from './input';
 import * as judoc from './judoc';
 import * as repl from './repl';
 import * as statusBar from './statusbar';
-import * as tasks from './tasks';
+import * as tasks from './tasks'; // This one contains the typecheck and compile tasks
 import * as vampir from './vampir/tasks';
 import * as installer from './installer';
 import {

@@ -72,7 +72,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'typecheck',
-        args: ['${file}'],
+        args: [ config.getTypeckeckFlags(), '${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
@@ -131,11 +131,29 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Silent,
       },
       {
-        command: 'dev parse',
+        command: 'dev-parse',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
+      {
+        command: 'clean',
+        args: [config.getCleanFlags()],
+        group: vscode.TaskGroup.Build, // could it be Clean?
+        reveal: vscode.TaskRevealKind.Always,
+      },
+      {
+        command: 'update-dependencies',
+        args: [],
+        group: vscode.TaskGroup.Build,
+        reveal: vscode.TaskRevealKind.Always,
+      },
+      {
+        command: 'generate-isabelle',
+        args: ['${file}'],
+        group: vscode.TaskGroup.Build,
+        reveal: vscode.TaskRevealKind.Always,
+      }
     ];
 
     const tasks: vscode.Task[] = [];
@@ -176,7 +194,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
 
 export async function JuvixTask(
   definition: JuvixTaskDefinition,
-  name: string,
+  name: string, 
   args: string[]
 ): Promise<vscode.Task> {
   const input = args.join(' ').trim();
@@ -212,6 +230,9 @@ export async function JuvixTask(
       break;
     case 'geb-check':
       exec = new vscode.ShellExecution(JuvixExec + ` dev geb check ${fl}`);
+      break;
+    case 'update-dependencies':
+      exec = new vscode.ShellExecution(JuvixExec + `dependencies update`);
       break;
     default:
       exec = new vscode.ShellExecution(JuvixExec + `  ${input}`);

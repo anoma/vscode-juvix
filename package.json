@@ -551,19 +551,19 @@
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
-        "command": "juvix-mode.cleanDependencies",
-        "title": "Clean package dependencies",
+        "command": "juvix-mode.clean",
+        "title": "Clean: Delete build artifacts",
         "category": "Juvix",
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
-        "command": "juvix-mode.updateDependencies",
+        "command": "juvix-mode.update-dependencies",
         "title": "Update package dependencies",
         "category": "Juvix",
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
-        "command": "juvix-mode.generateIsabelle",
+        "command": "juvix-mode.generate-isabelle",
         "title": "Generate Isabelle theory for current file",
         "category": "Juvix",
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
@@ -859,7 +859,27 @@
           "group": "navigation@1.31"
         },
         {
-          "command": "juvix-mode.createOrShowJudoc",
+          "command" : "juvix-mode.clean",
+          "group": "navigation@1.31"
+        },
+        {
+          "command": "juvix-mode.update-dependencies",
+          "group": "navigation@1.31"
+        },
+        {
+          "command": "juvix-mode.generate-isabelle",
+          "group": "navigation@1.31"
+        },
+        {
+          "command": "juvix-mode.getBinaryVersion",
+          "group": "navigation@1.31"
+        },
+        {
+          "command": "juvix-mode.openRepl",
+          "group": "navigation@1.31"
+        },
+        {
+          "command": "juvix-mode.loadFileRepl",
           "group": "navigation@1.31"
         }
       ]
@@ -912,7 +932,7 @@
             "none"
           ]
         },
-        "juvix-mode.typecheckExtraArgs": {
+        "juvix-mode.typecheckerExtraArgs": {
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
@@ -952,6 +972,11 @@
           "type": "string",
           "default": "html",
           "description": "Directory for HTML output. An empty string will make the compiler use a temporary directory."
+        },
+        "juvix-mode.globalClean" : {
+          "type": "boolean",
+          "default": false,
+          "description": "Delete all build artifacts in the workspace."
         },
         "juvix-mode.revealPanel": {
           "type": "string",

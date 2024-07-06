@@ -20,6 +20,16 @@ export class JuvixConfig {
     serializer: serializerWithDefault(''),
   });
 
+  readonly globalClean = new VsCodeSetting('juvix-mode.globalClean', {
+    serializer: serializerWithDefault(false),
+  });
+
+  public getCleanFlags(): string {
+    const globalClean = this.globalClean.get();
+    if (globalClean) return '--global';
+    return '';
+  }
+
   public getJuvixExec(): string {
     const binPath = this.binaryPath.get();
     const binName = this.binaryName.get();
@@ -32,6 +42,38 @@ export class JuvixConfig {
     this.binaryPath.set(path.dirname(juvixExec));
     this.binaryName.set(path.basename(juvixExec));
   }
+
+  // extraArgs for typechecking
+  readonly typecheckExtraArgs = new VsCodeSetting(
+    'juvix-mode.typecheckExtraArgs',
+    {
+      serializer: serializerWithDefault(''),
+      target: ConfigurationTarget.Global,
+    }
+  );
+  // extraArgs for compilation
+  readonly compilationExtraArgs = new VsCodeSetting(
+    'juvix-mode.compilationExtraArgs',
+    {
+      serializer: serializerWithDefault(''),
+      target: ConfigurationTarget.Global,
+    }
+  );
+
+  readonly compilationTarget = new VsCodeSetting(
+    'juvix-mode.compilationTarget',
+    {
+      serializer: serializerWithDefault('native'),
+      target: ConfigurationTarget.Global,
+    }
+  );
+  readonly compilationOutput = new VsCodeSetting(
+    'juvix-mode.compilationOutput',
+    {
+      serializer: serializerWithDefault(''),
+      target: ConfigurationTarget.Global,
+    }
+  );
 
   // VampIR settings
   readonly vampirBinaryName = new VsCodeSetting('juvix-mode.vampirBinName', {
@@ -164,7 +206,7 @@ export class JuvixConfig {
     if (this.noTermination.get()) flags.push('--no-termination');
     if (this.noPositivity.get()) flags.push('--no-positivity');
     if (this.noStdlib.get()) flags.push('--no-stdlib');
-    
+
     const buildDir = this.getInternalBuildDir();
     if (buildDir) {
       flags.push('--internal-build-dir');
@@ -173,12 +215,7 @@ export class JuvixConfig {
     return flags.join(' ').trim();
   }
 
-  readonly compilationTarget = new VsCodeSetting(
-    'juvix-mode.compilationTarget'
-  );
-  readonly compilationOutput = new VsCodeSetting(
-    'juvix-mode.compilationOutput'
-  );
+
   readonly vampirTarget: VsCodeSetting<string> = new VsCodeSetting(
     'juvix-mode.vampirTarget'
   );
@@ -186,10 +223,29 @@ export class JuvixConfig {
     serializer: serializerWithDefault(false),
   });
 
+  public getTypeckeckFlags(): string {
+    let flags = []
+    const extraArgs = this.typecheckExtraArgs.get();
+    if (extraArgs){
+      for (const arg of extraArgs.split(' ')){
+        flags.push(arg);
+      }
+    }
+    const typecheckFlags = flags.join(' ').trim();
+    return typecheckFlags;
+  }
+
   public getCompilationFlags(): string {
+    let flags = []
     const target = this.compilationTarget.get();
-    const flags = [];
-    flags.push(target);
+    if (target)
+      flags.push(target);
+    const extraArgs = this.compilationExtraArgs.get();
+    if (extraArgs){
+      for (const arg of extraArgs.split(' ')){
+        flags.push(arg);
+      }
+    }
     const outputFile = this.compilationOutput.get();
     if (outputFile) {
       flags.push('--output');
