@@ -12,8 +12,16 @@ export function needsJuvix(document: vscode.TextDocument): boolean {
   );
 }
 
+export function isJuvixMarkdownFile(document: vscode.TextDocument): boolean {
+  return document.languageId == 'JuvixMarkdown';
+}
+
+export function isPureJuvixFile(document: vscode.TextDocument): boolean {
+  return document.languageId == 'Juvix';
+}
+
 export function isJuvixFile(document: vscode.TextDocument): boolean {
-  return document.languageId == 'Juvix' || document.languageId == 'JuvixMarkdown';
+  return isPureJuvixFile(document) || isJuvixMarkdownFile(document);
 }
 
 export function isJuvixCoreFile(document: vscode.TextDocument): boolean {

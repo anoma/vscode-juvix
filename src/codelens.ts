@@ -4,7 +4,7 @@
 import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
 import { getModuleName } from './module';
-import { isJuvixFile } from './utils/base';
+import { isJuvixFile, isJuvixMarkdownFile, isPureJuvixFile } from './utils/base';
 
 /**
  * CodelensProvider
@@ -14,9 +14,17 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.languages.registerCodeLensProvider(
       { scheme: 'file', language: 'Juvix' },
-      new CodelensProvider()
+      new JuvixCodelensProvider()
     )
   );
+
+  context.subscriptions.push(
+    vscode.languages.registerCodeLensProvider(
+      { scheme: 'file', language: 'JuvixMarkdown' },
+      new JuvixCodelensProvider()
+    )
+  );
+
   context.subscriptions.push(
     vscode.commands.registerCommand('juvix-mode.enableCodeLens', () => {
       vscode.workspace
@@ -48,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-export class CodelensProvider implements vscode.CodeLensProvider {
+export class JuvixCodelensProvider implements vscode.CodeLensProvider {
   private codeLenses: vscode.CodeLens[] = [];
   private _onDidChangeCodeLenses: vscode.EventEmitter<void> =
     new vscode.EventEmitter<void>();
@@ -71,6 +79,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 
     if (vscode.workspace.getConfiguration('juvix-mode').get('codeLens', true)) {
       this.codeLenses = [];
+
 
       const text = document.getText();
       const firstLineRange = document.lineAt(0).range;
@@ -97,26 +106,41 @@ export class CodelensProvider implements vscode.CodeLensProvider {
       const regex = /module\s+([\w.]+);/;
       const match = text.match(regex);
       const moduleName: string | undefined = getModuleName(document);
+      var insertPosition: vscode.Position = new vscode.Position(0, 0);
+      var juvixBlockText: string = '';
+
       if (moduleName && (text.length === 0 || match === null)) {
         const moduleTopHeader = `module ${moduleName};`;
+      
+        if (isPureJuvixFile(document)) {
+          insertPosition = new vscode.Position(0, 0);
+          juvixBlockText = `${moduleTopHeader}\n\n`;
+        } else if (isJuvixMarkdownFile(document)) {
+          const metadataMatch = text.match(/---\n([\s\S]*?)\n---/);
+          if (metadataMatch) {
+            insertPosition = new vscode.Position(metadataMatch[0].split('\n').length, 0);
+          } else {
+            insertPosition = new vscode.Position(0, 0);
+          }
+          juvixBlockText = `\`\`\`juvix\n${moduleTopHeader}\n\`\`\`\n\n`;
+        }
+      
         const insertModuleCodeLenses = new vscode.CodeLens(
-          new vscode.Range(
-            new vscode.Position(0, 0),
-            new vscode.Position(0, 0)
-          ),
+          new vscode.Range(insertPosition, insertPosition),
           {
             title: `Insert "${moduleTopHeader}"`,
             command: 'juvix-mode.aux.prependText',
             arguments: [
               {
-                text: `${moduleTopHeader}\n\n`,
+                text: juvixBlockText,
               },
             ],
           }
         );
-
-        this.codeLenses = [insertModuleCodeLenses].concat(this.codeLenses);
+      
+        this.codeLenses = [insertModuleCodeLenses, ...this.codeLenses];
       }
+      
 
       return this.codeLenses;
     }
