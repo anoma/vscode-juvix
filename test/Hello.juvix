@@ -4,4 +4,4 @@ module Hello;
   -- Importing the 'String' type from standard library prelude
   import Stdlib.Prelude open;
 
-  main : String := "Hello world!"; 
+  main : String := "Hello world!";
