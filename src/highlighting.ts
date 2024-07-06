@@ -28,7 +28,6 @@ We therefore call only once the compiler and then we parse the output
 to get the information we need. For "goto" and "doc" feature, we have a
 map that associates a file path to the corresponding information for that file.
 */
-
 export async function activate(context: vscode.ExtensionContext) {
   if (!config.enableSemanticSyntax.get()) return;
   try {
@@ -39,12 +38,24 @@ export async function activate(context: vscode.ExtensionContext) {
         semanticTokensProvider,
         legend
       );
+    const markdownSemanticTokensProvider = new Highlighter();
+    const markdownHighlighterProvider =
+      vscode.languages.registerDocumentSemanticTokensProvider(
+        { language: 'JuvixMarkdown', scheme: 'file' },
+        markdownSemanticTokensProvider,
+        legend
+      );
     context.subscriptions.push(highlighterProvider);
+    context.subscriptions.push(markdownHighlighterProvider);
     context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration(e => {
         if (e.affectsConfiguration('juvix-mode.enableSemanticSyntax')) {
-          if (!config.enableSemanticSyntax.get()) highlighterProvider.dispose();
-          else activate(context);
+          if (!config.enableSemanticSyntax.get()) {
+            highlighterProvider.dispose();
+            markdownHighlighterProvider.dispose();
+          } else {
+            activate(context);
+          }
         }
       })
     );
