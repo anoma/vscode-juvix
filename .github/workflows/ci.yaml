@@ -46,7 +46,7 @@ jobs:
           - ubuntu-latest
           - macos-latest
         node:
-          - 18.12.1
+          - 22.2.0
     outputs:
       vsixPath: ${{ steps.packageExtension.outputs.vsixPath }}
     steps:
