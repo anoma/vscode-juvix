@@ -64,4 +64,3 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('setContext', 'juvix-mode:ready', true);
   }
 }
-
