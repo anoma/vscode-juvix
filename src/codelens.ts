@@ -14,6 +14,7 @@ import {
  * CodelensProvider
  */
 
+
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.languages.registerCodeLensProvider(
@@ -95,6 +96,31 @@ export class JuvixCodelensProvider implements vscode.CodeLensProvider {
         command: '',
       });
       this.codeLenses.push(juvixVersionCodeLenses);
+
+      if(document.fileName.endsWith('Package.juvix') && text.length === 0){
+const packageText: string = `module Package;
+
+import PackageDescription.V2 open;
+
+package : Package :=
+  defaultPackage
+    { name := "MyPackage"
+    ; version := mkVersion 0 1 0
+    ; dependencies := []
+    };
+`;
+        const packageCodeLenses = new vscode.CodeLens(firstLineRange, {
+          title: 'Insert Package module template',
+          command: 'juvix-mode.aux.prependText',
+          arguments: [
+            {
+              text: packageText,
+            },
+          ],
+        });
+        this.codeLenses = [packageCodeLenses, ...this.codeLenses];
+        return this.codeLenses;
+      }
 
       const moduleName: string | undefined = getModuleName(document);
       const moduleDeclaration = `module ${moduleName};`;
