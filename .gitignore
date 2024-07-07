@@ -17,3 +17,4 @@ out
 **/.juvix-build
 .history
 html/
+*.zip
