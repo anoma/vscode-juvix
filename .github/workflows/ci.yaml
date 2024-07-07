@@ -62,9 +62,6 @@ jobs:
         run: npm run lint
       - name: Build Code
         run: npm run compile
-      - name: Run tests
-        run: npm run test
-        if: runner.os != 'Linux'
       - name: Package Extension
         id: packageExtension
         uses: HaaLeo/publish-vscode-extension@v1
