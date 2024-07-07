@@ -36,14 +36,14 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.languages.registerDocumentSemanticTokensProvider(
         { language: 'Juvix', scheme: 'file' },
         semanticTokensProvider,
-        legend
+        legend,
       );
     const markdownSemanticTokensProvider = new Highlighter();
     const markdownHighlighterProvider =
       vscode.languages.registerDocumentSemanticTokensProvider(
         { language: 'JuvixMarkdown', scheme: 'file' },
         markdownSemanticTokensProvider,
-        legend
+        legend,
       );
     context.subscriptions.push(highlighterProvider);
     context.subscriptions.push(markdownHighlighterProvider);
@@ -57,12 +57,12 @@ export async function activate(context: vscode.ExtensionContext) {
             activate(context);
           }
         }
-      })
+      }),
     );
   } catch (error) {
     logger.error(
       'Juvix: Could not register semantic syntax highlighter\n' + error,
-      'highlighting.ts'
+      'highlighting.ts',
     );
   }
 }
@@ -85,25 +85,25 @@ export const legend: vscode.SemanticTokensLegend = (function () {
   ];
 
   tokenTypesLegend.forEach((tokenType, index) =>
-    tokenTypes.set(tokenType, index)
+    tokenTypes.set(tokenType, index),
   );
 
   // not used at the moment
   const tokenModifiersLegend = ['declaration', 'documentation'];
   tokenModifiersLegend.forEach((tokenModifier, index) =>
-    tokenModifiers.set(tokenModifier, index)
+    tokenModifiers.set(tokenModifier, index),
   );
 
   return new vscode.SemanticTokensLegend(
     tokenTypesLegend,
-    tokenModifiersLegend
+    tokenModifiersLegend,
   );
 })();
 
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   async provideDocumentSemanticTokens(
     document: vscode.TextDocument,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ): Promise<vscode.SemanticTokens> {
     const filePath: string = document.fileName;
     const content: string = document.getText();
@@ -204,7 +204,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
           this.numberOfAstralSymbols(
             contentLines[l],
             newStartCol,
-            newStartCol + lineLength
+            newStartCol + lineLength,
           );
 
         builder.push(l, newStartCol, realLength, token, 0);
@@ -216,7 +216,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   private numberOfAstralSymbols(
     str: string,
     start: number,
-    end: number
+    end: number,
   ): number {
     // Regular expression to match astral symbols
     const regexAstralSymbols = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
@@ -254,7 +254,7 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
   }
 
   private getFaceProperty(
-    entry: ((string | number)[] | string)[]
+    entry: ((string | number)[] | string)[],
   ): FaceProperty {
     const intervalInfo = entry[0];
     const rawInterval: RawInterval = {

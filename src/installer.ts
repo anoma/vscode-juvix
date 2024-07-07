@@ -23,7 +23,7 @@ export class Installer {
   constructor(
     name: string,
     shellCommand: string,
-    env: { [key: string]: string }
+    env: { [key: string]: string },
   ) {
     this.name = name;
     const options: vscode.TerminalOptions = {
@@ -49,19 +49,19 @@ export class Installer {
               vscode.window
                 .showInformationMessage(
                   `${this.name} binary installation complete.`,
-                  'Reload window'
+                  'Reload window',
                 )
                 .then(selection => {
                   if (selection === 'Reload window') {
                     vscode.window.terminals.forEach(t => t.dispose());
                     vscode.commands.executeCommand(
-                      'workbench.action.reloadWindow'
+                      'workbench.action.reloadWindow',
                     );
                   }
                 });
             } else reject('Terminal exited with undefined status');
           }
-        }
+        },
       );
     });
   }
@@ -70,7 +70,7 @@ export class Installer {
     const name = this.name;
     if (process.platform === 'win32') {
       vscode.window.showInformationMessage(
-        `${name} is not supported on Windows yet.`
+        `${name} is not supported on Windows yet.`,
       );
       return;
     }
@@ -89,7 +89,7 @@ export class Installer {
             return exit(1);
           });
           return await this.promiseCall(this.shellCmd);
-        }
+        },
       )
       .then(exitStatus => {
         logger.trace(`${name} exit status: ${exitStatus.code}`);
@@ -112,7 +112,7 @@ export async function installJuvix() {
     "curl --proto '=https' --tlsv1.2 -sSfL https://get.juvix.org | sh && exit 0",
     {
       JUVIX_INSTALLER_ASSUME_YES: '1',
-    }
+    },
   );
   installer.run();
   installer.dispose();
@@ -124,7 +124,7 @@ export async function installVampir() {
     "curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/anoma/juvix-installer/vamp-ir-installer/vamp-ir-installer.sh | sh && exit 0",
     {
       VAMPIR_INSTALLER_ASSUME_YES: '1',
-    }
+    },
   );
   installer.run();
   installer.dispose();
@@ -137,6 +137,6 @@ export async function activate(context: vscode.ExtensionContext) {
     }),
     vscode.commands.registerCommand('juvix-mode.installVampirBinary', () => {
       installVampir();
-    })
+    }),
   );
 }

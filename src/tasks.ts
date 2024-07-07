@@ -27,7 +27,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const provider = new JuvixTaskProvider();
   const juvixTasks: Promise<vscode.Task[]> = provider.provideTasks();
   context.subscriptions.push(
-    vscode.tasks.registerTaskProvider(TASK_TYPE, provider)
+    vscode.tasks.registerTaskProvider(TASK_TYPE, provider),
   );
 
   juvixTasks
@@ -44,7 +44,7 @@ export async function activate(context: vscode.ExtensionContext) {
               return true;
             });
             return false;
-          }
+          },
         );
         context.subscriptions.push(cmd);
       }
@@ -72,7 +72,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       },
       {
         command: 'typecheck',
-        args: [ config.getTypeckeckFlags(), '${file}'],
+        args: [config.getTypeckeckFlags(), '${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
       },
@@ -153,7 +153,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
-      }
+      },
     ];
 
     const tasks: vscode.Task[] = [];
@@ -162,7 +162,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       const vscodeTask = await JuvixTask(
         { type: TASK_TYPE, command: def.command }, // definition
         def.command, // name
-        [def.command].concat(def.args ?? []) // args
+        [def.command].concat(def.args ?? []), // args
       );
       vscodeTask.group = def.group;
       vscodeTask.problemMatchers = ['$juvixerror'];
@@ -195,7 +195,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
 export async function JuvixTask(
   definition: JuvixTaskDefinition,
   name: string,
-  args: string[]
+  args: string[],
 ): Promise<vscode.Task> {
   const input = args.join(' ').trim();
   const config = new user.JuvixConfig();
@@ -208,12 +208,12 @@ export async function JuvixTask(
       exec = new vscode.ShellExecution(
         JuvixExec +
           ` compile native --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
-        { cwd: buildDir }
+        { cwd: buildDir },
       );
       break;
     case 'core-compile':
       exec = new vscode.ShellExecution(
-        JuvixExec + ` dev core compile -t geb ${fl}`
+        JuvixExec + ` dev core compile -t geb ${fl}`,
       );
       break;
     case 'core-eval':
@@ -245,6 +245,6 @@ export async function JuvixTask(
     name,
     TASK_TYPE,
     exec,
-    ['$juvixerror']
+    ['$juvixerror'],
   );
 }

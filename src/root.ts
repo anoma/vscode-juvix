@@ -9,7 +9,7 @@ import * as path from 'path';
 import { isJuvixFile } from './utils/base';
 
 export function juvixRoot(
-  document: vscode.TextDocument | undefined = undefined
+  document: vscode.TextDocument | undefined = undefined,
 ): string | undefined {
   const { spawnSync } = require('child_process');
   const doc: vscode.TextDocument | undefined =
@@ -39,7 +39,7 @@ export function globalJuvixRoot(): string {
     'juvix',
     juvixVersion ?? '',
     'global-project',
-    path.sep
+    path.sep,
   );
   return rootPath;
 }

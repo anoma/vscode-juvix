@@ -20,7 +20,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const provider = new VampIRProvider();
   const vampIRTasks: Promise<vscode.Task[]> = provider.provideTasks();
   context.subscriptions.push(
-    vscode.tasks.registerTaskProvider(TASK_TYPE, provider)
+    vscode.tasks.registerTaskProvider(TASK_TYPE, provider),
   );
 
   vampIRTasks
@@ -37,7 +37,7 @@ export async function activate(context: vscode.ExtensionContext) {
               return true;
             });
             return false;
-          }
+          },
         );
         context.subscriptions.push(cmd);
       }
@@ -118,7 +118,7 @@ export class VampIRProvider implements vscode.TaskProvider {
         const vscodeTask = await VampIR(
           { type: TASK_TYPE, command: def.command }, // definition
           `${def.command}-${target}`, // name
-          [target, def.command].concat(def.args ?? []) // args
+          [target, def.command].concat(def.args ?? []), // args
         );
         vscodeTask.group = def.group;
         vscodeTask.problemMatchers = ['$rusterror'];
@@ -154,7 +154,7 @@ export class VampIRProvider implements vscode.TaskProvider {
 export async function VampIR(
   definition: VampIRDefinition,
   name: string,
-  args: string[]
+  args: string[],
 ): Promise<vscode.Task> {
   const input = args.join(' ').trim();
   const config = new JuvixConfig();
@@ -166,6 +166,6 @@ export async function VampIR(
     name,
     TASK_TYPE,
     exec,
-    ['$juvixerror']
+    ['$juvixerror'],
   );
 }

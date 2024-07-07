@@ -15,7 +15,7 @@ import { Disposable } from 'vscode';
  * The `disposables` passed to `reaction` will be disposed when the reaction is triggered again.
  */
 export function autorunDisposable(
-  reaction: (disposables: Disposable[]) => void
+  reaction: (disposables: Disposable[]) => void,
 ): Disposable {
   let lastDisposable = new Array<Disposable>();
   return {

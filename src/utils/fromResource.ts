@@ -20,15 +20,15 @@ function invariant(_condition: boolean, _message?: string) {
  * Creates an observables resource from a sink.
  */
 export function fromResource<T>(
-  subscriber: (sink: (newValue: T) => void) => Disposable
+  subscriber: (sink: (newValue: T) => void) => Disposable,
 ): IResource<T | undefined>;
 export function fromResource<T>(
   subscriber: (sink: (newValue?: T) => void) => Disposable,
-  getValue: () => T
+  getValue: () => T,
 ): IResource<T>;
 export function fromResource<T>(
   subscriber: (sink: (newValue?: T) => void) => Disposable,
-  getValue: (() => T) | undefined = undefined
+  getValue: (() => T) | undefined = undefined,
 ): IResource<T | undefined> {
   let isActive = false;
   let isDisposed = false;
@@ -71,7 +71,7 @@ export function fromResource<T>(
           return getValue();
         } else {
           logger.warn(
-            'Called `get` of a subscribingObservable outside a reaction. Current value will be returned but no new subscription has started'
+            'Called `get` of a subscribingObservable outside a reaction. Current value will be returned but no new subscription has started',
           );
         }
       }

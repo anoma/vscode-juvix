@@ -49,7 +49,7 @@ export class JuvixConfig {
     {
       serializer: serializerWithDefault(''),
       target: ConfigurationTarget.Global,
-    }
+    },
   );
   // extraArgs for compilation
   readonly compilationExtraArgs = new VsCodeSetting(
@@ -57,7 +57,7 @@ export class JuvixConfig {
     {
       serializer: serializerWithDefault(''),
       target: ConfigurationTarget.Global,
-    }
+    },
   );
 
   readonly compilationTarget = new VsCodeSetting(
@@ -65,14 +65,14 @@ export class JuvixConfig {
     {
       serializer: serializerWithDefault('native'),
       target: ConfigurationTarget.Global,
-    }
+    },
   );
   readonly compilationOutput = new VsCodeSetting(
     'juvix-mode.compilationOutput',
     {
       serializer: serializerWithDefault(''),
       target: ConfigurationTarget.Global,
-    }
+    },
   );
 
   // VampIR settings
@@ -129,51 +129,48 @@ export class JuvixConfig {
   readonly noStdlib = new VsCodeSetting('juvix-mode.noStdlib', {
     target: ConfigurationTarget.Global,
   });
-  readonly internalBuildDir = new VsCodeSetting(
-    'juvix-mode.internalBuildDir',
-    {
-      target: ConfigurationTarget.Global,
-    }
-  );
+  readonly internalBuildDir = new VsCodeSetting('juvix-mode.internalBuildDir', {
+    target: ConfigurationTarget.Global,
+  });
   readonly judocDir = new VsCodeSetting('juvix-mode.judocDir', {
     target: ConfigurationTarget.Global,
   });
 
   public getInternalBuildDir(): string | undefined {
-      const useTmpDir = () => {
-          const tmpPath = path.join(tmpdir(), '.juvix-build');
-          try {
-              const tmp = fs.mkdtempSync(tmpPath);
-              const juvixBuildDir = tmp.toString();
-              return juvixBuildDir;
-          } catch (e) {
-              logger.error(
-                  `Error creating temporary directory ${tmpPath}: ${e}`,
-                  'config.ts'
-              );
-              return ''; // Add a return statement here
-          }
-      };
-
-      const buildDir = this.internalBuildDir.get();
-
-      if (buildDir) {
-          const juvixBuildDir = buildDir.toString();
-          try {
-              if (fs.existsSync(juvixBuildDir)) {
-                  return juvixBuildDir;
-              } else {
-                  const tmpJuvixDir = useTmpDir();
-                  return tmpJuvixDir;
-              }
-          } catch (e) {
-              logger.error(`An error occurred: ${e}`, 'config.ts');
-              const tmpJuvixBuildDir = useTmpDir();
-              return tmpJuvixBuildDir;
-          }
+    const useTmpDir = () => {
+      const tmpPath = path.join(tmpdir(), '.juvix-build');
+      try {
+        const tmp = fs.mkdtempSync(tmpPath);
+        const juvixBuildDir = tmp.toString();
+        return juvixBuildDir;
+      } catch (e) {
+        logger.error(
+          `Error creating temporary directory ${tmpPath}: ${e}`,
+          'config.ts',
+        );
+        return ''; // Add a return statement here
       }
-      const tmpJuvixBuildDir = useTmpDir();
-      return tmpJuvixBuildDir;
+    };
+
+    const buildDir = this.internalBuildDir.get();
+
+    if (buildDir) {
+      const juvixBuildDir = buildDir.toString();
+      try {
+        if (fs.existsSync(juvixBuildDir)) {
+          return juvixBuildDir;
+        } else {
+          const tmpJuvixDir = useTmpDir();
+          return tmpJuvixDir;
+        }
+      } catch (e) {
+        logger.error(`An error occurred: ${e}`, 'config.ts');
+        const tmpJuvixBuildDir = useTmpDir();
+        return tmpJuvixBuildDir;
+      }
+    }
+    const tmpJuvixBuildDir = useTmpDir();
+    return tmpJuvixBuildDir;
   }
 
   public getJudocdDir(): string {
@@ -186,7 +183,7 @@ export class JuvixConfig {
     } catch (e) {
       logger.error(
         'Error creating temporary directory for Judoc: ' + e,
-        'config.ts'
+        'config.ts',
       );
     }
     return 'html';
@@ -196,54 +193,52 @@ export class JuvixConfig {
     'juvix-mode.typecheckOnChange',
     {
       serializer: serializerWithDefault(false),
-    }
+    },
   );
 
   public getGlobalFlags(): string {
-      const flags: string[] = [];
-      if (this.noColors.get()) flags.push('--no-colors');
-      if (this.showNameIds.get()) flags.push('--show-name-ids');
-      if (this.onlyErrors.get()) flags.push('--only-errors');
-      if (this.noTermination.get()) flags.push('--no-termination');
-      if (this.noPositivity.get()) flags.push('--no-positivity');
-      if (this.noStdlib.get()) flags.push('--no-stdlib');
+    const flags: string[] = [];
+    if (this.noColors.get()) flags.push('--no-colors');
+    if (this.showNameIds.get()) flags.push('--show-name-ids');
+    if (this.onlyErrors.get()) flags.push('--only-errors');
+    if (this.noTermination.get()) flags.push('--no-termination');
+    if (this.noPositivity.get()) flags.push('--no-positivity');
+    if (this.noStdlib.get()) flags.push('--no-stdlib');
 
-      const buildDir = this.getInternalBuildDir();
-      if (buildDir) {
-          flags.push('--internal-build-dir');
-          flags.push(buildDir);
-      }
-      return flags.join(' ').trim();
+    const buildDir = this.getInternalBuildDir();
+    if (buildDir) {
+      flags.push('--internal-build-dir');
+      flags.push(buildDir);
+    }
+    return flags.join(' ').trim();
   }
 
-
   readonly vampirTarget: VsCodeSetting<string> = new VsCodeSetting(
-    'juvix-mode.vampirTarget'
+    'juvix-mode.vampirTarget',
   );
   readonly reloadReplOnSave = new VsCodeSetting('juvix-mode.reloadReplOnSave', {
     serializer: serializerWithDefault(false),
   });
 
   public getTypeckeckFlags(): string {
-      const flags: string[] = []; // Explicitly define the type of the flags array
-      const extraArgs = this.typecheckExtraArgs.get();
-      if (extraArgs){
-        for (const arg of extraArgs.split(' ')){
-          flags.push(arg);
-        }
+    const flags: string[] = []; // Explicitly define the type of the flags array
+    const extraArgs = this.typecheckExtraArgs.get();
+    if (extraArgs) {
+      for (const arg of extraArgs.split(' ')) {
+        flags.push(arg);
       }
-      const typecheckFlags = flags.join(' ').trim();
-      return typecheckFlags;
+    }
+    const typecheckFlags = flags.join(' ').trim();
+    return typecheckFlags;
   }
 
   public getCompilationFlags(): string {
     const flags: string[] = [];
     const target: string | undefined = this.compilationTarget.get();
-    if (target)
-      flags.push(target);
+    if (target) flags.push(target);
     const extraArgs = this.compilationExtraArgs.get();
-    if (extraArgs){
-      for (const arg of extraArgs.split(' ')){
+    if (extraArgs) {
+      for (const arg of extraArgs.split(' ')) {
         flags.push(arg);
       }
     }
@@ -260,7 +255,7 @@ export class JuvixConfig {
     'juvix-mode.enableSemanticSyntax',
     {
       serializer: serializerWithDefault(true),
-    }
+    },
   );
   readonly inputModeEnabled = new VsCodeSetting('juvix-mode.input.enabled', {
     serializer: serializerWithDefault(true),
@@ -270,7 +265,7 @@ export class JuvixConfig {
     'juvix-mode.input.leader',
     {
       serializer: serializerWithDefault('\\'),
-    }
+    },
   );
 
   readonly languages = new VsCodeSetting('juvix-mode.input.languages', {
@@ -281,14 +276,14 @@ export class JuvixConfig {
     'juvix-mode.input.customTranslations',
     {
       serializer: serializerWithDefault<TaggedList>({}),
-    }
+    },
   );
 
   readonly eagerReplacementEnabled = new VsCodeSetting(
     'juvix-mode.input.eagerReplacementEnabled',
     {
       serializer: serializerWithDefault(true),
-    }
+    },
   );
 }
 

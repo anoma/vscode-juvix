@@ -20,7 +20,7 @@ export async function vampirIsNotInstalled() {
     Alternatively, we can install it for you now.
     Would you like to proceed with the installation?`,
     'Install',
-    'Show recommendations'
+    'Show recommendations',
   );
 
   if (result === 'Install') {
@@ -28,7 +28,7 @@ export async function vampirIsNotInstalled() {
   } else {
     logger.warn(
       'Check the binary path in the configuration page or ' +
-        `visit ${vampirLink} for instructions.`
+        `visit ${vampirLink} for instructions.`,
     );
   }
 }

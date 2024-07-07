@@ -9,11 +9,11 @@ import { logger } from './utils/debug';
 export function activate(_context: vscode.ExtensionContext) {
   vscode.languages.registerDocumentFormattingEditProvider('Juvix', {
     provideDocumentFormattingEdits(
-      document: vscode.TextDocument
+      document: vscode.TextDocument,
     ): vscode.TextEdit[] {
       const range = new vscode.Range(
         document.positionAt(0),
-        document.positionAt(document.getText().length)
+        document.positionAt(document.getText().length),
       );
 
       const filePath = document.uri.fsPath;
@@ -47,11 +47,11 @@ export function activate(_context: vscode.ExtensionContext) {
 
   vscode.languages.registerDocumentFormattingEditProvider('JuvixGeb', {
     provideDocumentFormattingEdits(
-      document: vscode.TextDocument
+      document: vscode.TextDocument,
     ): vscode.TextEdit[] {
       const range = new vscode.Range(
         document.positionAt(0),
-        document.positionAt(document.getText().length)
+        document.positionAt(document.getText().length),
       );
 
       const filePath = document.uri.fsPath;

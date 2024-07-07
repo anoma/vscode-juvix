@@ -15,13 +15,13 @@ export async function activate(_context: vscode.ExtensionContext) {
     hoverProvider = new JuvixHoverProvider();
     vscode.languages.registerHoverProvider(
       { language: 'Juvix', scheme: 'file' },
-      hoverProvider
+      hoverProvider,
     );
 
     const juvixMarkdownHoverProvider = new JuvixHoverProvider();
     vscode.languages.registerHoverProvider(
       { language: 'JuvixMarkdown', scheme: 'file' },
-      juvixMarkdownHoverProvider
+      juvixMarkdownHoverProvider,
     );
   } catch (error) {
     logger.error('No hover provider' + error, 'hover.ts');
@@ -32,7 +32,7 @@ export class JuvixHoverProvider implements vscode.HoverProvider {
   provideHover(
     document: vscode.TextDocument,
     position: vscode.Position,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ) {
     const filePath: string = document.fileName;
     const line: number = position.line;
@@ -60,13 +60,13 @@ export class JuvixHoverProvider implements vscode.HoverProvider {
           new vscode.Range(
             new vscode.Position(
               hoverProperty.interval.line,
-              hoverProperty.interval.startCol
+              hoverProperty.interval.startCol,
             ),
             new vscode.Position(
               hoverProperty.interval.endLine,
-              hoverProperty.interval.endCol
-            )
-          )
+              hoverProperty.interval.endCol,
+            ),
+          ),
         );
         return hover;
       }
@@ -76,7 +76,7 @@ export class JuvixHoverProvider implements vscode.HoverProvider {
 }
 
 export function getHoverProperty(
-  entry: ((string | number)[] | string)[]
+  entry: ((string | number)[] | string)[],
 ): HoverProperty {
   const intervalInfo = entry[0];
   const rawInterval: RawInterval = {

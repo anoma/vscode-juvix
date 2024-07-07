@@ -107,7 +107,7 @@ Make sure to reload the window if prompted for some changes to take effect.
   - **JuvixAsm**: syntax highlighting.
   - **JuvixGeb**: syntax highlighting, REPL, execution.
   - **VampIR**: syntax highlighting, setup, compile, verify, prove commands.
-- **Unicode Input Support**: Enter symbols like λ, Π, Σ using shortcuts (`\` + "alpha" + `space`).
 - **User Configuration Options**, some requiring a window reload.
+- **Unicode input support** via `czhang03.unicode-math-input` extension.
 
 Enjoy coding with Juvix in VSCode!

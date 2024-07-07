@@ -9,7 +9,6 @@ import * as goToDefinition from './definitions';
 import * as formatter from './formatter';
 import * as syntaxHighlighter from './highlighting';
 import * as hoverInfo from './hover';
-import * as inputMethod from './input';
 import * as judoc from './judoc';
 import * as repl from './repl';
 import * as statusBar from './statusbar';
@@ -45,7 +44,6 @@ export async function activate(context: vscode.ExtensionContext) {
     statusBar.activate(context, juvixVersion);
 
     const isVampirInstalled = checkVampirBinary();
-
     if (!isVampirInstalled) {
       vampirIsNotInstalled();
     }
@@ -56,14 +54,14 @@ export async function activate(context: vscode.ExtensionContext) {
       goToDefinition,
       hoverInfo,
       tasks,
-      inputMethod,
       repl,
       judoc,
       check,
       formatter,
-      vampir
+      vampir,
     ];
     modules.forEach(module => module.activate(context));
     vscode.commands.executeCommand('setContext', 'juvix-mode:ready', true);
   }
 }
+

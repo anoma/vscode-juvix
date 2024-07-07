@@ -80,7 +80,7 @@ export class JuvixRepl {
               resolve(this.terminal.exitStatus);
             else reject('Terminal exited with undefined status');
           }
-        }
+        },
       );
     });
   }
@@ -181,7 +181,7 @@ export async function activate(context: vscode.ExtensionContext) {
         tempTerminal.sendText(call);
         context.subscriptions.push(tempTerminal);
       }
-    }
+    },
   );
   context.subscriptions.push(justOpenREPL);
   /* Create a new terminal and send the command to load the current file */
@@ -196,7 +196,7 @@ export async function activate(context: vscode.ExtensionContext) {
         repl = new JuvixRepl(document);
       }
       repl.loadFileRepl();
-    }
+    },
   );
   context.subscriptions.push(loadFile);
 
@@ -204,7 +204,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // only visible when a Juvix/JuvixCore file is open
 
   const buttonREPL = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Left
+    vscode.StatusBarAlignment.Left,
   );
   buttonREPL.command = 'juvix-mode.loadFileRepl';
   buttonREPL.text = 'Load file in Juvix REPL';

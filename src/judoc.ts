@@ -15,16 +15,16 @@ export function activate(context: vscode.ExtensionContext) {
       'juvix-mode.createOrShowJudoc',
       () => {
         JudocPanel.createOrShow();
-      }
-    )
+      },
+    ),
   );
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'juvix-mode.createOrShowJudocOnlySource',
       () => {
         JudocPanel.createOrShow(true);
-      }
-    )
+      },
+    ),
   );
 
   if (vscode.window.registerWebviewPanelSerializer) {
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerWebviewPanelSerializer(JudocPanel.viewType, {
       async deserializeWebviewPanel(
         webviewPanel: vscode.WebviewPanel,
-        state: any
+        state: any,
       ) {
         console.log(`Got state: ${state}`);
         // Reset the webview options so we use latest uri for `localResourceRoots`.
@@ -84,7 +84,7 @@ export class JudocPanel {
         viewColumn: vscode.ViewColumn.Beside,
         preserveFocus: true,
       },
-      getWebviewOptions()
+      getWebviewOptions(),
     );
 
     JudocPanel.currentPanel = new JudocPanel(panel);
@@ -106,7 +106,7 @@ export class JudocPanel {
           JudocPanel.juvixDocument = document;
           this._update();
         }
-      })
+      }),
     );
 
     this._disposables.push(
@@ -117,7 +117,7 @@ export class JudocPanel {
           JudocPanel.juvixDocument = document;
           this._update();
         }
-      })
+      }),
     );
 
     this._disposables.push(
@@ -125,7 +125,7 @@ export class JudocPanel {
         if (!e || !isJuvixFile(e.document)) return;
         JudocPanel.juvixDocument = e.document;
         this._update();
-      })
+      }),
     );
 
     // Set the webview's initial html content
@@ -143,7 +143,7 @@ export class JudocPanel {
         }
       },
       null,
-      this._disposables
+      this._disposables,
     );
 
     // Handle messages from the webview
@@ -156,7 +156,7 @@ export class JudocPanel {
         }
       },
       null,
-      this._disposables
+      this._disposables,
     );
   }
 
@@ -230,7 +230,7 @@ export class JudocPanel {
 
     const htmlByJudocForDoc = vscode.Uri.joinPath(
       judocDocFolderUri,
-      htmlFilename
+      htmlFilename,
     ).fsPath;
 
     const contentDisk: string = fs.readFileSync(htmlByJudocForDoc, 'utf8');
@@ -246,7 +246,7 @@ export class JudocPanel {
         webview.cspSource +
         " https:; script-src 'nonce-" +
         nonce +
-        '\';">'
+        '\';">',
     );
   }
 }

@@ -17,16 +17,16 @@ export async function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
       vscode.languages.registerDefinitionProvider(
         { language: 'Juvix', scheme: 'file' },
-        definitionProvider
-      )
+        definitionProvider,
+      ),
     );
 
     const juvixMarkdownDefinitionProvider = new JuvixDefinitionProvider();
     context.subscriptions.push(
       vscode.languages.registerDefinitionProvider(
         { language: 'JuvixMarkdown', scheme: 'file' },
-        juvixMarkdownDefinitionProvider
-      )
+        juvixMarkdownDefinitionProvider,
+      ),
     );
   } catch (error) {
     logger.error('No definition provider:' + error, 'definitions.ts');
@@ -36,7 +36,7 @@ export async function activate(context: vscode.ExtensionContext) {
 export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
   async provideDefinition(
     document: vscode.TextDocument,
-    position: vscode.Position
+    position: vscode.Position,
   ): Promise<vscode.Location | vscode.Location[] | undefined> {
     if (!isJuvixFile(document)) return undefined;
     const filePath = document.fileName;
@@ -58,17 +58,17 @@ export class JuvixDefinitionProvider implements vscode.DefinitionProvider {
         const { targetLine, targetStartCharacter, targetFile } = info;
         const rangeBegin = new vscode.Position(
           targetLine,
-          targetStartCharacter
+          targetStartCharacter,
         );
         const lengthIdentifier = info.interval.end - info.interval.start + 1;
         const rangeEnd = new vscode.Position(
           targetLine,
-          targetStartCharacter + lengthIdentifier
+          targetStartCharacter + lengthIdentifier,
         );
         const positionRange = new vscode.Range(rangeBegin, rangeEnd);
         const definitionFound = new vscode.Location(
           vscode.Uri.file(targetFile),
-          positionRange
+          positionRange,
         );
         return definitionFound;
       }

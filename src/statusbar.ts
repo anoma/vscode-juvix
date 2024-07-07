@@ -13,11 +13,11 @@ export function activate(context: vscode.ExtensionContext, version: string) {
       vscode.window.showInformationMessage(version, {
         modal: true,
       });
-    })
+    }),
   );
 
   juvixStatusBarItemVersion = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right
+    vscode.StatusBarAlignment.Right,
   );
   juvixStatusBarItemVersion.text = version;
   juvixStatusBarItemVersion.command = 'juvix-mode.getBinaryVersion';
@@ -37,6 +37,6 @@ export function activate(context: vscode.ExtensionContext, version: string) {
       } else {
         juvixStatusBarItemVersion.hide();
       }
-    })
+    }),
   );
 }

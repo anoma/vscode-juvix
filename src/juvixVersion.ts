@@ -24,7 +24,7 @@ export async function juvixIsNotInstalled() {
     Alternatively, we can install it for you now.
     Would you like to proceed with the installation?`,
     'Install',
-    'Show recommendations'
+    'Show recommendations',
   );
 
   if (result === 'Install') {
@@ -32,7 +32,7 @@ export async function juvixIsNotInstalled() {
   } else {
     logger.warn(
       'Check the binary path in the configuration page or ' +
-        `visit ${linkDocVersion} for instructions.`
+        `visit ${linkDocVersion} for instructions.`,
     );
   }
 }
@@ -79,7 +79,7 @@ export async function checkForUpgrade(version: string) {
       .showWarningMessage(
         `${version} is not supported. Do you want to upgrade to the latest version?`,
         'Upgrade',
-        'No'
+        'No',
       )
       .then(result => {
         if (result === 'Upgrade') {
@@ -87,7 +87,7 @@ export async function checkForUpgrade(version: string) {
           return getInstalledNumericVersion();
         } else {
           logger.warn(
-            'Please upgrade Juvix to the latest version. Visit https://docs.juvix.org/latest/howto/installing/ for instructions.'
+            'Please upgrade Juvix to the latest version. Visit https://docs.juvix.org/latest/howto/installing/ for instructions.',
           );
           return undefined; // Add a return statement here
         }

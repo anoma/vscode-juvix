@@ -43,7 +43,7 @@ export class VsCodeSetting<T> {
       serializer?: Serializer<T>;
       scope?: Uri;
       target?: ConfigurationTarget;
-    } = {}
+    } = {},
   ) {
     this.scope = options.scope;
     this.serializer = options.serializer || {
@@ -55,7 +55,7 @@ export class VsCodeSetting<T> {
     this.settingResource = new VsCodeSettingResource(
       this.id,
       this.scope,
-      this.target
+      this.target,
     );
   }
 
@@ -75,7 +75,7 @@ export class VsCodeSetting<T> {
       if (
         result &&
         [result.workspaceFolderLanguageValue, result.workspaceFolderValue].some(
-          i => i !== undefined
+          i => i !== undefined,
         )
       ) {
         target = ConfigurationTarget.WorkspaceFolder;
@@ -83,7 +83,7 @@ export class VsCodeSetting<T> {
       if (
         result &&
         [result.workspaceLanguageValue, result.workspaceValue].some(
-          i => i !== undefined
+          i => i !== undefined,
         )
       ) {
         target = ConfigurationTarget.Workspace;
@@ -105,13 +105,13 @@ class VsCodeSettingResource {
         update();
       });
     },
-    () => this.readValue()
+    () => this.readValue(),
   );
 
   constructor(
     public readonly id: string,
     private readonly scope: Uri | undefined,
-    private readonly target: ConfigurationTarget | undefined
+    private readonly target: ConfigurationTarget | undefined,
   ) {}
 
   private readValue(): any {
@@ -137,15 +137,13 @@ class VsCodeSettingResource {
   /**
    * This improves change detection.
    */
-  private readonly stringifiedSettingValue = computed(
-    () => {
-      JSON.stringify(this.resource.current()),
-    {
-      name: `VsCodeSettingResource[${this.id}].value`,
-      context: this,
-    }
-  }
-  );
+  private readonly stringifiedSettingValue = computed(() => {
+    JSON.stringify(this.resource.current()),
+      {
+        name: `VsCodeSettingResource[${this.id}].value`,
+        context: this,
+      };
+  });
 
   get value(): unknown {
     const v = this.stringifiedSettingValue.get();
@@ -157,5 +155,5 @@ class VsCodeSettingResource {
 }
 
 workspace.onDidChangeConfiguration(() =>
-  runInAction(() => VsCodeSettingResource.onConfigChange.fire(undefined))
+  runInAction(() => VsCodeSettingResource.onConfigChange.fire(undefined)),
 );
