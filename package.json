@@ -564,7 +564,7 @@
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
-        "command": "juvix-mode.generate-isabelle",
+        "command": "juvix-mode.isabelle",
         "title": "Generate Isabelle theory for current file",
         "category": "Juvix",
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
@@ -868,7 +868,7 @@
           "group": "navigation@1.31"
         },
         {
-          "command": "juvix-mode.generate-isabelle",
+          "command": "juvix-mode.isabelle",
           "group": "navigation@1.31"
         },
         {
