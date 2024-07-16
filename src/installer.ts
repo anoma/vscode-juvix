@@ -118,25 +118,10 @@ export async function installJuvix() {
   installer.dispose();
 }
 
-export async function installVampir() {
-  const installer = new Installer(
-    'Vamp-IR',
-    "curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/anoma/juvix-installer/vamp-ir-installer/vamp-ir-installer.sh | sh && exit 0",
-    {
-      VAMPIR_INSTALLER_ASSUME_YES: '1',
-    },
-  );
-  installer.run();
-  installer.dispose();
-}
-
 export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('juvix-mode.installJuvixBinary', () => {
       installJuvix();
-    }),
-    vscode.commands.registerCommand('juvix-mode.installVampirBinary', () => {
-      installVampir();
     }),
   );
 }

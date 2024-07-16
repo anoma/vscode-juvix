@@ -75,20 +75,6 @@ export class JuvixConfig {
     },
   );
 
-  // VampIR settings
-  readonly vampirBinaryName = new VsCodeSetting('juvix-mode.vampirBinName', {
-    serializer: serializerWithDefault('vamp-ir'),
-    target: ConfigurationTarget.Global,
-  });
-  readonly vampirBinaryPath = new VsCodeSetting('juvix-mode.vampirBinPath', {
-    serializer: serializerWithDefault(''),
-    target: ConfigurationTarget.Global,
-  });
-
-  public getVampirExec(): string {
-    return path.join(this.vampirBinaryPath.get(), this.vampirBinaryName.get());
-  }
-
   // Geb settings
   readonly gebBinaryName = new VsCodeSetting('juvix-mode.gebName', {
     serializer: serializerWithDefault('geb.image'),
@@ -213,9 +199,6 @@ export class JuvixConfig {
     return flags.join(' ').trim();
   }
 
-  readonly vampirTarget: VsCodeSetting<string> = new VsCodeSetting(
-    'juvix-mode.vampirTarget',
-  );
   readonly reloadReplOnSave = new VsCodeSetting('juvix-mode.reloadReplOnSave', {
     serializer: serializerWithDefault(false),
   });

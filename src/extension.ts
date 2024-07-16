@@ -13,7 +13,6 @@ import * as judoc from './judoc';
 import * as repl from './repl';
 import * as statusBar from './statusbar';
 import * as tasks from './tasks'; // This one contains the typecheck and compile tasks
-import * as vampir from './vampir/tasks';
 import * as installer from './installer';
 import {
   checkForUpgrade,
@@ -22,7 +21,6 @@ import {
 } from './juvixVersion';
 import { logger } from './utils/debug';
 import { config } from './config';
-import { checkVampirBinary, vampirIsNotInstalled } from './vampir';
 
 export async function activate(context: vscode.ExtensionContext) {
   logger.debug('Activating Juvix Mode');
@@ -43,11 +41,6 @@ export async function activate(context: vscode.ExtensionContext) {
     checkForUpgrade(juvixVersion);
     statusBar.activate(context, juvixVersion);
 
-    const isVampirInstalled = checkVampirBinary();
-    if (!isVampirInstalled) {
-      vampirIsNotInstalled();
-    }
-
     const modules = [
       codelens,
       syntaxHighlighter,
@@ -58,7 +51,6 @@ export async function activate(context: vscode.ExtensionContext) {
       judoc,
       check,
       formatter,
-      vampir,
     ];
     modules.forEach(module => module.activate(context));
     vscode.commands.executeCommand('setContext', 'juvix-mode:ready', true);

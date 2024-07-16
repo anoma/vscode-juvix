@@ -37,7 +37,6 @@
     "onLanguage:JuvixCore",
     "onLanguage:JuvixMarkdown",
     "onLanguage:JuvixGeb",
-    "onLanguage:VampIR",
     "onCommand:juvix-mode.installJuvixBinary"
   ],
   "extensionPack": [
@@ -387,18 +386,6 @@
           ".geb"
         ],
         "configuration": "./language-configuration-geb.json"
-      },
-      {
-        "id": "VampIR",
-        "aliases": [
-          "VampIR",
-          "vampir"
-        ],
-        "extensions": [
-          ".vampir",
-          ".pir"
-        ],
-        "configuration": "./language-configuration-vampir.json"
       }
     ],
     "grammars": [
@@ -426,11 +413,6 @@
         "language": "JuvixAsm",
         "scopeName": "source.JuvixAsm",
         "path": "./syntaxes/JuvixAsm.tmLanguage.json"
-      },
-      {
-        "language": "VampIR",
-        "scopeName": "source.VampIR",
-        "path": "./syntaxes/VampIR.tmLanguage.json"
       }
     ],
     "semanticTokenScopes": [],
@@ -483,11 +465,6 @@
       {
         "command": "juvix-mode.installJuvixBinary",
         "title": "Install Juvix Binary",
-        "category": "Juvix"
-      },
-      {
-        "command": "juvix-mode.installVampirBinary",
-        "title": "Install VampIR Binary",
         "category": "Juvix"
       },
       {
@@ -623,62 +600,6 @@
         "category": "Juvix",
         "when": "editorLangId == JuvixGeb && editorTextFocus",
         "icon": "$(check)"
-      },
-      {
-        "command": "juvix-mode.vampir-setup-plonk",
-        "title": "Internal: VampIR Setup Plonk",
-        "category": "Juvix",
-        "when": "editorLangId == vampir && editorTextFocus",
-        "icon": "$(gear)"
-      },
-      {
-        "command": "juvix-mode.vampir-compile-plonk",
-        "title": "Internal: VampIR Compile Plonk",
-        "category": "Juvix",
-        "when": "editorLangId == vampir && editorTextFocus",
-        "icon": "$(output)"
-      },
-      {
-        "command": "juvix-mode.vampir-prove-plonk",
-        "title": "Internal: VampIR Prove Plonk",
-        "category": "Juvix",
-        "when": "editorLangId == vampir && editorTextFocus",
-        "icon": "$(check)"
-      },
-      {
-        "command": "juvix-mode.vampir-verify-plonk",
-        "title": "Internal: VampIR Verify Plonk",
-        "category": "Juvix",
-        "when": "editorLangId == vampir && editorTextFocus",
-        "icon": "$(check-all)"
-      },
-      {
-        "command": "juvix-mode.vampir-setup-halo2",
-        "title": "Internal: VampIR Setup Halo2",
-        "category": "Juvix",
-        "when": "editorLangId == vampir && editorTextFocus",
-        "icon": "$(gear)"
-      },
-      {
-        "command": "juvix-mode.vampir-compile-halo2",
-        "title": "Internal: VampIR Compile Halo2",
-        "category": "Juvix",
-        "when": "editorLangId == vampir && editorTextFocus",
-        "icon": "$(output)"
-      },
-      {
-        "command": "juvix-mode.vampir-prove-halo2",
-        "title": "Internal: VampIR Prove Halo2",
-        "category": "Juvix",
-        "when": "editorLangId == vampir && editorTextFocus",
-        "icon": "$(check)"
-      },
-      {
-        "command": "juvix-mode.vampir-verify-halo2",
-        "title": "Internal: VampIR Verify Halo2",
-        "category": "Juvix",
-        "when": "editorLangId == vampir && editorTextFocus",
-        "icon": "$(check-all)"
       }
     ],
     "keybindings": [
@@ -793,48 +714,8 @@
           "when": "juvix-mode:ready && editorLangId == JuvixGeb",
           "command": "juvix-mode.geb-eval",
           "group": "navigation@3"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-setup-plonk",
-          "group": "navigation@0"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-compile-plonk",
-          "group": "navigation@1"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-prove-plonk",
-          "group": "navigation@2"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-verify-plonk",
-          "group": "navigation@3"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-setup-halo2",
-          "group": "navigation@4"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-compile-halo2",
-          "group": "navigation@5"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-prove-halo2",
-          "group": "navigation@6"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == VampIR",
-          "command": "juvix-mode.vampir-verify-halo2",
-          "group": "navigation@6"
         }
-      ],
+            ],
       "editor/context": [
         {
           "submenu": "juvix-submenu",
@@ -900,18 +781,6 @@
           "scope": "machine-overridable",
           "description": "Absolute root path where the Juvix binary is located (e.g. /usr/local/bin/)"
         },
-        "juvix-mode.vampirBinName": {
-          "type": "string",
-          "default": "vamp-ir",
-          "scope": "machine-overridable",
-          "description": "Name of the executable of VampIR. (e.g. vamp-ir)"
-        },
-        "juvix-mode.vampirBinPath": {
-          "type": "string",
-          "default": "",
-          "scope": "machine-overridable",
-          "description": "Absolute path to the VampIR executable. (e.g. /usr/local/bin/)"
-        },
         "juvix-mode.gebBinName": {
           "type": "string",
           "default": "geb.image",
@@ -943,7 +812,6 @@
           "type": "string",
           "default": "native",
           "enum": [
-            "vampir",
             "anoma",
             "cairo",
             "geb",
@@ -1045,7 +913,7 @@
     "run": "^1.5.0",
     "temp": "^0.9.4",
     "typescript": "^5.5.3",
-    "vsce": "^2.15.0"
+    "@vscode/vsce": "^2.15.0"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
