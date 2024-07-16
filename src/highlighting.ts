@@ -29,7 +29,7 @@ to get the information we need. For "goto" and "doc" feature, we have a
 map that associates a file path to the corresponding information for that file.
 */
 export async function activate(context: vscode.ExtensionContext) {
-  if (!config.enableSemanticSyntax.get()) return;
+  if (!config.enableSemanticSyntax()) return;
   try {
     const semanticTokensProvider = new Highlighter();
     const highlighterProvider =
@@ -50,7 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration(e => {
         if (e.affectsConfiguration('juvix-mode.enableSemanticSyntax')) {
-          if (!config.enableSemanticSyntax.get()) {
+          if (!config.enableSemanticSyntax()) {
             highlighterProvider.dispose();
             markdownHighlighterProvider.dispose();
           } else {

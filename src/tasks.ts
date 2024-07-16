@@ -195,15 +195,20 @@ export async function JuvixTask(
   const config = new user.JuvixConfig();
   const JuvixExec = [config.getJuvixExec(), config.getGlobalFlags()].join(' ');
   let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined;
-  const buildDir = config.getInternalBuildDir();
   const fl = args.slice(1).join(' ').trim();
   switch (name) {
     case 'run':
+      if (config.useInternalBuildDirOption()) {
+      const buildDir = config.getInternalBuildDir();
       exec = new vscode.ShellExecution(
         JuvixExec +
         ` compile native --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
         { cwd: buildDir },
       );
+    } else {
+      exec = new vscode.ShellExecution(JuvixExec
+         + ` compile native --output ${fl}.out ${fl} && ${fl}.out`);
+    }
       break;
     case 'core-compile':
       exec = new vscode.ShellExecution(
@@ -230,7 +235,8 @@ export async function JuvixTask(
       exec = new vscode.ShellExecution(JuvixExec + `dependencies update`);
       break;
     default:
-      exec = new vscode.ShellExecution(JuvixExec + `  ${input}`);
+      let cmd = (JuvixExec + ` ${input}`).replace('\n', '').replace('  ', ' ');
+      exec = new vscode.ShellExecution(JuvixExec + ` ${input}`);
       break;
   }
   return new vscode.Task(

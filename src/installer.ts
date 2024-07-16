@@ -45,7 +45,7 @@ export class Installer {
             disposeToken.dispose();
             if (this.terminal.exitStatus !== undefined) {
               resolve(this.terminal.exitStatus);
-              config.binaryPath.set(INSTALLBIN_PATH);
+              config.setBinaryPath(INSTALLBIN_PATH);
               vscode.window
                 .showInformationMessage(
                   `${this.name} binary installation complete.`,

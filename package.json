@@ -17,7 +17,7 @@
     "test": "test"
   },
   "engines": {
-    "vscode": "^1.91.1"
+    "vscode": "^1.91.0"
   },
   "categories": [
     "Programming Languages"
@@ -831,6 +831,11 @@
         "juvix-mode.compilationOutput": {
           "type": "string",
           "scope": "machine-overridable"
+        },
+        "juvix-mode.useInternalBuildDirOption": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use the internal build directory option."
         },
         "juvix-mode.internalBuildDir": {
           "type": "string",

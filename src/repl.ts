@@ -44,7 +44,7 @@ export class JuvixRepl {
     this.openRepl();
 
     const reloadFile = vscode.workspace.onDidSaveTextDocument(d => {
-      if (d === document && this.config.reloadReplOnSave.get()) {
+      if (d === document && this.config.reloadReplOnSave()) {
         this.loadFileRepl();
         this.disposables.push(reloadFile);
       }

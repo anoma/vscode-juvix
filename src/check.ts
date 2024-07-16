@@ -50,7 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(command, commandHandler),
   );
 
-  switch (config.typecheckOn.get()) {
+  switch (config.typecheckOn()) {
     case 'change':
       context.subscriptions.push(
         vscode.workspace.onDidChangeTextDocument(e => {
