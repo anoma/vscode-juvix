@@ -235,7 +235,6 @@ export async function JuvixTask(
       exec = new vscode.ShellExecution(JuvixExec + `dependencies update`);
       break;
     default:
-      let cmd = (JuvixExec + ` ${input}`).replace('\n', '').replace('  ', ' ');
       exec = new vscode.ShellExecution(JuvixExec + ` ${input}`);
       break;
   }
