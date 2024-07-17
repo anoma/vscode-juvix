@@ -199,16 +199,17 @@ export async function JuvixTask(
   switch (name) {
     case 'run':
       if (config.useInternalBuildDirOption()) {
-      const buildDir = config.getInternalBuildDir();
-      exec = new vscode.ShellExecution(
-        JuvixExec +
-        ` compile native --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
-        { cwd: buildDir },
-      );
-    } else {
-      exec = new vscode.ShellExecution(JuvixExec
-         + ` compile native --output ${fl}.out ${fl} && ${fl}.out`);
-    }
+        const buildDir = config.getInternalBuildDir();
+        exec = new vscode.ShellExecution(
+          JuvixExec +
+            ` compile native --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
+          { cwd: buildDir },
+        );
+      } else {
+        exec = new vscode.ShellExecution(
+          JuvixExec + ` compile native --output ${fl}.out ${fl} && ${fl}.out`,
+        );
+      }
       break;
     case 'core-compile':
       exec = new vscode.ShellExecution(

@@ -14,7 +14,6 @@ import {
  * CodelensProvider
  */
 
-
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.languages.registerCodeLensProvider(
@@ -97,8 +96,8 @@ export class JuvixCodelensProvider implements vscode.CodeLensProvider {
       });
       this.codeLenses.push(juvixVersionCodeLenses);
 
-      if(document.fileName.endsWith('Package.juvix') && text.length === 0){
-const packageText: string = `module Package;
+      if (document.fileName.endsWith('Package.juvix') && text.length === 0) {
+        const packageText: string = `module Package;
 
 import PackageDescription.V2 open;
 
@@ -129,7 +128,6 @@ package : Package :=
       let juvixBlockText: string = '';
 
       if (moduleName && text.length === 0) {
-
         if (isPureJuvixFile(document)) {
           juvixBlockText = `${moduleDeclaration}\n\n`;
         } else if (isJuvixMarkdownFile(document)) {

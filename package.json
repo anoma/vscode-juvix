@@ -715,7 +715,7 @@
           "command": "juvix-mode.geb-eval",
           "group": "navigation@3"
         }
-            ],
+      ],
       "editor/context": [
         {
           "submenu": "juvix-submenu",

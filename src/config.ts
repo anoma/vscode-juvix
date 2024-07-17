@@ -11,7 +11,6 @@ import { logger } from './utils/debug';
 import { ConfigurationTarget, workspace } from 'vscode';
 
 export class JuvixConfig {
-
   private workspaceConfig = workspace.getConfiguration('juvix-mode');
   public _binaryPath = this.workspaceConfig.get('juvixBinPath', '');
   public _binaryName = this.workspaceConfig.get('juvixBinName', 'juvix');
@@ -27,12 +26,20 @@ export class JuvixConfig {
 
   public setBinaryPath(value: string): void {
     this._binaryPath = value;
-    this.workspaceConfig.update('juvixBinPath', value, ConfigurationTarget.Workspace);
+    this.workspaceConfig.update(
+      'juvixBinPath',
+      value,
+      ConfigurationTarget.Workspace,
+    );
   }
 
   public setBinaryName(value: string): void {
     this._binaryName = value;
-    this.workspaceConfig.update('juvixBinName', value, ConfigurationTarget.Workspace);
+    this.workspaceConfig.update(
+      'juvixBinName',
+      value,
+      ConfigurationTarget.Workspace,
+    );
   }
 
   public getJuvixExec(): string {
@@ -192,7 +199,10 @@ export class JuvixConfig {
         const juvixBuildDir = tmp.toString();
         return juvixBuildDir;
       } catch (e) {
-        logger.error(`Error creating temporary directory ${tmpPath}: ${e}`, 'config.ts');
+        logger.error(
+          `Error creating temporary directory ${tmpPath}: ${e}`,
+          'config.ts',
+        );
         return ''; // Add a return statement here
       }
     };
@@ -226,7 +236,10 @@ export class JuvixConfig {
       fs.mkdirSync(tmp);
       return tmp.toString();
     } catch (e) {
-      logger.error('Error creating temporary directory for Judoc: ' + e, 'config.ts');
+      logger.error(
+        'Error creating temporary directory for Judoc: ' + e,
+        'config.ts',
+      );
     }
     return 'html';
   }
@@ -240,7 +253,6 @@ export class JuvixConfig {
   public inputModeEnabled(): boolean {
     return this.workspaceConfig.get('input.enabled', true);
   }
-
 }
 
 export interface TaggedList {
