@@ -67,14 +67,24 @@
       "[Juvix]": {
         "editor.insertSpaces": true,
         "editor.tabSize": 2,
-        "editor.unicodeHighlight.invisibleCharacters": true,
-        "editor.trimAutoWhitespace": true
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "editor.trimAutoWhitespace": true,
+        "diffEditor.ignoreTrimWhitespace": false
+      },
+      "[JuvixMarkdown]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "editor.trimAutoWhitespace": true,
+        "diffEditor.ignoreTrimWhitespace": false
       },
       "editor.tokenColorCustomizations": {
         "[*Light*]": {
           "textMateRules": [
             {
-              "scope": "comments",
+              "scope": "comment",
               "settings": {
                 "foreground": "#a8a8a8",
                 "fontStyle": "italic"
@@ -159,7 +169,7 @@
         "[*Dark*]": {
           "textMateRules": [
             {
-              "scope": "comments",
+              "scope": "comment",
               "settings": {
                 "foreground": "#646464",
                 "fontStyle": "italic"
@@ -253,8 +263,7 @@
               "foreground": "#ef3e9d"
             },
             "comment": {
-              "foreground": "#a8a8a8",
-              "fontStyle": "italic"
+              "foreground": "#a8a8a8"
             },
             "pragma": {
               "foreground": "#717070"
@@ -295,8 +304,7 @@
               "foreground": "#ef3e9d"
             },
             "comment": {
-              "foreground": "#a8a8a8",
-              "fontStyle": "italic"
+              "foreground": "#a8a8a8"
             },
             "pragma": {
               "foreground": "#aaa9a9"
@@ -343,7 +351,6 @@
           ".juvix"
         ],
         "aliases": [
-          "Juvix",
           "juvix"
         ],
         "configuration": "./language-configuration.json"
@@ -354,7 +361,8 @@
           ".juvix.md"
         ],
         "aliases": [
-          "JuvixMarkdown"
+          "JuvixMarkdown",
+          "juvixmarkdown"
         ],
         "configuration": "./language-configuration-juvix-md.json"
       },
@@ -397,7 +405,15 @@
       {
         "language": "JuvixMarkdown",
         "scopeName": "text.juvix.markdown",
-        "path": "./syntaxes/JuvixMarkdown.json"
+        "path": "./syntaxes/JuvixMarkdown.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.juvix": "Juvix",
+          "meta.embedded.block.juvix": "Juvix"
+        },
+        "unbalancedBracketScopes": [
+          "markup.underline.link.markdown",
+          "punctuation.definition.list.begin.markdown"
+        ]
       },
       {
         "language": "JuvixCore",

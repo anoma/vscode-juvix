@@ -125,7 +125,6 @@ export class JuvixConfig {
     return this.workspaceConfig.get('gebBinPath', '');
   }
 
-
   public getGebExec(): string {
     return path.join(this.gebBinaryPath(), this.gebBinaryName());
   }
@@ -247,7 +246,6 @@ export class JuvixConfig {
   // Input mode configuration methods
   public enableSemanticSyntax(): boolean {
     return this.workspaceConfig.get('enableSemanticSyntax', true);
-
   }
 
   public inputModeEnabled(): boolean {

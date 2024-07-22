@@ -1,7 +1,7 @@
 {
   "name": "Juvix",
-  "scopeName": "source.Juvix",
-  "fileTypes": ["Juvix"],
+  "scopeName": "source.juvix",
+  "fileTypes": ["juvix"],
   "patterns": [
     {
       "include": "#comment"
@@ -27,37 +27,37 @@
       "patterns": [
         {
           "match": "--.*$",
-          "name": "comments.line.double-dash.Juvix"
+          "name": "comment.line.double-dash.juvix"
         },
         {
           "begin": "\\{--",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.comment.Juvix"
+              "name": "punctuation.definition.comment.juvix"
             }
           },
           "end": "--\\}",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.comment.Juvix"
+              "name": "punctuation.definition.comment.juvix"
             }
           },
-          "name": "comments.documentation.block.Juvix"
+          "name": "comment.documentation.block.juvix"
         },
         {
           "begin": "\\{-",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.comment.Juvix"
+              "name": "punctuation.definition.comment.juvix"
             }
           },
           "end": "-\\}",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.comment.Juvix"
+              "name": "punctuation.definition.comment.juvix"
             }
           },
-          "name": "comments.block.Juvix"
+          "name": "comment.block.juvix"
         }
       ]
     },
