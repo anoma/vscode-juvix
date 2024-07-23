@@ -4,7 +4,7 @@
 
   - [x] typecheck (ctrl+c ctrl+l)
   - [x] compile (ctrl+c ctrl+c)
-  - [x] run (ctrl+c ctrl+r)
+  - [x] eval (ctrl+c ctrl+r)
   - [x] html
   - [x] internal parse
   - [x] internal scope
@@ -14,7 +14,7 @@
   - Juvix submenu
     - [x] typecheck
     - [x] compile
-    - [x] run
+    - [x] eval
 
 - **Problem matchers provider:**
 

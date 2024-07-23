@@ -498,7 +498,7 @@
         "icon": "$(output)"
       },
       {
-        "command": "juvix-mode.run",
+        "command": "juvix-mode.eval",
         "title": "Evaluate current file",
         "category": "Juvix",
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus",
@@ -599,7 +599,7 @@
       },
       {
         "key": "shift+alt+x",
-        "command": "juvix-mode.run",
+        "command": "juvix-mode.eval",
         "when": "(editorLangId == Juvix || editorLangId == JuvixMarkdown) && editorTextFocus"
       },
       {
@@ -643,7 +643,7 @@
         },
         {
           "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown)",
-          "command": "juvix-mode.run",
+          "command": "juvix-mode.eval",
           "group": "navigation@3"
         },
         {
@@ -679,7 +679,7 @@
           "group": "navigation"
         },
         {
-          "command": "juvix-mode.run",
+          "command": "juvix-mode.eval",
           "group": "navigation"
         },
         {

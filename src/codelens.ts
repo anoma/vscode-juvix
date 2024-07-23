@@ -124,7 +124,7 @@ package : Package :=
       const moduleName: string | undefined = getModuleName(document);
       const moduleDeclaration = `module ${moduleName};`;
 
-      let insertPosition: vscode.Position = new vscode.Position(0, 0);
+      const insertPosition: vscode.Position = new vscode.Position(0, 0);
       let juvixBlockText: string = '';
 
       if (moduleName && text.length === 0) {

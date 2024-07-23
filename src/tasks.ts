@@ -95,7 +95,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
-        command: 'run',
+        command: 'eval',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
         reveal: vscode.TaskRevealKind.Always,
@@ -178,26 +178,14 @@ export async function JuvixTask(
   const JuvixExec = [config.getJuvixExec(), config.getGlobalFlags()].join(' ');
   let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined;
   const fl = args.slice(1).join(' ').trim();
+  const target = config.compilationTarget();
   switch (name) {
-    case 'run':
-      if (config.useInternalBuildDirOption()) {
-        const buildDir = config.getInternalBuildDir();
+    case 'core-compile':
+      {
         exec = new vscode.ShellExecution(
-          JuvixExec +
-            ` compile native --output ${buildDir}\${pathSeparator}out ${fl} && ${buildDir}\${pathSeparator}out`,
-          { cwd: buildDir },
-        );
-      } else {
-        exec = new vscode.ShellExecution(
-          JuvixExec + ` compile native --output ${fl}.out ${fl} && ${fl}.out`,
+          JuvixExec + ` dev core compile -t ${target} ${fl}`,
         );
       }
-      break;
-    case 'core-compile':
-      const target = config.compilationTarget();
-      exec = new vscode.ShellExecution(
-        JuvixExec + ` dev core compile -t ${target} ${fl}`,
-      );
       break;
     case 'core-eval':
       exec = new vscode.ShellExecution(JuvixExec + ` dev core eval ${fl}`);

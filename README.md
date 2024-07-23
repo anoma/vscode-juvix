@@ -68,7 +68,7 @@ Use <kbd>Ctrl</kbd>+<kbd>P</kbd> to open the Command Palette and type `Juvix`. A
 | :-------- | :------------------------------------------: |
 | typecheck | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> |
 | compile   | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>C</kbd> |
-| run       | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>X</kbd> |
+| eval      | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>X</kbd> |
 | doctor    | <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>D</kbd> |
 
 ## Configuration
