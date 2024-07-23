@@ -116,19 +116,6 @@ export class JuvixConfig {
     return compilationFlags;
   }
 
-  // Geb configuration methods
-  public gebBinaryName(): string {
-    return this.workspaceConfig.get('gebName', 'geb.image');
-  }
-
-  public gebBinaryPath(): string {
-    return this.workspaceConfig.get('gebBinPath', '');
-  }
-
-  public getGebExec(): string {
-    return path.join(this.gebBinaryPath(), this.gebBinaryName());
-  }
-
   // Other configuration methods
   public noColors(): boolean {
     return this.workspaceConfig.get('noColors', false);

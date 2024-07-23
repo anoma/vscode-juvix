@@ -105,7 +105,6 @@ Make sure to reload the window if prompted for some changes to take effect.
 - Intermediate Representations (IR) support:
   - **JuvixCore**: syntax highlighting, REPL, execution.
   - **JuvixAsm**: syntax highlighting.
-  - **JuvixGeb**: syntax highlighting, REPL, execution.
 - **User Configuration Options**, some requiring a window reload.
 - **Unicode input support** via `czhang03.unicode-math-input` extension.
 

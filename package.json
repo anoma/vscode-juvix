@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
@@ -36,7 +36,6 @@
     "onLanguage:JuvixAsm",
     "onLanguage:JuvixCore",
     "onLanguage:JuvixMarkdown",
-    "onLanguage:JuvixGeb",
     "onCommand:juvix-mode.installJuvixBinary"
   ],
   "extensionPack": [
@@ -383,17 +382,6 @@
         "extensions": [
           ".jvc"
         ]
-      },
-      {
-        "id": "JuvixGeb",
-        "aliases": [
-          "JuvixGeb",
-          "geb"
-        ],
-        "extensions": [
-          ".geb"
-        ],
-        "configuration": "./language-configuration-geb.json"
       }
     ],
     "grammars": [
@@ -419,11 +407,6 @@
         "language": "JuvixCore",
         "scopeName": "source.JuvixCore",
         "path": "./syntaxes/JuvixCore.tmLanguage.json"
-      },
-      {
-        "language": "JuvixGeb",
-        "scopeName": "source.JuvixGeb",
-        "path": "./syntaxes/JuvixGeb.tmLanguage.json"
       },
       {
         "language": "JuvixAsm",
@@ -595,27 +578,6 @@
         "category": "Juvix",
         "when": "editorLangId == JuvixCore && editorTextFocus",
         "icon": "$(output)"
-      },
-      {
-        "command": "juvix-mode.geb-eval",
-        "title": "Internal: evaluate current Geb file",
-        "category": "Juvix",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
-        "icon": "$(debug-start)"
-      },
-      {
-        "command": "juvix-mode.geb-compile",
-        "title": "Internal: compile current Geb file",
-        "category": "Juvix",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
-        "icon": "$(output)"
-      },
-      {
-        "command": "juvix-mode.geb-check",
-        "title": "Internal: typecheck current Geb file",
-        "category": "Juvix",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
-        "icon": "$(check)"
       }
     ],
     "keybindings": [
@@ -642,7 +604,7 @@
       },
       {
         "command": "juvix-mode.loadFileRepl",
-        "when": "(editorLangId == Juvix || editorLangId == JuvixCore || editorLangId == JuvixGeb)  && editorTextFocus"
+        "when": "(editorLangId == Juvix || editorLangId == JuvixCore)  && editorTextFocus"
       },
       {
         "key": "shift+alt+c",
@@ -653,23 +615,6 @@
         "key": "shift+alt+x",
         "command": "juvix-mode.core-eval",
         "when": "editorLangId == JuvixCore && editorTextFocus"
-      },
-      {
-        "key": "shift+alt+x",
-        "command": "juvix-mode.geb-eval",
-        "when": "editorLangId == JuvixGeb && editorTextFocus"
-      },
-      {
-        "key": "shift+alt+t",
-        "command": "juvix-mode.geb-check",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
-        "icon": "$(debug-start)"
-      },
-      {
-        "key": "shift+alt+c",
-        "command": "juvix-mode.geb-compile",
-        "when": "editorLangId == JuvixGeb && editorTextFocus",
-        "icon": "$(debug-start)"
       }
     ],
     "submenus": [
@@ -682,7 +627,7 @@
     "menus": {
       "editor/title": [
         {
-          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown || editorLangId == JuvixCore || editorLangId == JuvixGeb)",
+          "when": "juvix-mode:ready && (editorLangId == Juvix || editorLangId == JuvixMarkdown || editorLangId == JuvixCore)",
           "command": "juvix-mode.loadFileRepl",
           "group": "navigation@0"
         },
@@ -714,21 +659,6 @@
         {
           "when": "juvix-mode:ready && editorLangId == JuvixCore",
           "command": "juvix-mode.core-eval",
-          "group": "navigation@3"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
-          "command": "juvix-mode.geb-check",
-          "group": "navigation@1"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
-          "command": "juvix-mode.geb-compile",
-          "group": "navigation@2"
-        },
-        {
-          "when": "juvix-mode:ready && editorLangId == JuvixGeb",
-          "command": "juvix-mode.geb-eval",
           "group": "navigation@3"
         }
       ],
@@ -797,18 +727,6 @@
           "scope": "machine-overridable",
           "description": "Absolute root path where the Juvix binary is located (e.g. /usr/local/bin/)"
         },
-        "juvix-mode.gebBinName": {
-          "type": "string",
-          "default": "geb.image",
-          "scope": "machine-overridable",
-          "description": "Name of the executable of geb. (e.g. geb)"
-        },
-        "juvix-mode.gebBinPath": {
-          "type": "string",
-          "default": "",
-          "scope": "machine-overridable",
-          "description": "Absolute path to the Geb executable. (e.g. /usr/local/bin/)"
-        },
         "juvix-mode.typecheckOn": {
           "type": "string",
           "default": "none",
@@ -830,7 +748,6 @@
           "enum": [
             "anoma",
             "cairo",
-            "geb",
             "wasi",
             "native",
             "risc0-rust"

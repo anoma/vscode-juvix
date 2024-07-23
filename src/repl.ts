@@ -7,12 +7,7 @@ import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
 import { observable } from 'mobx';
 import * as path from 'path';
-import {
-  canRunRepl,
-  isJuvixCoreFile,
-  isJuvixFile,
-  isJuvixGebFile,
-} from './utils/base';
+import { canRunRepl, isJuvixCoreFile, isJuvixFile } from './utils/base';
 
 export const terminalName = 'Juvix REPL';
 
@@ -92,8 +87,6 @@ export class JuvixRepl {
       shellCmd += ' ' + 'repl';
     } else if (isJuvixCoreFile(this.document)) {
       shellCmd += ' ' + 'dev core repl';
-    } else if (isJuvixGebFile(this.document)) {
-      shellCmd += ' ' + 'dev geb repl';
     } else {
       logger.warn('Unknown language', 'repl.ts');
       return;
@@ -119,8 +112,6 @@ export class JuvixRepl {
       if (!this.reloadNextTime) this.terminal.sendText(`:load ${filename}`);
       else this.terminal.sendText(`\n:reload ${filename}`);
     } else if (isJuvixCoreFile(this.document)) {
-      this.terminal.sendText(`:l ${filename}`);
-    } else if (isJuvixGebFile(this.document)) {
       this.terminal.sendText(`:l ${filename}`);
     } else return;
     this.reloadNextTime = true;

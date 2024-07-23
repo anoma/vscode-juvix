@@ -95,24 +95,6 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         reveal: vscode.TaskRevealKind.Always,
       },
       {
-        command: 'geb-eval',
-        args: ['${file}'],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
-      },
-      {
-        command: 'geb-compile',
-        args: ['${fileBasenameNoExtension}'],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
-      },
-      {
-        command: 'geb-check',
-        args: ['${file}'],
-        group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
-      },
-      {
         command: 'run',
         args: ['${file}'],
         group: vscode.TaskGroup.Build,
@@ -212,25 +194,13 @@ export async function JuvixTask(
       }
       break;
     case 'core-compile':
+      const target = config.compilationTarget();
       exec = new vscode.ShellExecution(
-        JuvixExec + ` dev core compile -t geb ${fl}`,
+        JuvixExec + ` dev core compile -t ${target} ${fl}`,
       );
       break;
     case 'core-eval':
       exec = new vscode.ShellExecution(JuvixExec + ` dev core eval ${fl}`);
-      break;
-    case 'geb-compile': {
-      const gebCompile =
-        config.getGebExec() +
-        ` -i ${fl}.lisp -e "${fl}::*entry*" -l -v -o ${fl}.pir`;
-      exec = new vscode.ShellExecution(gebCompile);
-      break;
-    }
-    case 'geb-eval':
-      exec = new vscode.ShellExecution(JuvixExec + ` dev geb eval ${fl}`);
-      break;
-    case 'geb-check':
-      exec = new vscode.ShellExecution(JuvixExec + ` dev geb check ${fl}`);
       break;
     case 'update-dependencies':
       exec = new vscode.ShellExecution(JuvixExec + `dependencies update`);
