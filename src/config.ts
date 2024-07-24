@@ -81,7 +81,7 @@ export class JuvixConfig {
   }
 
   public typecheckOn(): string {
-    return this.workspaceConfig.get('typecheckOn', '');
+    return this.workspaceConfig.get('typecheckOn', 'save');
   }
 
   // Compilation configuration methods

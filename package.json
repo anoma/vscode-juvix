@@ -438,24 +438,21 @@
     "problemMatchers": [
       {
         "name": "juvixerror",
-        "owner": "juvixerror",
-        "source": "Juvix Error",
-        "fileLocation": "autoDetect",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
         "pattern": [
           {
-            "kind": "location",
-            "regexp": "^(.+):(\\d+)(?:-(\\d+))?:(\\d+)-(\\d+): (\\w+).*",
-            "file": 1,
-            "line": 2,
-            "endLine": 3,
-            "column": 4,
-            "endColumn": 5,
-            "severity": 6
+            "regexp": "^(([^:]+):(\\d+):(\\d+)):\\s+(error|info|debug|warn|progress):\\s?\\1(.*)$",
+            "severity": 4
           },
           {
-            "regexp": "(.*)",
-            "message": 1,
-            "loop": true
+            "regexp": "^(([^:]+):(\\d+):(\\d+)):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 5
           }
         ]
       }
@@ -729,7 +726,7 @@
         },
         "juvix-mode.typecheckOn": {
           "type": "string",
-          "default": "none",
+          "default": "save",
           "enum": [
             "change",
             "save",
@@ -787,7 +784,7 @@
         },
         "juvix-mode.revealPanel": {
           "type": "string",
-          "default": "silent",
+          "default": "always",
           "enum": [
             "always",
             "silent",
