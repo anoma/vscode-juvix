@@ -10,10 +10,6 @@ import { logger } from './utils/debug';
 export async function activate(context: vscode.ExtensionContext) {
   const config = new user.JuvixConfig();
 
-  // case 'typecheck-silent':
-  //   exec = new vscode.ShellExecution(JuvixExec + ` --only-errors typecheck  ${fl}`);
-  //   break;
-
   const command = 'juvix-mode.typecheck-silent';
 
   const commandHandler = async (doc: vscode.TextDocument, content: string) => {
@@ -34,6 +30,7 @@ export async function activate(context: vscode.ExtensionContext) {
         if (res.status !== 0) {
           const errMsg: string = "Juvix Error: " + res.stderr.toString();
           logger.error(errMsg, 'check.ts');
+          vscode.window.showErrorMessage(errMsg);
         }
         return res.stdout;
       }

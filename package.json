@@ -795,14 +795,26 @@
           ],
           "description": "Reveal panel for typechecking/compilation output"
         },
-        "juvix-mode.onlyErrors": {
-          "type": "boolean",
-          "default": false,
-          "description": "Only print errors in a uniform format."
+        "juvix-mode.logLevel": {
+          "type": "string",
+          "default": "info",
+          "enum": [
+            "warn",
+            "info",
+            "progress",
+            "debug",
+            "error"
+          ],
+          "description": "Log level for Juvix"
+        },
+        "juvix-mode.ide-end-error-char": {
+          "type": "string",
+          "default": "⚠",
+          "description": "Character to append to the end of an error message."
         },
         "juvix-mode.noColors": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Disable ANSI formatting."
         },
         "juvix-mode.showNameIds": {
@@ -833,7 +845,7 @@
         "juvix-mode.codeLens": {
           "type": "boolean",
           "default": true,
-          "description": "Enable CodeLens, which shows type information in the editor."
+          "description": "Enable CodeLens, which provides functionality like module-name insertion, powered-by message, and others."
         },
         "juvix-mode.reloadReplOnSave": {
           "type": "boolean",

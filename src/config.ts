@@ -118,15 +118,15 @@ export class JuvixConfig {
 
   // Other configuration methods
   public noColors(): boolean {
-    return this.workspaceConfig.get('noColors', false);
+    return this.workspaceConfig.get('noColors', true);
   }
 
   public showNameIds(): boolean {
     return this.workspaceConfig.get('showNameIds', false);
   }
 
-  public onlyErrors(): boolean {
-    return this.workspaceConfig.get('onlyErrors', false);
+  public logLevel(): string {
+    return this.workspaceConfig.get('logLevel', "error");
   }
 
   public noTermination(): boolean {
@@ -161,10 +161,11 @@ export class JuvixConfig {
     const flags: string[] = [];
     if (this.noColors()) flags.push('--no-colors');
     if (this.showNameIds()) flags.push('--show-name-ids');
-    if (this.onlyErrors()) flags.push('--only-errors');
     if (this.noTermination()) flags.push('--no-termination');
     if (this.noPositivity()) flags.push('--no-positivity');
     if (this.noStdlib()) flags.push('--no-stdlib');
+
+    flags.push('--log-level=' + this.logLevel());
 
     if (this.useInternalBuildDirOption()) {
       const buildDir = this.getInternalBuildDir();
