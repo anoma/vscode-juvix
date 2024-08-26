@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { logger } from './utils/debug';
 import { JuvixConfig } from './config';
-import { isJuvixFile } from './utils/base';
+import { isJuvixFile, runShellCommand } from './utils/base';
 import * as path from 'path';
 import { getModuleName } from './module';
 
@@ -180,15 +180,15 @@ export class JudocPanel {
     }
   }
 
-  private _update() {
+  private async _update() {
     const webview = this._panel.webview;
     this._panel.title = 'Juvix Documentation viewer';
-    const html = this._getHtmlForWebview(webview);
+    const html = await this._getHtmlForWebview(webview);
     if (html) this._panel.webview.html = html;
     else this._panel.webview.html = 'No active Juvix document';
   }
 
-  private _getHtmlForWebview(webview: vscode.Webview) {
+  private async _getHtmlForWebview(webview: vscode.Webview) {
     const doc = JudocPanel.juvixDocument;
     if (!doc || (doc && !isJuvixFile(doc))) return;
 
@@ -196,8 +196,6 @@ export class JudocPanel {
     const parsedFilepath = path.parse(fileName);
     const folderDocument = path.join(parsedFilepath.dir, 'docs', path.sep);
     const judocDocFolderUri = vscode.Uri.file(folderDocument);
-
-    const { spawnSync } = require('child_process');
 
     const vscodePrefix = webview.asWebviewUri(judocDocFolderUri).toString();
     const config = new JuvixConfig();
@@ -217,13 +215,10 @@ export class JudocPanel {
       doc.uri.fsPath,
     ].join(' ');
 
-    const ls = spawnSync(judocCall, {
-      shell: true,
-      encoding: 'utf8',
-    });
+    const res = await runShellCommand(judocCall, "");
 
-    if (ls.status !== 0) {
-      const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
+    if (res.status !== 0) {
+      const errMsg: string = "Juvix Error: " + res.stderr.toString();
       logger.error(errMsg, 'judoc');
     }
     const htmlFilename = getModuleName(doc) + '.html';
@@ -241,12 +236,12 @@ export class JudocPanel {
     return contentDisk.replace(
       '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
       '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src ' +
-        webview.cspSource +
-        '; img-src ' +
-        webview.cspSource +
-        " https:; script-src 'nonce-" +
-        nonce +
-        '\';">',
+      webview.cspSource +
+      '; img-src ' +
+      webview.cspSource +
+      " https:; script-src 'nonce-" +
+      nonce +
+      '\';">',
     );
   }
 }

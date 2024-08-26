@@ -6,22 +6,18 @@ import { logger } from './utils/debug';
 import { config } from './config';
 import { getInstalledNumericVersion } from './juvixVersion';
 import * as path from 'path';
-import { isJuvixFile } from './utils/base';
+import { isJuvixFile, runShellCommandSync } from './utils/base';
 
 export function juvixRoot(
   document: vscode.TextDocument | undefined = undefined,
 ): string | undefined {
-  const { spawnSync } = require('child_process');
   const doc: vscode.TextDocument | undefined =
     document ?? vscode.window.activeTextEditor?.document;
   if (!doc || !isJuvixFile(doc)) {
     return undefined;
   }
   const juvixRootCall = `${config.getJuvixExec()} dev root ${doc.uri.fsPath}`;
-  const { status, stderr, stdout } = spawnSync(juvixRootCall, {
-    shell: true,
-    encoding: 'utf8',
-  });
+  const { status, stderr, stdout } = runShellCommandSync(juvixRootCall);
   if (status !== 0) {
     logger.trace(stderr.toString());
     return undefined;

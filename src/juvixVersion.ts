@@ -6,10 +6,10 @@ import { config } from './config';
 import * as versioning from 'compare-versions';
 import * as fs from 'fs';
 import * as path from 'path';
-import { spawnSync } from 'child_process';
 import { installJuvix } from './installer';
 
 import { window } from 'vscode';
+import { runShellCommand, runShellCommandSync } from './utils/base';
 
 export async function juvixIsNotInstalled() {
   const juvixVer = 'Juvix-v' + supportedVersion;
@@ -32,21 +32,21 @@ export async function juvixIsNotInstalled() {
   } else {
     logger.warn(
       'Check the binary path in the configuration page or ' +
-        `visit ${linkDocVersion} for instructions.`,
+      `visit ${linkDocVersion} for instructions.`,
     );
   }
 }
 
-export function checkJuvixBinary(): string | undefined {
+export async function checkJuvixBinary(): Promise<string | undefined> {
   const juvixExec = config.getJuvixExec();
   logger.debug(juvixExec, 'config.getJuvixExec()');
   try {
-    const ls = spawnSync(juvixExec, ['--version']);
-    if (ls.status !== 0) {
+    const res = await runShellCommand(juvixExec + ' --version');
+    if (res.status !== 0) {
       logger.debug('Juvix is not installed.', 'checkJuvixBinary');
       return;
     }
-    return ls.stdout.toString().replace('version ', 'v').split('\n')[0];
+    return res.stdout.toString().replace('version ', 'v').split('\n')[0];
   } catch (e) {
     logger.debug('Juvix is not installed.', 'checkJuvixBinary');
     return undefined; // Add a return statement here
@@ -54,8 +54,8 @@ export function checkJuvixBinary(): string | undefined {
 }
 
 export function getInstalledNumericVersion(): string | undefined {
-  const ls = spawnSync(config.getJuvixExec(), ['--numeric-version']);
-  if (ls.status == 0) return ls.stdout.toString().split('\n')[0];
+  const res = runShellCommandSync(config.getJuvixExec() + ' --numeric-version');
+  if (res.status == 0) return res.stdout.toString().split('\n')[0];
   else {
     juvixIsNotInstalled();
     return undefined;
@@ -66,8 +66,8 @@ export const supportedVersion: string = fs
   .readFileSync(path.join(__dirname, '..', 'juvix.version'), 'utf8')
   .trim();
 
-export function isJuvixVersionSupported(): boolean {
-  const installedVersion = getInstalledNumericVersion();
+export async function isJuvixVersionSupported(): Promise<boolean> {
+  const installedVersion = await getInstalledNumericVersion();
   return installedVersion
     ? versioning.satisfies(installedVersion, `>=${supportedVersion}`)
     : false;

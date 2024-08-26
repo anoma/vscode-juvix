@@ -14,7 +14,7 @@ import {
   HoverProperty,
 } from './interfaces';
 import { config } from './config';
-import { spawnSync } from 'child_process';
+import { runShellCommand } from './utils/base';
 
 /*
 The Juvix compiler outputs a JSON file with the following structure:
@@ -123,18 +123,13 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
       '--stdin',
     ].join(' ');
 
-    const ls = spawnSync(highlighterCall, {
-      input: content,
-      shell: true,
-      encoding: 'utf8',
-    });
+    const res = await runShellCommand(highlighterCall, content);
 
-    if (ls.status !== 0) {
-      const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
+    if (res.status !== 0) {
+      const errMsg: string = "Juvix Error: " + res.stderr.toString();
       logger.error(errMsg);
     }
-    const stdout = ls.stdout;
-    const output: DevHighlightOutput = JSON.parse(stdout.toString());
+    const output: DevHighlightOutput = JSON.parse(res.stdout.toString());
 
     /*
       Populate the location map for the Goto feature

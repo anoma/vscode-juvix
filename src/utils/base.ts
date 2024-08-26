@@ -1,6 +1,7 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import { spawn, spawnSync } from 'child_process';
 import * as vscode from 'vscode';
 
 export function needsJuvix(document: vscode.TextDocument): boolean {
@@ -33,4 +34,39 @@ export function canRunRepl(document: vscode.TextDocument): boolean {
 
 export function isJuvixAsmFile(document: vscode.TextDocument): boolean {
   return document.languageId == 'JuvixAsm';
+}
+
+export function runShellCommandSync(command: string, input?: string): { stdout: string, stderr: string, status: number | null } {
+  return spawnSync(command, { shell: true, input, encoding: 'utf8' });
+}
+
+export async function runShellCommand(command: string, input?: string): Promise<{ stdout: string, stderr: string, status: number | null }> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, { shell: true });
+
+    let stdout = '';
+    let stderr = '';
+
+    if (input !== undefined) {
+      child.stdin.setDefaultEncoding('utf8');
+      child.stdin.write(input);
+      child.stdin.end();
+    }
+
+    child.stdout.on('data', (data) => {
+      stdout += data.toString();
+    });
+
+    child.stderr.on('data', (data) => {
+      stderr += data.toString();
+    });
+
+    child.on('close', (status) => {
+      resolve({ stdout, stderr, status });
+    });
+
+    child.on('error', (err) => {
+      reject(err);
+    });
+  });
 }

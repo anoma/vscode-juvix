@@ -27,13 +27,13 @@ export async function activate(context: vscode.ExtensionContext) {
   logger.debug('Initial config: ' + config.getJuvixExec());
   installer.activate(context);
 
-  let juvixVersion = checkJuvixBinary();
+  let juvixVersion = await checkJuvixBinary();
   vscode.commands.executeCommand('setContext', 'juvix-mode:ready', false);
 
   if (!juvixVersion) {
     logger.debug('Juvix binary not found, installing...');
-    juvixIsNotInstalled().then(() => {
-      juvixVersion = checkJuvixBinary();
+    juvixIsNotInstalled().then(async () => {
+      juvixVersion = await checkJuvixBinary();
     });
   }
   if (juvixVersion !== undefined) {

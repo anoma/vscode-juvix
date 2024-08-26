@@ -24,9 +24,9 @@ export function getModuleName(
   const moduleName = isUsingGlobalRoot(document)
     ? baseName
     : (relativePath => {
-        const result = `${relativePath}.${baseName}`;
-        return result.startsWith('.') ? result.slice(1) : result;
-      })(path.relative(projRoot, parsedFilepath.dir).split(path.sep).join('.'));
+      const result = `${relativePath}.${baseName}`;
+      return result.startsWith('.') ? result.slice(1) : result;
+    })(path.relative(projRoot, parsedFilepath.dir).split(path.sep).join('.'));
 
   return moduleName;
 }

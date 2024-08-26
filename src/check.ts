@@ -4,9 +4,8 @@
 
 import * as vscode from 'vscode';
 import * as user from './config';
-import { isJuvixFile } from './utils/base';
+import { isJuvixFile, runShellCommand } from './utils/base';
 import { logger } from './utils/debug';
-import { spawnSync } from 'child_process';
 
 export async function activate(context: vscode.ExtensionContext) {
   const config = new user.JuvixConfig();
@@ -17,7 +16,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const command = 'juvix-mode.typecheck-silent';
 
-  const commandHandler = (doc: vscode.TextDocument, content: string) => {
+  const commandHandler = async (doc: vscode.TextDocument, content: string) => {
     const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor && activeEditor.document == doc) {
       if (doc && isJuvixFile(doc)) {
@@ -30,17 +29,13 @@ export async function activate(context: vscode.ExtensionContext) {
           filePath,
         ].join(' ');
 
-        const ls = spawnSync(typecheckerCall, {
-          input: content,
-          shell: true,
-          encoding: 'utf8',
-        });
+        const res = await runShellCommand(typecheckerCall, content);
 
-        if (ls.status !== 0) {
-          const errMsg: string = "Juvix's Error: " + ls.stderr.toString();
+        if (res.status !== 0) {
+          const errMsg: string = "Juvix Error: " + res.stderr.toString();
           logger.error(errMsg, 'check.ts');
         }
-        return ls.stdout;
+        return res.stdout;
       }
     }
     return '';
