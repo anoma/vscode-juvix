@@ -80,7 +80,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         command: 'compile',
         args: [config.getCompilationFlags(), '${file}'],
         group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Always,
+        reveal: vscode.TaskRevealKind.Silent,
       },
       {
         command: 'core-compile',
@@ -115,8 +115,8 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       {
         command: 'clean',
         args: [config.getCleanFlags()],
-        group: vscode.TaskGroup.Build, // could it be Clean?
-        reveal: vscode.TaskRevealKind.Always,
+        group: vscode.TaskGroup.Clean, // could it be Clean?
+        reveal: vscode.TaskRevealKind.Silent,
       },
       {
         command: 'update-dependencies',
@@ -145,7 +145,7 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
       vscodeTask.presentationOptions = {
         reveal: def.reveal,
         showReuseMessage: false,
-        panel: vscode.TaskPanelKind.Shared,
+        panel: vscode.TaskPanelKind.Dedicated,
         focus: false,
         echo: false,
         clear: true,
@@ -193,13 +193,16 @@ export async function JuvixTask(
     case 'update-dependencies':
       exec = new vscode.ShellExecution(JuvixExec + `dependencies update`);
       break;
+    case 'typecheck':
+      exec = new vscode.ShellExecution(JuvixExec + ` ${input}` + ' && echo "🎉 Typecheck successful!"');
+      break;
     default:
       exec = new vscode.ShellExecution(JuvixExec + ` ${input}`);
       break;
   }
   return new vscode.Task(
     definition,
-    vscode.TaskScope.Global,
+    vscode.TaskScope.Workspace,
     name,
     TASK_TYPE,
     exec,
