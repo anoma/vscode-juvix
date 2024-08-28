@@ -3,11 +3,40 @@
  *--------------------------------------------------------*/
 'use strict';
 import * as vscode from 'vscode';
+import * as user from './config';
 import * as utils from './utils/base';
 
 export let juvixStatusBarItemVersion: vscode.StatusBarItem;
+export let JuvixCommandStatusItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext, version: string) {
+  const config = new user.JuvixConfig();
+  activateStatusBarCommandItem(context, config);
+
+  activateStatusBarJuvixVersionItem(context, version);
+
+  for (const item of [juvixStatusBarItemVersion, JuvixCommandStatusItem]) {
+
+    if (vscode.window.activeTextEditor) {
+      if (utils.needsJuvix(vscode.window.activeTextEditor.document)) {
+        item.show();
+      }
+    }
+
+    context.subscriptions.push(
+      vscode.window.onDidChangeActiveTextEditor(editor => {
+        if (editor && utils.needsJuvix(editor.document)) {
+          item.show();
+        } else {
+          item.hide();
+        }
+      }),
+    );
+  }
+
+}
+
+export function activateStatusBarJuvixVersionItem(context: vscode.ExtensionContext, version: string) {
   context.subscriptions.push(
     vscode.commands.registerCommand('juvix-mode.getBinaryVersion', () => {
       vscode.window.showInformationMessage(version, {
@@ -15,28 +44,65 @@ export function activate(context: vscode.ExtensionContext, version: string) {
       });
     }),
   );
-
   juvixStatusBarItemVersion = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
+    vscode.StatusBarAlignment.Right
   );
   juvixStatusBarItemVersion.text = version;
   juvixStatusBarItemVersion.command = 'juvix-mode.getBinaryVersion';
   juvixStatusBarItemVersion.hide();
+
   context.subscriptions.push(juvixStatusBarItemVersion);
 
-  if (vscode.window.activeTextEditor) {
-    if (utils.needsJuvix(vscode.window.activeTextEditor.document)) {
-      juvixStatusBarItemVersion.show();
-    }
-  }
+}
 
-  context.subscriptions.push(
-    vscode.window.onDidChangeActiveTextEditor(editor => {
-      if (editor && utils.needsJuvix(editor.document)) {
-        juvixStatusBarItemVersion.show();
-      } else {
-        juvixStatusBarItemVersion.hide();
-      }
-    }),
+export function activateStatusBarCommandItem(context: vscode.ExtensionContext, _config: user.JuvixConfig) {
+  JuvixCommandStatusItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    999
   );
+  JuvixCommandStatusItem.hide();
+  context.subscriptions.push(JuvixCommandStatusItem);
+}
+
+
+function updateJuvixStatusBar(icon: string = '', text: string,  tooltip: string, color: string = '', backgroundColor: vscode.ThemeColor) {
+  JuvixCommandStatusItem.text = `$(${icon}) Juvix: ${text}`;
+  JuvixCommandStatusItem.tooltip = tooltip;
+  JuvixCommandStatusItem.color = color;
+  JuvixCommandStatusItem.backgroundColor = backgroundColor;
+  JuvixCommandStatusItem.show();
+}
+
+export function setJuvixCommandStatusBarItem() {
+  JuvixCommandStatusItem.hide();
+  JuvixCommandStatusItem.text = '';
+  JuvixCommandStatusItem.tooltip = '';
+  JuvixCommandStatusItem.color = '';
+  JuvixCommandStatusItem.backgroundColor = new vscode.ThemeColor('statusBarItem.progressBackground');
+}
+
+export function inProgressJuvixCommandStatusBar(cmd: string) {
+  updateJuvixStatusBar('sync~spin', `${cmd} in progress`, '', 'white', new vscode.ThemeColor('statusBarItem.progressBackground'));
+}
+
+export function showExecResultJuvixStatusBar(success: boolean, cmd: string, tooltip?: string) {
+  if (success) {
+    updateJuvixStatusBar(
+      'check',
+      `${cmd} succeeded`,
+      tooltip || `${cmd} succeeded`,
+      'white',
+      new vscode.ThemeColor('statusBarItem.successBackground')
+
+    );
+  } else {
+    updateJuvixStatusBar(
+      'error',
+      `${cmd} failed`,
+      tooltip || `${cmd} failed`,
+      'white',
+      new vscode.ThemeColor('statusBarItem.errorBackground')
+
+    );
+  }
 }

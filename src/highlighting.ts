@@ -124,11 +124,11 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     ].join(' ');
 
     const res = await runShellCommand(highlighterCall, content);
-
     if (res.status !== 0) {
       const errMsg: string = "Juvix Error: " + res.stderr.toString();
       logger.error(errMsg);
     }
+
     const output: DevHighlightOutput = JSON.parse(res.stdout.toString());
 
     /*

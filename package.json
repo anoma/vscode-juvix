@@ -729,7 +729,7 @@
         },
         "juvix-mode.typecheckOn": {
           "type": "string",
-          "default": "none",
+          "default": "save",
           "enum": [
             "change",
             "save",

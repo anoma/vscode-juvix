@@ -196,9 +196,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const buttonREPL = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
+    1001
   );
   buttonREPL.command = 'juvix-mode.loadFileRepl';
-  buttonREPL.text = 'Load file in Juvix REPL';
+  buttonREPL.text = '$(terminal) Juvix REPL';
   context.subscriptions.push(buttonREPL);
 
   const doc = vscode.window.activeTextEditor?.document;
