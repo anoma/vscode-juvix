@@ -56,9 +56,9 @@ export function activateStatusBarJuvixVersionItem(context: vscode.ExtensionConte
 }
 
 export function activateStatusBarCommandItem(context: vscode.ExtensionContext, _config: user.JuvixConfig) {
-  /* The itemPriority number is used to arrange items in the status bar, specifically on the left. 
-     The higher the position to the left, and with many extensions, the order becomes unpredictable 
-     and it can get mixed up. The number 999 appears to be high enough to make it visible most of 
+  /* The itemPriority number is used to arrange items in the status bar, specifically on the left.
+     The higher the position to the left, and with many extensions, the order becomes unpredictable
+     and it can get mixed up. The number 999 appears to be high enough to make it visible most of
      the time. */
   const itemPriority = 999;
   JuvixCommandStatusItem = vscode.window.createStatusBarItem(
