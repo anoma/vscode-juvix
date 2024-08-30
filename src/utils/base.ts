@@ -70,3 +70,29 @@ export async function runShellCommand(command: string, input?: string): Promise<
     });
   });
 }
+
+const regexJuvixError = /(?<file>.*):(?<line>\d+):(?<begin_col>\d+)-?(?<end_col>\d+)?:\s(?<err_type>.*):\s(?<msg>((\n|.)*))/g;
+
+export function getDiagnosticFromError(output: string): vscode.Diagnostic | undefined {
+    const { file, line, begin_col, end_col, err_type, msg } = regexJuvixError.exec(output)!.groups!;
+    if (!msg || !line || !begin_col) return undefined;
+    const range = new vscode.Range(
+      new vscode.Position(parseInt(line) - 1 , parseInt(begin_col) - 1 ),
+      new vscode.Position(parseInt(line) - 1 , parseInt(end_col ?? begin_col) - 1 ),
+    );
+    let severity;
+    switch (err_type) {
+      case 'error':
+        severity = vscode.DiagnosticSeverity.Error;
+        break;
+      case 'warning':
+        severity = vscode.DiagnosticSeverity.Warning;
+        break;
+      case 'info':
+        severity = vscode.DiagnosticSeverity.Information;
+        break;
+    }
+    let diag = new vscode.Diagnostic(range, msg, severity);
+    diag.source = 'Juvix';
+    return diag;
+  }
