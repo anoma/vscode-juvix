@@ -41,7 +41,7 @@ export async function activate(context: vscode.ExtensionContext) {
         } else {
           useCmdName = cmdName;
         }
-        // Upercase the first letter of the command name
+        // Uppercase the first letter of the command name
         useCmdName = useCmdName.charAt(0).toUpperCase() + useCmdName.slice(1);
 
         const qualifiedCmdName = 'juvix-mode.' + cmdName;
