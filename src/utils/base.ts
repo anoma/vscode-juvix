@@ -77,7 +77,7 @@ export async function runShellCommand(command: string, input?: string): Promise<
       });
     } catch (err) {
       release();
-      throw err;
+      reject(err);
     }
   });
 }
