@@ -39,7 +39,8 @@
     "onCommand:juvix-mode.installJuvixBinary"
   ],
   "extensionPack": [
-    "czhang03.unicode-math-input"
+    "czhang03.unicode-math-input",
+    "usernamehw.errorlens"
   ],
   "main": "./out/extension.js",
   "scripts": {
