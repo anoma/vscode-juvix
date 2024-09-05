@@ -441,22 +441,16 @@
         "name": "juvixerror",
         "owner": "juvixerror",
         "source": "Juvix Error",
-        "fileLocation": "autoDetect",
+        "fileLocation": ["relative", "${workspaceFolder}"],
         "pattern": [
           {
-            "kind": "location",
-            "regexp": "^(.+):(\\d+)(?:-(\\d+))?:(\\d+)-(\\d+): (\\w+).*",
+            "regexp": "(?<file>.*):(?<line>\\d+):(?<begin_col>\\d+)-?(?<end_col>\\d+)?:\\s(?<err_type>.*):\\s?(?<msg>((\\n|.)*))",
             "file": 1,
             "line": 2,
-            "endLine": 3,
-            "column": 4,
-            "endColumn": 5,
-            "severity": 6
-          },
-          {
-            "regexp": "(.*)",
-            "message": 1,
-            "loop": true
+            "column": 3,
+            "severity": 4,
+            "message": 5,
+            "code": 6
           }
         ]
       }
