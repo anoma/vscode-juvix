@@ -69,10 +69,11 @@ jobs:
           pat: stub
           dryRun: true
       - name: Upload Extension Package as Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}
           path: ${{ steps.packageExtension.outputs.vsixPath }}
+          overwrite: true
 
   setup-xvfb:
     runs-on: ubuntu-latest
@@ -103,7 +104,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Download Build Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ubuntu-latest
       - name: GitHub Release
