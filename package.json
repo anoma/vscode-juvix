@@ -1,6 +1,6 @@
 {
   "name": "juvix-mode",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "GPL-3.0",
   "description": "Juvix Mode for VSCode",
   "displayName": "Juvix",
@@ -857,14 +857,15 @@
     }
   },
   "dependencies": {
+    "@vscode/vsce": "^2.15.0",
+    "async-mutex": "^0.5.0",
     "compare-versions": "^6.1.0",
     "eslint": "^8.57.0",
     "globals": "^15.8.0",
     "mobx": "^6.13.0",
     "run": "^1.5.0",
     "temp": "^0.9.4",
-    "typescript": "^5.5.3",
-    "@vscode/vsce": "^2.15.0"
+    "typescript": "^5.5.3"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
