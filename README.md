@@ -56,6 +56,8 @@ Verify your Juvix installation with:
 juvix --version
 ```
 
+
+
 ## Usage
 
 This extension provides semantic syntax highlighting for Juvix files and multiple commands accessible through the Command Palette. Note that you need to edit Juvix files within a workspace folder for the extension to function correctly.
@@ -92,6 +94,18 @@ Some common settings you can tweak include:
 - And more ...
 
 Make sure to reload the window if prompted for some changes to take effect.
+
+
+## Walkthrough
+
+This extension includes a walkthrough to help you get started with Juvix development in VSCode. To access the walkthrough:
+
+1. Open the Command Palette (Ctrl+Shift+P or Cmd+Shift+P on Mac).
+2. Type "Get Started: Open Walkthrough" and select it.
+3. Choose "Get Started with Juvix" from the list of walkthroughs.
+
+Follow the steps in the walkthrough to learn how to use the main features of the Juvix extension.
+
 
 ## Features
 

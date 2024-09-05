@@ -63,6 +63,87 @@
   "editor.semanticHighlighting.enabled": true,
   "editor.autoDetect": true,
   "contributes": {
+    "walkthroughs": [
+      {
+        "id": "juvixWalkthrough",
+        "title": "Get Started with Juvix",
+        "description": "Learn how to use the Juvix extension for VSCode",
+        "steps": [
+          {
+            "id": "installJuvix",
+            "title": "Install Juvix",
+            "description": "Make sure you have Juvix installed on your system.",
+            "media": {
+              "image": "assets/install-juvix.png",
+              "altText": "Juvix installation"
+            },
+            "completionEvents": [
+              "onCommand:juvix-mode.installJuvixBinary"
+            ]
+          },
+          {
+            "id": "openJuvixFile",
+            "title": "Open a Juvix File",
+            "description": "Open or create a new Juvix file to start coding.",
+            "media": {
+              "image": "assets/open-juvix-file.png",
+              "altText": "Open Juvix file"
+            },
+            "completionEvents": [
+              "onLanguage:Juvix"
+            ]
+          },
+          {
+            "id": "openJuvixMarkdownFile",
+            "title": "Open a Juvix Markdown File",
+            "description": "Open or create a new Juvix Markdown file to start coding.",
+            "media": {
+              "image": "assets/open-juvix-markdown-file.png",
+              "altText": "Open Juvix Markdown file"
+            },
+            "completionEvents": [
+              "onLanguage:JuvixMarkdown"
+            ]
+          },
+          {
+            "id": "typecheck",
+            "title": "Typecheck Your Code",
+            "description": "Use the typecheck command to verify your Juvix code.",
+            "media": {
+              "image": "assets/typecheck.png",
+              "altText": "Typecheck Juvix code"
+            },
+            "completionEvents": [
+              "onCommand:juvix-mode.typecheck"
+            ]
+          },
+          {
+            "id": "compile",
+            "title": "Compile Your Code",
+            "description": "Compile your Juvix code using the compile command.",
+            "media": {
+              "image": "assets/compile.png",
+              "altText": "Compile Juvix code"
+            },
+            "completionEvents": [
+              "onCommand:juvix-mode.compile"
+            ]
+          },
+          {
+            "id": "useRepl",
+            "title": "Use the Juvix REPL",
+            "description": "Open the Juvix REPL to interactively work with your code.",
+            "media": {
+              "image": "assets/repl.png",
+              "altText": "Juvix REPL"
+            },
+            "completionEvents": [
+              "onCommand:juvix-mode.openRepl"
+            ]
+          }
+        ]
+      }
+    ],
     "configurationDefaults": {
       "[Juvix]": {
         "editor.insertSpaces": true,
@@ -461,7 +542,13 @@
         ]
       }
     ],
+  
     "commands": [
+      {
+        "command": "juvix-mode.openWalkthrough",
+        "title": "Open Juvix Walkthrough",
+        "category": "Juvix"
+      },
       {
         "command": "juvix-mode.installJuvixBinary",
         "title": "Install Juvix Binary",
