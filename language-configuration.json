@@ -5,7 +5,10 @@
     "lineComment": "--",
     "blockComment": ["{-", "-}"]
   }, // symbols used as brackets
-  "brackets": [],
+  "brackets": [
+    ["(", ")"],
+    ["[", "]"]
+  ],
   "autoClosingPairs": [
     {
       "open": "{- ",

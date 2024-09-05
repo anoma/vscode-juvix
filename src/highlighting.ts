@@ -100,11 +100,57 @@ export const legend: vscode.SemanticTokensLegend = (function () {
   );
 })();
 
+
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
+
+  async provideDocumentSemanticEdits(
+    document: vscode.TextDocument,
+    _token: vscode.CancellationToken,
+  ): Promise<vscode.SemanticTokens> {
+
+    const editor = vscode.window.activeTextEditor;
+    if (!editor || editor.document !== document) {
+      return new vscode.SemanticTokens(new Uint32Array(0));
+    }
+
+    const visibleRange = editor.visibleRanges[0];
+    const startLine = visibleRange.start.line;
+    const endLine = visibleRange.end.line;
+
+    const fullTokens = await this.provideDocumentSemanticTokens(document, _token);
+    const builder = new vscode.SemanticTokensBuilder(legend);
+
+    const tokenData = fullTokens.data;
+    let currentLine = 0;
+    let currentCharacter = 0;
+
+    for (let i = 0; i < tokenData.length; i += 5) {
+      const lineDelta = tokenData[i];
+      const charDelta = tokenData[i + 1];
+      const length = tokenData[i + 2];
+      const tokenType = tokenData[i + 3];
+      const tokenModifiers = tokenData[i + 4];
+
+      currentLine += lineDelta;
+      currentCharacter = lineDelta === 0 ? currentCharacter + charDelta : charDelta;
+
+      if (currentLine >= startLine && currentLine <= endLine) {
+        builder.push(currentLine, currentCharacter, length, tokenType, tokenModifiers);
+      }
+
+      if (currentLine > endLine) {
+        break;
+      }
+    }
+
+    return builder.build();
+  }
+
   async provideDocumentSemanticTokens(
     document: vscode.TextDocument,
     _token: vscode.CancellationToken,
   ): Promise<vscode.SemanticTokens> {
+
     const filePath: string = document.fileName;
     const content: string = document.getText();
     const contentLines: string[] = content.split('\n');
