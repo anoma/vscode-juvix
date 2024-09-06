@@ -57,6 +57,12 @@ export async function activate(context: vscode.ExtensionContext) {
     check.activate(context, juvixDiagnosticCollection);
     context.subscriptions.push(juvixDiagnosticCollection);
 
+    context.subscriptions.push(
+      vscode.commands.registerCommand('juvix-mode.openWalkthrough', () => {
+        vscode.commands.executeCommand('workbench.action.openWalkthrough', 'Heliax.juvix-mode#juvixWalkthrough');
+      })
+    );
+    
     vscode.commands.executeCommand('setContext', 'juvix-mode:ready', true);
   }
 }
