@@ -5,6 +5,7 @@
 import * as vscode from 'vscode';
 import * as user from './config';
 import { logger } from './utils/debug';
+import * as check from './check';
 import { inProgressJuvixCommandStatusBar, showExecResultJuvixStatusBar } from './statusbar';
 
 export const TASK_TYPE = 'Juvix';
@@ -37,6 +38,7 @@ export async function activate(context: vscode.ExtensionContext) {
         const cmdName = task.name.replace(' ', '-');
         let useCmdName;
         if (cmdName === 'typecheck-silent') {
+          check.activate(context, task);
           useCmdName = 'typecheck';
         } else {
           useCmdName = cmdName;
@@ -107,7 +109,13 @@ export class JuvixTaskProvider implements vscode.TaskProvider {
         command: 'typecheck',
         args: [config.getTypeckeckFlags(), '${file}'],
         group: vscode.TaskGroup.Build,
-        reveal: vscode.TaskRevealKind.Silent,
+        reveal: vscode.TaskRevealKind.Always,
+      },
+      {
+        command: 'typecheck-silent',
+        args: [config.getTypeckeckFlags(), '${file}'],
+        group: vscode.TaskGroup.Build,
+        reveal: vscode.TaskRevealKind.Never,
       },
       {
         command: 'compile',
@@ -226,6 +234,9 @@ export async function JuvixTask(
       break;
     case 'update-dependencies':
       exec = new vscode.ShellExecution(JuvixExec + `dependencies update`);
+      break;
+    case 'typecheck-silent':
+      exec = new vscode.ShellExecution(JuvixExec + ` typecheck ${fl}`);
       break;
     default:
       exec = new vscode.ShellExecution(JuvixExec + ` ${input}`);

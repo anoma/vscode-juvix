@@ -82,6 +82,7 @@ export async function runShellCommand(command: string, input?: string): Promise<
   });
 }
 
+// ^(.+):(\\d+)(?:-(\\d+))?:(\\d+)-(\\d+): (\\w+).*
 const regexJuvixError = /(?<file>.*):(?<line>\d+):(?<begin_col>\d+)-?(?<end_col>\d+)?:\s(?<err_type>.*):\s?(?<msg>((\n|.)*))/g;
 
 export function getDiagnosticFromError(output: string): vscode.Diagnostic | undefined {

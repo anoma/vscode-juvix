@@ -53,10 +53,6 @@ export async function activate(context: vscode.ExtensionContext) {
     ];
     modules.forEach(module => module.activate(context));
 
-    let juvixDiagnosticCollection = vscode.languages.createDiagnosticCollection('juvix');
-    check.activate(context, juvixDiagnosticCollection);
-    context.subscriptions.push(juvixDiagnosticCollection);
-
     vscode.commands.executeCommand('setContext', 'juvix-mode:ready', true);
   }
 }

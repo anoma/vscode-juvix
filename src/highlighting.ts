@@ -31,7 +31,6 @@ map that associates a file path to the corresponding information for that file.
 export async function activate(context: vscode.ExtensionContext) {
   if (!config.enableSemanticSyntax()) return;
   try {
-    const semanticTokensProvider = new Highlighter();
     const highlighterProvider =
       vscode.languages.registerDocumentSemanticTokensProvider(
         { language: 'Juvix', scheme: 'file' },
@@ -101,6 +100,13 @@ export const legend: vscode.SemanticTokensLegend = (function () {
 })();
 
 export class Highlighter implements vscode.DocumentSemanticTokensProvider {
+  private _onDidChangeSemanticTokens = new vscode.EventEmitter<void>();
+  public onDidChangeSemanticTokens = this._onDidChangeSemanticTokens.event;
+
+  public triggerRehighlighting(): void {
+    this._onDidChangeSemanticTokens.fire();
+  }
+
   async provideDocumentSemanticTokens(
     document: vscode.TextDocument,
     _token: vscode.CancellationToken,
@@ -267,3 +273,5 @@ export class Highlighter implements vscode.DocumentSemanticTokensProvider {
     return token;
   }
 }
+
+export const semanticTokensProvider = new Highlighter();
