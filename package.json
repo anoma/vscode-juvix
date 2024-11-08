@@ -812,6 +812,11 @@
           "default": true,
           "description": "Disable ANSI formatting."
         },
+        "juvix-mode.vscodeErrors": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable VSCode compatible error formatting."
+        },
         "juvix-mode.showNameIds": {
           "type": "boolean",
           "default": false,

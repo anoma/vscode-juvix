@@ -121,6 +121,10 @@ export class JuvixConfig {
     return this.workspaceConfig.get('noColors', true);
   }
 
+  public vscodeErrors(): boolean {
+    return this.workspaceConfig.get('vscodeErrors', true);
+  }
+
   public showNameIds(): boolean {
     return this.workspaceConfig.get('showNameIds', false);
   }
@@ -160,6 +164,7 @@ export class JuvixConfig {
   public getGlobalFlags(): string {
     const flags: string[] = [];
     if (this.noColors()) flags.push('--no-colors');
+    if (this.vscodeErrors()) flags.push('--vscode');
     if (this.showNameIds()) flags.push('--show-name-ids');
     if (this.noTermination()) flags.push('--no-termination');
     if (this.noPositivity()) flags.push('--no-positivity');

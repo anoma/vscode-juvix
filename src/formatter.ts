@@ -34,6 +34,7 @@ export function activate(_context: vscode.ExtensionContext) {
         // this is the way to protect from unexpected behaviour of the `format` command
         return stdout !== '' ? [vscode.TextEdit.replace(range, stdout)] : [];
       } else {
+        // TODO: this should be parsed with the problem matcher
         const errMsg: string = res.stderr.toString();
         logger.warn(errMsg);
         return [];
