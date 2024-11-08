@@ -70,7 +70,6 @@ export async function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(initDisp);
 
         const disp = vscode.tasks.onDidEndTaskProcess(e => {
-
           if (e.execution.task.name === task.name) {
             if (e.exitCode === 0) {
               showExecResultJuvixStatusBar(true, useCmdName, '');
