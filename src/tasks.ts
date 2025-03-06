@@ -213,7 +213,7 @@ export async function JuvixTask(
   const input = args.join(' ').trim();
   const config = new user.JuvixConfig();
   const JuvixExec = [config.getJuvixExec(), config.getGlobalFlags()].join(' ');
-  let exec: vscode.ProcessExecution | vscode.ShellExecution | undefined;
+  let exec: vscode.ShellExecution;
   const fl = args.slice(1).join(' ').trim();
   const target = config.compilationTarget();
   switch (name) {

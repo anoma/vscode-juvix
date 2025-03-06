@@ -5,6 +5,22 @@ import { isJuvixFile } from './utils/base';
 export async function activate(context: vscode.ExtensionContext, typecheckTask: vscode.Task) {
   const config = new user.JuvixConfig();
 
+  if (config.typecheckOn() === 'none') return;
+
+  const activeEditor = vscode.window.activeTextEditor;
+  if (activeEditor && isJuvixFile(activeEditor.document)) {
+    await vscode.tasks.executeTask(typecheckTask);
+  }
+
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(async editor => {
+      if (editor) {
+        if (isJuvixFile(editor.document))
+          await vscode.tasks.executeTask(typecheckTask);
+      }
+    }),
+  );
+
   switch (config.typecheckOn()) {
     case 'change':
       context.subscriptions.push(
