@@ -31,12 +31,8 @@
     "workspace"
   ],
   "activationEvents": [
-    "onStartupFinished",
-    "onLanguage:Juvix",
     "onLanguage:JuvixAsm",
-    "onLanguage:JuvixCore",
-    "onLanguage:JuvixMarkdown",
-    "onCommand:juvix-mode.installJuvixBinary"
+    "onLanguage:JuvixCore"
   ],
   "extensionPack": [
     "czhang03.unicode-math-input",
@@ -444,7 +440,7 @@
         "fileLocation": "autoDetect",
         "pattern": {
           "kind": "location",
-          "regexp": "^(.+):(\\d+)(?:-(\\d+))?:(\\d+)-(\\d+):\\s+(\\w+):(.*)$",
+          "regexp": "^(.+):(\\d+)(?:-(\\d+))?:(\\d+)(?:-(\\d+))?:\\s+(\\w+):(.*)$",
           "file": 1,
           "line": 2,
           "endLine": 3,
