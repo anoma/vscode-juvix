@@ -1,7 +1,9 @@
 {
   "name": "Juvix",
   "scopeName": "source.juvix",
-  "fileTypes": ["juvix"],
+  "fileTypes": [
+    "juvix"
+  ],
   "patterns": [
     {
       "include": "#comment"
@@ -80,7 +82,7 @@
     "keyword": {
       "patterns": [
         {
-          "match": "\\b(let|in|case|of|type|trait|instance|module|import|open|using|hiding|public|as|terminating|positive|Type|builtin|syntax)\\b",
+          "match": "\\b(let|in|case|of|type|with|trait|instance|module|import|open|using|hiding|public|as|terminating|positive|Type|builtin|syntax)\\b",
           "name": "keyword"
         },
         {
