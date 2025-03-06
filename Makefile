@@ -1,11 +1,12 @@
 MAKEFLAGS?= -j 4
 MAKE?=make $(MAKEFLAGS)
+VSCE?=vsce
 
 .PHONY: all
 all:
 	@npm install \
 		&& npm run compile \
-		&& vsce package
+		&& $(VSCE) package
 
 PRECOMMIT := $(shell command -v pre-commit 2> /dev/null)
 

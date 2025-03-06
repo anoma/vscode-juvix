@@ -852,7 +852,6 @@
     }
   },
   "dependencies": {
-    "@vscode/vsce": "^2.15.0",
     "async-mutex": "^0.5.0",
     "compare-versions": "^6.1.0",
     "eslint": "^8.57.0",
@@ -870,7 +869,7 @@
     "@types/node": "^20.14.9",
     "@types/vscode": "^1.74.0",
     "@vscode/test-electron": "^2.4.0",
-    "@vscode/vsce": "^2.29.0",
+    "@vscode/vsce": "^3.2.2",
     "eslint": "^8.57.0",
     "glob": "^10.4.2",
     "globals": "^15.8.0",
