@@ -1,6 +1,3 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
 import { logger } from './utils/debug';
 import { config } from './config';
 import * as versioning from 'compare-versions';

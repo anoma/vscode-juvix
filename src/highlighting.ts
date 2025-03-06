@@ -1,7 +1,3 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
-
 import * as def from './definitions';
 import * as hover from './hover';
 import * as vscode from 'vscode';

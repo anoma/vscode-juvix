@@ -1,6 +1,3 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
 import * as vscode from 'vscode';
 import { juvixRoot, isUsingGlobalRoot } from './root';
 import * as path from 'path';

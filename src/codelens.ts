@@ -1,6 +1,3 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
 import * as vscode from 'vscode';
 import * as statusbar from './statusbar';
 import { getModuleName } from './module';

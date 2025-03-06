@@ -1,6 +1,3 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
 'use strict';
 import * as vscode from 'vscode';
 import * as user from './config';
@@ -70,7 +67,7 @@ export function activateStatusBarCommandItem(context: vscode.ExtensionContext, _
 }
 
 
-function updateJuvixStatusBar(icon: string = '', text: string,  tooltip: string, color: string = '', backgroundColor: vscode.ThemeColor) {
+function updateJuvixStatusBar(icon: string = '', text: string, tooltip: string, color: string = '', backgroundColor: vscode.ThemeColor) {
   JuvixCommandStatusItem.text = `$(${icon}) Juvix: ${text}`;
   JuvixCommandStatusItem.tooltip = tooltip;
   JuvixCommandStatusItem.color = color;

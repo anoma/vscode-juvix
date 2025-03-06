@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import * as user from './config';
 import { isJuvixFile } from './utils/base';
-import { logger } from './utils/debug';
 
 export async function activate(context: vscode.ExtensionContext, typecheckTask: vscode.Task) {
   const config = new user.JuvixConfig();

@@ -1,7 +1,3 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
-
 import { logger } from './utils/debug';
 import * as vscode from 'vscode';
 import { JuvixConfig } from './config';
