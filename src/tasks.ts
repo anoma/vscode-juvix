@@ -232,7 +232,7 @@ export async function JuvixTask(
       exec = new vscode.ShellExecution(JuvixExec + ` dev core eval ${fl}`);
       break;
     case 'update-dependencies':
-      exec = new vscode.ShellExecution(JuvixExec + `dependencies update`);
+      exec = new vscode.ShellExecution(JuvixExec + ` dependencies update`);
       break;
     case 'typecheck-silent':
       exec = new vscode.ShellExecution(JuvixExec + ` typecheck ${fl}`);
