@@ -1,9 +1,7 @@
 {
   "name": "Juvix",
   "scopeName": "source.juvix",
-  "fileTypes": [
-    "juvix"
-  ],
+  "fileTypes": ["juvix"],
   "patterns": [
     {
       "include": "#comment"
@@ -67,7 +65,7 @@
       "patterns": [
         {
           "match": "\".*\"",
-          "name": "string"
+          "name": "string.juvix"
         }
       ]
     },
@@ -75,7 +73,7 @@
       "patterns": [
         {
           "match": "\\b(\\d+)\\b",
-          "name": "number"
+          "name": "number.juvix"
         }
       ]
     },
@@ -83,14 +81,14 @@
       "patterns": [
         {
           "match": "\\b(let|in|case|of|type|with|trait|instance|deriving|module|end|import|open|using|hiding|public|as|terminating|positive|axiom|Type|builtin|syntax|if|else)\\b",
-          "name": "keyword"
+          "name": "keyword.juvix"
         },
         {
-          "name": "delimiter",
+          "name": "delimiter.juvix",
           "match": "(;)"
         },
         {
-          "name": "keyword",
+          "name": "keyword.juvix",
           "match": "(:=|:|\\/|->|→|↦|@|\\|)"
         }
       ]
@@ -99,7 +97,7 @@
       "patterns": [
         {
           "match": "\\b(true|false)\\b",
-          "name": "constant.language"
+          "name": "constant.language.juvix"
         }
       ]
     },
@@ -107,7 +105,7 @@
       "patterns": [
         {
           "match": "(\\+|-|\\*|\\^|\\$|&&|\\!|==|>>|<=|>=)",
-          "name": "function"
+          "name": "function.juvix"
         }
       ]
     }

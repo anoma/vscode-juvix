@@ -80,82 +80,82 @@
         "[*Light*]": {
           "textMateRules": [
             {
-              "scope": "comment",
+              "scope": "comment.documentation.block.juvix, comment.line.double-dash.juvix",
               "settings": {
                 "foreground": "#a8a8a8",
                 "fontStyle": "italic"
               }
             },
             {
-              "scope": "pragma",
+              "scope": "pragma.juvix",
               "settings": {
                 "foreground": "#7e7d7d",
                 "fontStyle": "italic"
               }
             },
             {
-              "scope": "axiom",
+              "scope": "axiom.juvix",
               "settings": {
                 "foreground": "#ad1313"
               }
             },
             {
-              "scope": "constructor",
+              "scope": "constructor.juvix",
               "settings": {
                 "foreground": "#8d8dff"
               }
             },
             {
-              "scope": "error",
+              "scope": "error.juvix",
               "settings": {
                 "foreground": "#bd3744",
                 "fontStyle": "bold"
               }
             },
             {
-              "scope": "function",
+              "scope": "function.juvix",
               "settings": {
                 "foreground": "#d98200"
               }
             },
             {
-              "scope": "type",
+              "scope": "type.juvix",
               "settings": {
                 "foreground": "#769c03"
               }
             },
             {
-              "scope": "keyword",
+              "scope": "keyword.juvix",
               "settings": {
                 "foreground": "#0083e1"
               }
             },
             {
-              "scope": "module",
+              "scope": "module.juvix",
               "settings": {
                 "foreground": "#1b1b1b"
               }
             },
             {
-              "scope": "number",
+              "scope": "number.juvix",
               "settings": {
                 "foreground": "#a0d500"
               }
             },
             {
-              "scope": "string",
+              "scope": "string.juvix",
               "settings": {
                 "foreground": "#ff4d00"
               }
             },
             {
-              "scope": "storage",
+              "scope": "storage.juvix",
               "settings": {
                 "foreground": "#befc04"
               }
             },
             {
-              "scope": "punctuation.definition.group",
+              "scope": "punctuation.definition.group.juvix",
               "settings": {
                 "foreground": "#FF0000"
               }
@@ -165,82 +165,82 @@
         "[*Dark*]": {
           "textMateRules": [
             {
-              "scope": "comment",
+              "scope": "comment.documentation.block.juvix, comment.line.double-dash.juvix",
               "settings": {
                 "foreground": "#646464",
                 "fontStyle": "italic"
               }
             },
             {
-              "scope": "pragma",
+              "scope": "pragma.juvix",
               "settings": {
                 "foreground": "#a9a9a9",
                 "fontStyle": "italic"
               }
             },
             {
-              "scope": "axiom",
+              "scope": "axiom.juvix",
               "settings": {
                 "foreground": "#f07171"
               }
             },
             {
-              "scope": "constructor",
+              "scope": "constructor.juvix",
               "settings": {
                 "foreground": "#8d8dff"
               }
             },
             {
-              "scope": "error",
+              "scope": "error.juvix",
               "settings": {
                 "foreground": "#bd3744",
                 "fontStyle": "bold"
               }
             },
             {
-              "scope": "function",
+              "scope": "function.juvix",
               "settings": {
                 "foreground": "#feb64a"
               }
             },
             {
-              "scope": "type",
+              "scope": "type.juvix",
               "settings": {
                 "foreground": "#86b300"
               }
             },
             {
-              "scope": "keyword",
+              "scope": "keyword.juvix",
               "settings": {
                 "foreground": "#399ee6"
               }
             },
             {
-              "scope": "module",
+              "scope": "module.juvix",
               "settings": {
                 "foreground": "#ffffff"
               }
             },
             {
-              "scope": "number",
+              "scope": "number.juvix",
               "settings": {
                 "foreground": "#befc04"
               }
             },
             {
-              "scope": "string",
+              "scope": "string.juvix",
               "settings": {
                 "foreground": "#ff4d00"
               }
             },
             {
-              "scope": "storage",
+              "scope": "storage.juvix",
               "settings": {
                 "foreground": "#befc04"
               }
             },
             {
-              "scope": "punctuation.definition.group",
+              "scope": "punctuation.definition.group.juvix",
               "settings": {
                 "foreground": "#FF0000"
               }
@@ -252,88 +252,94 @@
         "enabled": true,
         "[*Light*]": {
           "rules": {
-            "axiom": {
+            "axiom.juvix": {
               "foreground": "#ad1313"
             },
-            "rules": {
+            "rules.juvix": {
               "foreground": "#ef3e9d"
             },
-            "comment": {
+            "comment.juvix": {
               "foreground": "#a8a8a8"
             },
-            "pragma": {
+            "comment.documentation.juvix": {
+              "foreground": "#a8a8a8"
+            },
+            "pragma.juvix": {
               "foreground": "#717070"
             },
-            "constructor": {
+            "constructor.juvix": {
               "foreground": "#8d8dff"
             },
-            "error": {
+            "error.juvix": {
               "foreground": "#ed1452",
               "fontStyle": "bold"
             },
-            "function": {
+            "function.juvix": {
               "foreground": "#ef9f00"
             },
-            "type": {
+            "type.juvix": {
               "foreground": "#31a36a"
             },
-            "keyword": {
+            "keyword.juvix": {
               "foreground": "#000bd3"
             },
-            "module": {
+            "module.juvix": {
               "foreground": "#1b1b1b"
             },
-            "number": {
+            "number.juvix": {
               "foreground": "#6b8e00"
             },
-            "string": {
+            "string.juvix": {
               "foreground": "#ff4d00"
             }
           }
         },
         "[*Dark*]": {
           "rules": {
-            "axiom": {
+            "axiom.juvix": {
               "foreground": "#f07171"
             },
-            "rules": {
+            "rules.juvix": {
               "foreground": "#ef3e9d"
             },
-            "comment": {
+            "comment.juvix": {
               "foreground": "#a8a8a8"
             },
-            "pragma": {
+            "comment.documentation.juvix": {
+              "foreground": "#a8a8a8"
+            },
+            "pragma.juvix": {
               "foreground": "#aaa9a9"
             },
-            "constructor": {
+            "constructor.juvix": {
               "foreground": "#8d8dff"
             },
-            "error": {
+            "error.juvix": {
               "foreground": "#ed1452",
               "fontStyle": "bold"
             },
-            "function": {
+            "function.juvix": {
               "foreground": "#ffc522"
             },
-            "type": {
+            "type.juvix": {
               "foreground": "#3cbc7f"
             },
-            "keyword": {
+            "keyword.juvix": {
               "foreground": "#45caff"
             },
-            "module": {
+            "module.juvix": {
               "foreground": "#ffffff"
             },
-            "number": {
+            "number.juvix": {
               "foreground": "#befc04"
             },
-            "string": {
+            "string.juvix": {
               "foreground": "#fb6349"
             },
-            "storage": {
+            "storage.juvix": {
               "foreground": "#befc04"
             },
-            "punctuation.definition.group": {
+            "punctuation.definition.group.juvix": {
               "foreground": "#FF0000"
             }
           }
@@ -411,7 +417,43 @@
         "path": "./syntaxes/JuvixAsm.tmLanguage.json"
       }
     ],
-    "semanticTokenScopes": [],
+    "semanticTokenScopes": [
+      {
+        "language": "juvix",
+        "scopes": {
+          "comment": [
+            "comment.juvix"
+          ],
+          "comment.documentation": [
+            "comment.documentation.juvix"
+          ],
+          "constructor": [
+            "constructor.juvix"
+          ],
+          "error": [
+            "error.juvix"
+          ],
+          "function": [
+            "function.juvix"
+          ],
+          "type": [
+            "type.juvix"
+          ],
+          "keyword": [
+            "keyword.juvix"
+          ],
+          "module": [
+            "module.juvix"
+          ],
+          "number": [
+            "number.juvix"
+          ],
+          "string": [
+            "string.juvix"
+          ]
+        }
+      }
+    ],
     "taskDefinitions": [
       {
         "when": "editorLangId == Juvix || editorLangId == JuvixMarkdown",
